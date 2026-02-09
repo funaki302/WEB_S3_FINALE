@@ -30,6 +30,10 @@ $router->group('', function(Router $router) use ($app) {
 // route pour la page login : 
 	$router->post('/login', [UserController::class, 'login']);
 
+// route pour la page profile:
+	$router->get('/profile', function() use ($app) {
+		$app->render('profile', []);
+	});
 
 	$router->get('/messages', function() use ($app) {
 		// Vérifier que l'utilisateur est authentifié
