@@ -14,8 +14,9 @@ class UserController {
     public function __construct() {
         $this->userModel = new User();
     }
-    
-    public function login(){
+
+//sing-in fonction :    
+     public function login(){
         $data = Flight::request()->data->getData();
         
         if (empty($data)) {
@@ -52,6 +53,8 @@ class UserController {
         Flight::redirect('/');
         return;
     }
+
+    
 
     public function logout($id){
         $result = $this->userModel->updateStatus($id,'inactive');

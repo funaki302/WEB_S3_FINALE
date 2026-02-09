@@ -319,4 +319,32 @@ class User {
             return false;
         }
     }
+
+    public function singnUp($data){
+        $sql = "INSERT INTO {$this->table} 
+            (name, email, status, phone, join_date, last_active, pwd, role) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        // Hash du mot de passe
+        
+        $params = [
+            $data['name'],
+            $data['email'],
+            'active',
+            $data['phone'] ?? '',
+            date('Y-m-d'),
+            date('Y-m-d H:i:s'),
+            $data['pwd'],
+            'user'
+        ];
+        
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            error_log("Error in User::create - " . $e->getMessage());
+            return false;
+        }
+    }
 }
