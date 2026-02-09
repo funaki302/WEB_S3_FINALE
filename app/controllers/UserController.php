@@ -1,99 +1,40 @@
 <?php
-
-/**
- * UserController
- * Gestion des opérations liées aux utilisateurs
- */
-
-namespace app\controllers;
-use app\models\User;
-use Flight;
+// controllers/UserController.php
 class UserController {
+
     private $userModel;
-    
-    public function __construct() {
-        $this->userModel = new User();
+
+    public function __construct($db) {
+        $this->userModel = new User_model($db);
     }
-    
-    public function login(){
-        $data = Flight::request()->data->getData();
-        
-        if (empty($data)) {
-            Flight::json(['error' => 'No data received']);
-            Flight::redirect('/');
-            return;
+
+    public function register($postData) {
+        // Validation à faire ici ou dans un helper/form
+        $data = [
+            'name'       => $postData['name'],
+            'email'      => $postData['email'],
+            'status'     => 'active',
+            'phone'      => $postData['phone'] ?? null,
+            'join_date'  => date('Y-m-d'),
+            'pwd'        => password_hash($postData['password'], PASSWORD_DEFAULT),
+            'role'       => 'user'
+        ];
+
+        if ($this->userModel->create($data)) {
+            // redirect ou json response
+            return ['success' => true, 'message' => 'Inscription réussie'];
         }
-        
-        $name = $data['name'] ?? '';
-        $email = $data['email'] ?? '';
-        $pwd = $data['password'] ?? '';
-        $phone = $data['telephone'] ?? '';
+        return ['success' => false, 'message' => 'Erreur lors de l\'inscription'];
+    }
 
-        // Voir si le user existe deja
-        $existingUser = $this->userModel->getByEmail($email);
-        if($existingUser){
-            // Mettre à jour la dernière activité
-            $this->userModel->updateLastActive($existingUser['id_user']);
-            if ($pwd == $existingUser['pwd'] && $phone == $existingUser['phone']) {
-                // Créer la session
-                $_SESSION['user_id'] = $existingUser['id_user'];
-                $_SESSION['user_name'] = $existingUser['name'];
-                $_SESSION['user_phone'] = $existingUser['phone'];
-                $_SESSION['user_email'] = $existingUser['email'];
-                $_SESSION['user_role'] = $existingUser['role'];
-                $_SESSION['login_time'] = time();
-                Flight::redirect('/home');
-                return;
-            } 
-            Flight::redirect('/');
-            return;
-            
-        } else {
-            // Creer un nouveau user
-            $newUserId = $this->userModel->create([
-                'name' => $name,
-                'email' => $email,
-                'pwd' => $pwd,
-                'phone' => $phone
-            ]);
-            if($newUserId){
-                // Connexion automatique apres inscription
-                $user = $this->userModel->getByEmail($email);
-                if ($user) {
-                    $_SESSION['user_id'] = $user['id_user'];
-                    $_SESSION['user_email'] = $user['email'];
-                    $_SESSION['user_role'] = $user['role'];
-                    $_SESSION['login_time'] = time();
-                    Flight::redirect('/home');
-                    return;
-                } else {
-                    Flight::redirect('/');
-                    return;
-                }
-            } else {
-                Flight::redirect('/');
-                return;
-            }
+    public function login($email, $password) {
+        $user = $this->userModel->findByEmail($email);
+        if ($user && password_verify($password, $user['pwd'])) {
+            $this->userModel->updateLastActive($user['id_user']);
+            return $user; // ou session_start() + $_SESSION['user'] = $user;
         }
-
-        Flight::redirect('/');
-        return;
+        return false;
     }
 
-    public function logout(){
-        // Détruire la session
-        session_unset();
-        session_destroy();
-        Flight::redirect('/');
-    }
-
-    public function getAll(){
-        return $this->userModel->getAll();
-    }
-
-    public function getAllJson(){
-        $users = $this->userModel->getAll();
-        Flight::json($users);
-    }
-
+    // profil, update, etc.
 }
