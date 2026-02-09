@@ -34,7 +34,7 @@ class ResponseExtension extends ExtensionBase implements \Tracy\IBarPanel {
 		ksort($response_data, SORT_NATURAL);
 		$table_tr_html = '';
 		foreach($response_data as $key => $value) {
-			$table_tr_html .= '<tr><td>'.htmlspecialchars($key).'</td><td>'.$this->handleLongStrings($value).'</td></tr>'."\n";
+			$table_tr_html .= '<tr><td>'specialchars($key).'</td><td>'.$this->handleLongStrings($value).'</td></tr>'."\n";
 		}
 		$html = <<<EOT
 			<h1>Response</h1> 

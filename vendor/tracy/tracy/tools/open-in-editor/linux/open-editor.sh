@@ -16,7 +16,7 @@ declare -A mapping
 # Pluma
 #editor='pluma +$LINE "$FILE"'
 # PHPStorm
-# To enable PHPStorm command-line interface, folow this guide: https://www.jetbrains.com/help/phpstorm/working-with-the-ide-features-from-command-line.html
+# To enable PHPStorm command-line interface, folow this guide: https://www.jetbrains.com/help/phpstorm/working-with-the-ide-features-from-command-line
 #editor='phpstorm --line $LINE "$FILE"'
 # VS Codium
 #editor='codium --goto "$FILE":"$LINE"'

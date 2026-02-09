@@ -138,7 +138,7 @@ class Logger implements ILogger
 			}
 		}
 
-		return $dir . $level . '--' . date('Y-m-d--H-i') . "--$hash.html";
+		return $dir . $level . '--' . date('Y-m-d--H-i') . "--$hash";
 	}
 
 

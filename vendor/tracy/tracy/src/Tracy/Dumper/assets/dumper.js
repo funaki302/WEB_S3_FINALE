@@ -326,8 +326,8 @@ function createEl(el, attrs, content) {
 		}
 	}
 
-	if (content && content.html !== undefined) {
-		el.innerHTML = content.html;
+	if (content && content !== undefined) {
+		el.innerHTML = content;
 		return el;
 	}
 
