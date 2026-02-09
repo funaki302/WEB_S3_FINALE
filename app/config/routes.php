@@ -23,7 +23,7 @@ $router->group('', function(Router $router) use ($app) {
 
 
 	$router->get('/', function() use ($app) {
-		$app->render('login', []);
+		$app->render('sign-in', []);
 	});
 
 	$router->post('/', [UserController::class, 'login']);

@@ -21,20 +21,14 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Soft UI Dashboard 3 by Creative Tim
+   EXAM FINAL BY 
   </title>
   <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <!-- CSS Files -->
+  <link href="/assets/online/css/online.css" rel="stylesheet" />
+   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 </head>
 
 <body class="">
@@ -86,7 +80,7 @@
               </li>
               <ul class="navbar-nav d-lg-block d-none">
                 <li class="nav-item">
-                  <a href="https://www.creative-tim.com/product/soft-ui-dashboard" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-dark">Free download</a>
+                  <a href="#" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-dark">Free download</a>
                 </li>
               </ul>
             </div>
@@ -129,7 +123,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
-                    <a href="javascript:;" class="text-info text-gradient font-weight-bold">Sign up</a>
+                    <a href="Geste fotsiny reto eh kkkkkkk" class="text-info text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>
@@ -149,39 +143,39 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Company
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             About Us
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Team
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Products
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Blog
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Pricing
           </a>
         </div>
         <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-dribbble"></span>
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-twitter"></span>
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-instagram"></span>
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-pinterest"></span>
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-github"></span>
           </a>
         </div>
@@ -191,7 +185,7 @@
           <p class="mb-0 text-secondary">
             Copyright © <script>
               document.write(new Date().getFullYear())
-            </script> Soft by Creative Tim.
+            </script> ETU4169 - ETU4250
           </p>
         </div>
       </div>
