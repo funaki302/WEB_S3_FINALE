@@ -13,7 +13,7 @@ use PDOException;
 
 class User {
     private $db;
-    private $table = 'user';
+    private $table = 'tk_user';
     
     public function __construct() {
         $app = \Flight::app();
@@ -40,17 +40,13 @@ class User {
             $params[] = $options['status'];
         }
         
-        if (!empty($options['department'])) {
-            $sql .= (empty($params) ? " WHERE" : " AND") . " department = ?";
-            $params[] = $options['department'];
-        }
+        // no department column in tk_user
         
         // Recherche
         if (!empty($options['search'])) {
             $sql .= (empty($params) ? " WHERE" : " AND") . " 
-                (name LIKE ? OR email LIKE ? OR department LIKE ?)";
+                (name LIKE ? OR email LIKE ?)";
             $searchTerm = '%' . $options['search'] . '%';
-            $params[] = $searchTerm;
             $params[] = $searchTerm;
             $params[] = $searchTerm;
         }
@@ -123,21 +119,20 @@ class User {
      */
     public function create($data) {
         $sql = "INSERT INTO {$this->table} 
-                (name, email, role, status, department, phone, join_date, last_active, pwd) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            (name, email, status, phone, join_date, last_active, pwd, role) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         // Hash du mot de passe
         
         $params = [
             $data['name'],
             $data['email'],
-            $data['role'] ?? 'user',
             $data['status'] ?? 'active',
-            $data['department'] ?? 'General',
             $data['phone'] ?? '',
             $data['join_date'] ?? date('Y-m-d'),
             $data['last_active'] ?? date('Y-m-d H:i:s'),
-            $data['pwd'] 
+            $data['pwd'],
+            $data['role'] ?? 'user'
         ];
         
         try {
@@ -158,22 +153,20 @@ class User {
      */
     public function update($id, $data) {
         $sql = "UPDATE {$this->table} SET 
-                name = ?, email = ?, role = ?, status = ?, 
-                department = ?, phone = ?, last_active = ?";
+            name = ?, email = ?, status = ?, phone = ?, last_active = ?, role = ?";
         $params = [
             $data['name'],
             $data['email'],
-            $data['role'],
             $data['status'],
-            $data['department'],
             $data['phone'],
-            date('Y-m-d H:i:s')
+            date('Y-m-d H:i:s'),
+            $data['role'] ?? 'user'
         ];
         
         // Ajouter le mot de passe seulement s'il est fourni
         if (!empty($data['pwd'])) {
             $sql .= ", pwd = ?";
-            $params[] = pwd($data['pwd'], PASSWORD_DEFAULT);
+            $params[] = $data['pwd'];
         }
         
         // Ajouter la date de join si elle est fournie
@@ -272,11 +265,11 @@ class User {
      * @return bool
      */
     public function updateLastActive($id) {
-        $sql = "UPDATE {$this->table} SET last_active = ? WHERE id_user = ?";
+        $sql = "UPDATE {$this->table} SET last_active = NOW() WHERE id_user = ?";
         
         try {
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([date('Y-m-d H:i:s'), $id]);
+            return $stmt->execute([$id]);
         } catch (PDOException $e) {
             error_log("Error in User::updateLastActive - " . $e->getMessage());
             return false;
@@ -310,16 +303,20 @@ class User {
             $stats['by_status'] = [];
         }
         
-        // Total par département
-        $sql = "SELECT department, COUNT(*) as count FROM {$this->table} GROUP BY department";
-        try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            $stats['by_department'] = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-        } catch (PDOException $e) {
-            $stats['by_department'] = [];
-        }
+        // no department stats for tk_user
         
         return $stats;
+    }
+
+    public function updateStatus($userId, $status){
+        $sql = "UPDATE {$this->table} SET last_active = NOW(), status = ? WHERE id_user = ?";
+        
+        try {
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$status, $userId]);
+        } catch (PDOException $e) {
+            error_log("Error in User::updateLastActive - " . $e->getMessage());
+            return false;
+        }
     }
 }

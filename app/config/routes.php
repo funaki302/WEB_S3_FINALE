@@ -26,45 +26,10 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('sign-in', []);
 	});
 
-	$router->post('/', [UserController::class, 'login']);
 
-	$router->get('/home', function() use ($app) {
-		if (!isset($_SESSION['user_id'])) {
-			$app->redirect('/');
-			return;
-		}
-		$app->render('index', []);
-	});
+// route pour la page login : 
+	$router->post('/login', [UserController::class, 'login']);
 
-	$router->get('/users', function() use ($app) {
-		$userController = new UserController();
-		$users = $userController->getAll();
-		$app->render('users', ['users' => $users]);
-	});
-
-	$router->get('/analytics', function() use ($app) {
-		$app->render('analytics', []);
-	});
-
-	$router->get('/products', function() use ($app) {
-		$app->render('products', []);
-	});
-
-	$router->get('/settings', function() use ($app) {
-		$app->render('settings', []);
-	});
-
-	$router->get('/orders', function() use ($app) {
-		$app->render('orders', []);
-	});
-
-	$router->get('/forms', function() use ($app) {
-		$app->render('forms', []);
-	});
-
-	$router->get('/reports', function() use ($app) {
-		$app->render('reports', []);
-	});
 
 	$router->get('/messages', function() use ($app) {
 		// Vérifier que l'utilisateur est authentifié
@@ -82,14 +47,6 @@ $router->group('', function(Router $router) use ($app) {
 		$messageController = new MessageController();
 		$messages = $messageController->getByDiscussion($id);
 		$app->json($messages);
-	});
-
-	$router->get('/calendar', function() use ($app) {
-		$app->render('caledar', []);
-	});
-
-	$router->get('/files', function() use ($app) {
-		$app->render('files', []);
 	});
 	
 }, [ SecurityHeadersMiddleware::class ]);

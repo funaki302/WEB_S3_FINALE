@@ -13,7 +13,7 @@ use PDOException;
 
 class Message {
     private $db;
-    private $table = 'messages';
+    private $table = 'tk_messages';
     
     public function __construct() {
         $app = \Flight::app();
@@ -27,11 +27,12 @@ class Message {
      */
     public function getAll($options = []) {
         $sql = "SELECT m.*, 
-                       u.name as sender_name, u.email as sender_email,
-                       d.title as discussion_title
-                FROM {$this->table} m
-                LEFT JOIN user u ON m.id_sender = u.id_user
-                LEFT JOIN discussion d ON m.id_discussion = d.id_discussion";
+                   u.name as sender_name, u.email as sender_email,
+                   d.title as discussion_title
+            FROM {$this->table} m
+            LEFT JOIN tk_user u ON m.id_sender = u.id_user
+            LEFT JOIN tk_discussion d ON m.id_discussion = d.id_discussion
+            ";
         $params = [];
         
         // Filtres
@@ -46,22 +47,19 @@ class Message {
         }
         
         if (!empty($options['content'])) {
-            $sql .= (empty($params) ? " WHERE" : " AND") . " m.content LIKE ?";
+            $sql .= (empty($params) ? " WHERE" : " AND") . " m.contenue LIKE ?";
             $params[] = '%' . $options['content'] . '%';
         }
         
-        // Tri par date d'envoi décroissante
-        $sql .= " ORDER BY m.sent_at DESC, m.id_message DESC";
+        // Tri par date d'envoi croissante
+        $sql .= " ORDER BY m.date_envoie ASC";
         
         // Pagination
         if (!empty($options['limit'])) {
-            $sql .= " LIMIT ?";
-            $params[] = $options['limit'];
-        }
-        
-        if (!empty($options['offset'])) {
-            $sql .= " OFFSET ?";
-            $params[] = $options['offset'];
+            $offset = $options['offset'] ?? 0;
+            $sql .= " LIMIT ? OFFSET ?";
+            $params[] = (int) $options['limit'];
+            $params[] = (int) $offset;
         }
         
         try {
@@ -82,12 +80,12 @@ class Message {
      */
     public function getById($id) {
         $sql = "SELECT m.*, 
-                       u.name as sender_name, u.email as sender_email,
-                       d.title as discussion_title
-                FROM {$this->table} m
-                LEFT JOIN user u ON m.id_sender = u.id_user
-                LEFT JOIN discussion d ON m.id_discussion = d.id_discussion
-                WHERE m.id_message = ?";
+                   u.name as sender_name, u.email as sender_email,
+                   d.title as discussion_title
+            FROM {$this->table} m
+            LEFT JOIN tk_user u ON m.id_sender = u.id_user
+            LEFT JOIN tk_discussion d ON m.id_discussion = d.id_discussion
+            WHERE m.id_message = ?";
         
         try {
             $stmt = $this->db->prepare($sql);
@@ -139,30 +137,37 @@ class Message {
      */
     public function create($data) {
         $sql = "INSERT INTO {$this->table} 
-                (id_discussion, id_sender, content, sent_at) 
-                VALUES (?, ?, ?, ?)";
+                (id_discussion, id_sender, contenue, date_envoie, seen_at) 
+                VALUES (?, ?, ?, NOW(), NULL)";
         
         $params = [
             $data['id_discussion'],
             $data['id_sender'],
-            $data['content'],
-            $data['sent_at'] ?? date('Y-m-d H:i:s')
+            $data['contenue'] ?? ($data['content'] ?? '')
         ];
         
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->execute($params);
-            $messageId = $this->db->lastInsertId();
-            
-            // Mettre à jour la date de dernière activité de la discussion
-            if ($messageId) {
-                $discussionModel = new Discussion();
-                $discussionModel->updateLastActivity($data['id_discussion']);
-            }
-            
-            return $messageId;
+            return $this->db->lastInsertId();
         } catch (PDOException $e) {
             error_log("Error in Message::create - " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function markSeen($discussionId, $viewerUserId) {
+        $sql = "UPDATE {$this->table}
+                SET seen_at = NOW()
+                WHERE id_discussion = ?
+                  AND id_sender != ?
+                  AND seen_at IS NULL";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int) $discussionId, (int) $viewerUserId]);
+            return (int) $stmt->rowCount();
+        } catch (PDOException $e) {
+            error_log("Error in Message::markSeen - " . $e->getMessage());
             return false;
         }
     }
@@ -179,13 +184,18 @@ class Message {
         $updates = [];
         
         if (isset($data['content'])) {
-            $updates[] = "content = ?";
+            $updates[] = "contenue = ?";
             $params[] = $data['content'];
         }
+
+        if (isset($data['contenue'])) {
+            $updates[] = "contenue = ?";
+            $params[] = $data['contenue'];
+        }
         
-        if (isset($data['sent_at'])) {
-            $updates[] = "sent_at = ?";
-            $params[] = $data['sent_at'];
+        if (isset($data['date_envoie'])) {
+            $updates[] = "date_envoie = ?";
+            $params[] = $data['date_envoie'];
         }
         
         if (empty($updates)) {
@@ -264,12 +274,12 @@ class Message {
      */
     public function getLastMessageByDiscussion($discussionId) {
         $sql = "SELECT m.*, 
-                       u.name as sender_name, u.email as sender_email
-                FROM {$this->table} m
-                LEFT JOIN user u ON m.id_sender = u.id_user
-                WHERE m.id_discussion = ?
-                ORDER BY m.sent_at DESC, m.id_message DESC
-                LIMIT 1";
+                   u.name as sender_name, u.email as sender_email
+            FROM {$this->table} m
+            LEFT JOIN tk_user u ON m.id_sender = u.id_user
+            WHERE m.id_discussion = ?
+            ORDER BY m.date_envoie DESC, m.id_message DESC
+            LIMIT 1";
         
         try {
             $stmt = $this->db->prepare($sql);

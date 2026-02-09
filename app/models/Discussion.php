@@ -13,7 +13,7 @@ use PDOException;
 
 class Discussion {
     private $db;
-    private $table = 'discussion';
+    private $table = 'tk_discussion';
     
     public function __construct() {
         $app = \Flight::app();
@@ -30,8 +30,8 @@ class Discussion {
                        u1.name as user1_name, u1.email as user1_email,
                        u2.name as user2_name, u2.email as user2_email
                 FROM {$this->table} d
-                LEFT JOIN user u1 ON d.id_user1 = u1.id_user
-                LEFT JOIN user u2 ON d.id_user2 = u2.id_user";
+                LEFT JOIN tk_user u1 ON d.id_user1 = u1.id_user
+                LEFT JOIN tk_user u2 ON d.id_user2 = u2.id_user";
         $params = [];
         
         // Filtres
@@ -47,17 +47,14 @@ class Discussion {
         }
         
         // Tri
-        $sql .= " ORDER BY d.updated_at DESC, d.created_at DESC";
+        $sql .= " ORDER BY d.date_creation DESC, d.id_discussion DESC";
         
         // Pagination
         if (!empty($options['limit'])) {
-            $sql .= " LIMIT ?";
-            $params[] = $options['limit'];
-        }
-        
-        if (!empty($options['offset'])) {
-            $sql .= " OFFSET ?";
-            $params[] = $options['offset'];
+            $offset = $options['offset'] ?? 0;
+            $sql .= " LIMIT ? OFFSET ?";
+            $params[] = (int) $options['limit'];
+            $params[] = (int) $offset;
         }
         
         try {
@@ -78,12 +75,12 @@ class Discussion {
      */
     public function getById($id) {
         $sql = "SELECT d.*, 
-                       u1.name as user1_name, u1.email as user1_email,
-                       u2.name as user2_name, u2.email as user2_email
-                FROM {$this->table} d
-                LEFT JOIN user u1 ON d.id_user1 = u1.id_user
-                LEFT JOIN user u2 ON d.id_user2 = u2.id_user
-                WHERE d.id_discussion = ?";
+                   u1.name as user1_name, u1.status as user1_status, u1.email as user1_email,
+                   u2.name as user2_name, u2.status as user2_status, u2.email as user2_email
+            FROM {$this->table} d
+            LEFT JOIN tk_user u1 ON d.id_user1 = u1.id_user
+            LEFT JOIN tk_user u2 ON d.id_user2 = u2.id_user
+            WHERE d.id_discussion = ?";
         
         try {
             $stmt = $this->db->prepare($sql);
@@ -95,36 +92,77 @@ class Discussion {
             return null;
         }
     }
-    
 
-    public function getConversations($id_user){
-        $sql = "SELECT 
-                d.id_discussion,
-                d.title,
-                u.id_user,
-                u.name,
-                u.email,
-                u.phone,
-                u.role
-                FROM discussion d
-                JOIN user u on u.id_user = d.id_user2
-                WHERE d.id_user1 = '$id_user'
-                UNION 
-                SELECT 
-                d.id_discussion,
-                d.title,
-                u.id_user,
-                u.name,
-                u.email,
-                u.phone,
-                u.role
-                FROM discussion d
-                JOIN user u on u.id_user = d.id_user1
-                WHERE d.id_user2 = '$id_user'
-              ";
+    public function getRecherche($name, $userId){
+        $sql = "SELECT
+                    d.id_discussion,
+                    d.title,
+                    u.id_user,
+                    u.name,
+                    u.email,
+                    u.phone,
+                    u.role,
+                    u.status
+                FROM {$this->table} d
+                JOIN tk_user u
+                    ON u.id_user = IF(d.id_user1 = :userId, d.id_user2, d.id_user1)
+                WHERE u.name LIKE :name
+                AND (d.id_user1 = :userId OR d.id_user2 = :userId)";
+
         try {
             $stmt = $this->db->prepare($sql);
-            $stmt->execute();
+
+            $stmt->execute([
+                ":userId" => $userId,
+                ":name"   => "%$name%"
+            ]);
+
+            // ✅ fetchAll retourne un tableau complet
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $results; // retourne toujours un tableau (vide si aucun résultat)
+
+        } catch (PDOException $e) {
+            error_log("Error in Discussion::getRecherche - " . $e->getMessage());
+            return [];
+        }
+    }
+    
+    public function getConversations($userId){
+        $sql = "SELECT
+                    d.id_discussion,
+                    d.title,
+                    u.id_user,
+                    u.name,
+                    u.email,
+                    u.phone,
+                    u.role,
+                    u.status,
+                    COALESCE(unread.unread_count, 0) AS unread_count,
+                    lastm.id_message AS last_message_id,
+                    lastm.contenue AS last_message,
+                    lastm.date_envoie AS last_message_date,
+                    lastm.id_sender AS last_message_sender
+                FROM {$this->table} d
+                JOIN tk_user u
+                    ON u.id_user = IF(d.id_user1 = ?, d.id_user2, d.id_user1)
+                LEFT JOIN (
+                    SELECT
+                        id_discussion,
+                        SUM(CASE WHEN seen_at IS NULL AND id_sender != ? THEN 1 ELSE 0 END) AS unread_count
+                    FROM tk_messages
+                    GROUP BY id_discussion
+                ) unread ON unread.id_discussion = d.id_discussion
+                LEFT JOIN tk_messages lastm ON lastm.id_message = (
+                    SELECT MAX(m2.id_message)
+                    FROM tk_messages m2
+                    WHERE m2.id_discussion = d.id_discussion
+                )
+                WHERE d.id_user1 = ? OR d.id_user2 = ?
+                ORDER BY lastm.id_message DESC, d.id_discussion DESC";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int) $userId, (int) $userId, (int) $userId, (int) $userId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result ?: [];
         } catch (PDOException $e) {
@@ -149,15 +187,13 @@ class Discussion {
      */
     public function create($data) {
         $sql = "INSERT INTO {$this->table} 
-                (title, id_user1, id_user2, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?)";
+                (title, id_user1, id_user2, date_creation) 
+                VALUES (?, ?, ?, NOW())";
         
         $params = [
             $data['title'],
             $data['id_user1'],
-            $data['id_user2'],
-            $data['created_at'] ?? date('Y-m-d'),
-            $data['updated_at'] ?? date('Y-m-d')
+            $data['id_user2']
         ];
         
         try {
@@ -195,13 +231,10 @@ class Discussion {
             $updates[] = "id_user2 = ?";
             $params[] = $data['id_user2'];
         }
-        
-        if (isset($data['updated_at'])) {
-            $updates[] = "updated_at = ?";
-            $params[] = $data['updated_at'];
-        } else {
-            $updates[] = "updated_at = ?";
-            $params[] = date('Y-m-d');
+
+        if (isset($data['date_creation'])) {
+            $updates[] = "date_creation = ?";
+            $params[] = $data['date_creation'];
         }
         
         if (empty($updates)) {
@@ -265,6 +298,27 @@ class Discussion {
      * @return bool
      */
     public function updateLastActivity($id) {
-        return $this->update($id, ['updated_at' => date('Y-m-d')]);
+        return $this->update($id, ['date_creation' => date('Y-m-d')]);
+    }
+
+    public function getNoConv($userId){
+        $sql = "SELECT * FROM tk_user WHERE id_user NOT IN 
+                (SELECT
+                    u.id_user
+                FROM {$this->table} d
+                JOIN tk_user u
+                    ON u.id_user = IF(d.id_user1 = ?, d.id_user2, d.id_user1)
+                WHERE d.id_user1 = ? OR d.id_user2 = ?) 
+                AND id_user != ?
+            ";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int) $userId, (int) $userId, (int) $userId, (int) $userId]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result ?: [];
+        } catch (PDOException $e) {
+            error_log("Error in Discussion::getConversations - " . $e->getMessage());
+            return [];
+        }
     }
 }

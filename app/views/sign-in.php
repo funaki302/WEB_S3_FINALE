@@ -13,7 +13,7 @@
   <!--     Fonts and icons     -->
   <link href="/assets/online/css/online.css" rel="stylesheet" />
    <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
  
 </head>
 
@@ -88,14 +88,14 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
+                  <form role="form" action="/login" method="post">
                     <label>Email</label>
                     <div class="mb-3">
-                      <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                      <input type="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                     </div>
                     <label>Password</label>
                     <div class="mb-3">
-                      <input type="email" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                      <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
@@ -109,7 +109,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
-                    <a href="Geste fotsiny reto eh kkkkkkk" class="text-info text-gradient font-weight-bold">Sign up</a>
+                    <a href="#" class="text-info text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>
@@ -129,39 +129,39 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Company
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             About Us
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Team
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Products
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Blog
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="#" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Pricing
           </a>
         </div>
         <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-dribbble"></span>
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-twitter"></span>
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-instagram"></span>
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-pinterest"></span>
           </a>
-          <a href="Geste fotsiny reto eh kkkkkkk" target="_blank" class="text-secondary me-xl-4 me-4">
+          <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
             <span class="text-lg fab fa-github"></span>
           </a>
         </div>
@@ -179,10 +179,10 @@
   </footer>
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="/assets/js/core/popper.min.js"></script>
+  <script src="/assets/js/core/bootstrap.min.js"></script>
+  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {

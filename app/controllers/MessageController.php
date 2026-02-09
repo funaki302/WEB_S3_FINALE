@@ -6,8 +6,6 @@
  */
 
 namespace app\controllers;
-use app\models\User;
-use app\models\Discussion;
 use app\models\Message;
 use Flight;
 class MessageController {
@@ -17,7 +15,10 @@ class MessageController {
     }
 
     public function getByDiscussion($id_discussion) {
-        $messages = $this->messageModel->getAll(['id_discussion' => $id_discussion]);
-        return $messages;
+        return $this->messageModel->getByDiscussion($id_discussion);
+    }
+
+    public function create($data) {
+        return $this->messageModel->create($data);
     }
 }
