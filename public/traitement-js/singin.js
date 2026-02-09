@@ -75,7 +75,9 @@ function __singinInit() {
 		toggle.addEventListener('click', function () {
 			const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
 			password.setAttribute('type', type);
-			toggle.textContent = type === 'password' ? '👁' : '🙈';
+			toggle.innerHTML = type === 'password' 
+				? '<img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;">' 
+				: '<img src="/assets/icons/eye-slash-fill.svg" alt="Hide password" style="width:16px;height:16px;">';
 			toggle.setAttribute('aria-pressed', String(type === 'text'));
 		});
 	}

@@ -62,7 +62,7 @@
                 </li>
               </ul>
               <li class="nav-item d-flex align-items-center">
-                <a class="btn btn-round btn-sm mb-0 btn-outline-primary me-2" target="_blank" href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online Builder</a>
+                <a class="btn btn-round btn-sm mb-0 btn-outline-primary me-2" target="_blank" href="#">Online Builder</a>
               </li>
               <ul class="navbar-nav d-lg-block d-none">
                 <li class="nav-item">
@@ -92,12 +92,13 @@
                     <label>Email</label>
                     <div class="mb-3">
                       <input type="email" id="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
-                      <div id="emailError" class="invalid-feedback" style="display:none;color:#e74c3c;font-size:0.9em;margin-top:6px;"></div>
+                      <div id="emailError" class="invalid-feedback position-absolute" style="top: 100%; left: 0; z-index: 5; display:none;"></div>
                     </div>
                     <label>Password</label>
                     <div class="mb-3 position-relative">
-                      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
-                      <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;">👁</button>
+                      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
+                      <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;">
+                        <img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" checked="">

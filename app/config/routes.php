@@ -35,6 +35,12 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('profile', []);
 	});
 
+// route pour la page sign-up :
+	$router->post('/sign', [UserController::class, 'register']);
+
+
+
+
 	$router->get('/messages', function() use ($app) {
 		// Vérifier que l'utilisateur est authentifié
 		if (!isset($_SESSION['user_id'])) {
@@ -51,6 +57,42 @@ $router->group('', function(Router $router) use ($app) {
 		$messageController = new MessageController();
 		$messages = $messageController->getByDiscussion($id);
 		$app->json($messages);
+	});
+
+	$router->get('/dashboard', function() use ($app) {
+		$app->render('dashboard', []);
+	});
+
+	$router->get('/sign-up', function() use ($app) {
+		$app->render('sign-up', []);
+	});
+
+	$router->get('/tables', function() use ($app) {
+		$app->render('tables', []);
+	});
+
+	$router->get('/billing', function() use ($app) {
+		$app->render('billing', []);
+	});
+
+	$router->get('/virtual-reality', function() use ($app) {
+		$app->render('virtual-reality', []);
+	});
+
+	$router->get('/sign-in', function() use ($app) {
+		$app->render('sign-in', []);
+	});
+	
+
+	$router->get('/api/check-email', function() use ($app) {
+		$email = Flight::request()->query['email'];
+		if (!$email) {
+			$app->json(['error' => 'Email parameter required']);
+			return;
+		}
+		$userController = new UserController();
+		$exists = $userController->checkEmailExists($email);
+		$app->json(['exists' => $exists]);
 	});
 	
 }, [ SecurityHeadersMiddleware::class ]);

@@ -320,13 +320,13 @@ class User {
         }
     }
 
-    public function singnUp($data){
+    public function signUp($data){
         $sql = "INSERT INTO {$this->table} 
             (name, email, status, phone, join_date, last_active, pwd, role) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         // Hash du mot de passe
-        
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
         $params = [
             $data['name'],
             $data['email'],
@@ -334,7 +334,7 @@ class User {
             $data['phone'] ?? '',
             date('Y-m-d'),
             date('Y-m-d H:i:s'),
-            $data['pwd'],
+            $hashedPassword,
             'user'
         ];
         

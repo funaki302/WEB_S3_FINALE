@@ -8,17 +8,20 @@
 namespace app\controllers;
 use app\models\User;
 use Flight;
-class UserController {
+class UserController
+{
     private $userModel;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->userModel = new User();
     }
 
 //sing-in fonction :    
-     public function login(){
+    public function login()
+    {
         $data = Flight::request()->data->getData();
-        
+
         if (empty($data)) {
             Flight::json(['error' => 'No data received']);
             Flight::redirect('/');
@@ -27,14 +30,14 @@ class UserController {
 
         $email = $data['Email'] ?? '';
         $pwd = $data['password'] ?? '';
-    
+
 
         // Voir si le user existe deja
         $existingUser = $this->userModel->getByEmail($email);
-        if($existingUser){
+        if ($existingUser) {
             // Mettre à jour la dernière activité
-            $this->userModel->updateStatus($existingUser['id_user'],'active');
-            if ($pwd == $existingUser['pwd']) {
+            $this->userModel->updateStatus($existingUser['id_user'], 'active');
+            if (password_verify($pwd, $existingUser['pwd'])) {
                 // Créer la session
                 $_SESSION['user_id'] = $existingUser['id_user'];
                 $_SESSION['user_name'] = $existingUser['name'];
@@ -44,20 +47,58 @@ class UserController {
                 $_SESSION['login_time'] = time();
                 Flight::redirect('/profile');
                 return;
-            } 
+            }
             Flight::redirect('/');
             return;
-            
+
         }
 
         Flight::redirect('/');
         return;
     }
 
-    
+ //sign-up fonction :
+    public function register()
+    {
+        $data = Flight::request()->data->getData();
+        if (empty($data)) {
+            Flight::json(['error' => 'No data received']);
+            Flight::redirect('/sign-up');
+            return;
+        }
+        $email = $data['email'] ?? '';
+        $pwd = $data['password'] ?? '';
+        $name = $data['name'] ?? '';
+        $phone = $data['phone'] ?? '';
 
-    public function logout($id){
-        $result = $this->userModel->updateStatus($id,'inactive');
+        if ($this->userModel->emailExists($email)) {
+            Flight::json(['error' => 'Email already exists']);
+            Flight::redirect('/sign-up');
+            return;
+        } else {
+            $userId = $this->userModel->signUp(['name' => $name, 'email' => $email, 'phone' => $phone, 'password' => $pwd]);
+            if ($userId) {
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['user_name'] = $name;
+                $_SESSION['user_phone'] = $phone;
+                $_SESSION['user_email'] = $email;
+                $_SESSION['user_role'] = 'user';
+                $_SESSION['login_time'] = time();
+                Flight::redirect('/profile');
+                return;
+            } else {
+                Flight::json(['error' => 'Failed to create user']);
+                Flight::redirect('/sign-up');
+                return;
+            }
+
+        }
+    }
+
+
+    public function logout($id)
+    {
+        $result = $this->userModel->updateStatus($id, 'inactive');
 
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
@@ -80,7 +121,13 @@ class UserController {
         return $result;
     }
 
-    public function getAll(){
+    public function checkEmailExists($email)
+    {
+        return $this->userModel->emailExists($email);
+    }
+
+    public function getAll()
+    {
         return $this->userModel->getAll();
     }
 
