@@ -53,4 +53,12 @@ class ObjetController {
     public function getObjet_User($id_user){
         return $this->objetModel->getObjet_User($id_user);
     }
+
+    public function getCount() {
+        return $this->objetModel->getCount();
+    }
+
+    public function getCountExchanges() {
+        return $this->objetModel->getCountExchanges();
+    }
 }

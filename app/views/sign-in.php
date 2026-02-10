@@ -80,7 +80,7 @@
                     <label>Email</label>
                     <div class="mb-3">
                       <input type="email" id="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
-                      <div id="emailError" class="invalid-feedback position-absolute" style="top: 100%; left: 0; z-index: 5; display:none;"></div>
+                      <div id="emailError" class="invalid-feedback" style="display:none;"></div>
                     </div>
                     <label>Password</label>
                     <div class="mb-3 position-relative">

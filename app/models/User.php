@@ -347,4 +347,30 @@ class User {
             return false;
         }
     }
+
+    public function getCountAdmin() {
+        $sql = "select count(*) as total from {$this->table} where role = 'admin'";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);   
+            return $result["total"] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error in User::getCountAdmin - " . $e->getMessage());
+            return 0;   
+        }    
+    }
+
+    public function getCountUser() {
+       $sql = "select count(*) as total from {$this->table} where role = 'user'";
+       try {
+           $stmt = $this->db->prepare($sql);
+           $stmt->execute();
+           $result = $stmt->fetch(PDO::FETCH_ASSOC);   
+           return $result["total"] ?? 0;
+       } catch (PDOException $e) {
+           error_log("Error in User::getCountUser - " . $e->getMessage());
+           return 0;   
+       }    
+    }
 }

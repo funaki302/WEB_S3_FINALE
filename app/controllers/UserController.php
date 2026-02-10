@@ -57,7 +57,7 @@ class UserController
         return;
     }
 
- //sign-up fonction :
+//sign-up fonction :
     public function register()
     {
         $data = Flight::request()->data->getData();
@@ -94,6 +94,18 @@ class UserController
 
         }
     }
+
+//get the count of users :
+    public function getCountUser()
+    {
+        return $this->userModel->getCountUser();
+    } 
+
+//get the count of Admins :
+    public function getCountAdmin()
+    {
+        return $this->userModel->getCountAdmin();
+    } 
 
 
     public function logout($id)

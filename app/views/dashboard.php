@@ -57,10 +57,10 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <i class="ni ni-circle-08 text-dark text-gradient text-lg opacity-10" aria-hidden="true"></i>
+                        <img src="../assets/icons/dashbord-icon/user.svg" alt="Users" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
-                        1600
+                        <?php echo $count_users ?? 0; ?>
                       </h5>
                       <span class="text-white text-sm">Users Active</span>
                     </div>
@@ -88,12 +88,12 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <i class="ni ni-active-40 text-dark text-gradient text-lg opacity-10" aria-hidden="true"></i>
+                        <img src="../assets/icons/dashbord-icon/Admin.svg" alt="Admins" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
-                        357
+                        <?php echo $count_admins ?? 0; ?>
                       </h5>
-                      <span class="text-white text-sm">Click Events</span>
+                      <span class="text-white text-sm">Admins</span>
                     </div>
                     <div class="col-4">
                       <div class="dropstart text-end mb-6">
@@ -121,12 +121,12 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <i class="ni ni-cart text-dark text-gradient text-lg opacity-10" aria-hidden="true"></i>
+                        <img src="../assets/icons/dashbord-icon/objects.svg" alt="Objects" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
-                        2300
+                        <?php echo $count_objects ?? 0; ?>
                       </h5>
-                      <span class="text-white text-sm">Purchases</span>
+                      <span class="text-white text-sm">Objects</span>
                     </div>
                     <div class="col-4">
                       <div class="dropdown text-end mb-6">
@@ -152,12 +152,12 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <i class="ni ni-like-2 text-dark text-gradient text-lg opacity-10" aria-hidden="true"></i>
+                        <img src="../assets/icons/dashbord-icon/exchange.svg" alt="Exchanges" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
-                        940
+                        <?php echo $count_exchanges ?? 0; ?>
                       </h5>
-                      <span class="text-white text-sm">Likes</span>
+                      <span class="text-white text-sm">Exchanges</span>
                     </div>
                     <div class="col-4">
                       <div class="dropstart text-end mb-6">

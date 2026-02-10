@@ -1,6 +1,11 @@
 <?php
 // models/Categorie.php
 
+namespace app\models;
+
+use PDO;
+use PDOException;
+
 class Categorie {
 
     private $db;
@@ -106,5 +111,18 @@ class Categorie {
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchColumn() > 0;
+    }
+
+    public function getCount() {
+        $sql = "SELECT COUNT(*) as total FROM tk_categorie";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error in Categorie::getCount - " . $e->getMessage());
+            return 0;
+        }
     }
 }
