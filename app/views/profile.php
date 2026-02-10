@@ -328,8 +328,8 @@
   </script>
 
   <!-- Mes script -->
-  <script src="/traitement-js/met_objet.js"></script>
-  <script src="/traitement-js/profile.js"></script>
+  <script src="/traitement-js/methodes/met_objet.js"></script>
+  <script src="/traitement-js/profile/profile.js"></script>
 
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
