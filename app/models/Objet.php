@@ -15,7 +15,13 @@ class Objet {
 
     public function getAllNotOwnedByUser($userId, $limit = 50, $offset = 0) {
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nom_categorie, u.name AS proprietaire
+            SELECT o.*, c.nom_categorie, u.name AS proprietaire,
+                   (
+                     SELECT COUNT(*)
+                     FROM tk_echanges e
+                     WHERE e.status = 'attente'
+                       AND e.objet_requise = o.id_objet
+                   ) AS pending_count
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
@@ -53,7 +59,13 @@ class Objet {
         $whereSql = implode(' AND ', $conditions);
 
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nom_categorie, u.name AS proprietaire
+            SELECT o.*, c.nom_categorie, u.name AS proprietaire,
+                   (
+                     SELECT COUNT(*)
+                     FROM tk_echanges e
+                     WHERE e.status = 'attente'
+                       AND e.objet_requise = o.id_objet
+                   ) AS pending_count
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
@@ -126,11 +138,20 @@ class Objet {
             SELECT o.*, c.nom_categorie 
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
-            WHERE o.id_proprietaire = ?
+            WHERE o.id_proprietaire = :user_id
+              AND NOT EXISTS (
+                SELECT 1
+                FROM tk_echanges e
+                WHERE e.status = 'attente'
+                  AND e.objet_proposer = o.id_objet
+              )
             ORDER BY o.date_creation DESC
-            LIMIT ? OFFSET ?
+            LIMIT :limit OFFSET :offset
         ");
-        $stmt->execute([$userId, $limit, $offset]);
+        $stmt->bindValue(':user_id', (int)$userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

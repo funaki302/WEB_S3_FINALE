@@ -65,6 +65,9 @@ function renderObjectsCards(objets) {
         const desc = escapeHtml(objet.description || '');
         const prix = escapeHtml(objet.prix_estime ?? '');
         const proprietaire = escapeHtml(objet.proprietaire ?? '-');
+        const exchangeUrl = `/exchange?target=${encodeURIComponent(String(id))}`;
+        const pendingCount = parseInt(objet.pending_count || 0, 10) || 0;
+        const pendingBadge = `<span class="badge bg-dark text-white ms-2" title="Demandes en attente">Demandes en attente: ${pendingCount}</span>`;
 
         const card = document.createElement('div');
         card.className = 'objects-scroll-item';
@@ -74,6 +77,9 @@ function renderObjectsCards(objets) {
               <a class="d-block">
                 <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
               </a>
+              <div class="position-absolute top-0 end-0 mt-2 me-2">
+                ${pendingCount > 0 ? `<span class=\"badge bg-dark text-white\">${pendingCount} demandes en attente</span>` : ''}
+              </div>
             </div>
             <div class="card-body px-1 pb-0">
               <p class="text-secondary mb-0 text-sm">${cat}</p>
@@ -82,7 +88,10 @@ function renderObjectsCards(objets) {
               </a>
               <p class="mb-3 text-sm">${desc}</p>
               <div class="d-flex align-items-center justify-content-between">
-                <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#modalObjet${id}">Voir</button>
+                <div class="d-flex align-items-center" style="gap: .5rem;">
+                  <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#modalObjet${id}">Voir</button>
+                  <a class="btn bg-gradient-primary btn-sm mb-0" href="${exchangeUrl}">Exchange</a>
+                </div>
                 <p class="text-sm text-dark font-weight-bold mb-0">${prix} Ar</p>
               </div>
             </div>
@@ -92,17 +101,19 @@ function renderObjectsCards(objets) {
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">${title}</h5>
+                  <h5 class="modal-title">${title}${pendingBadge}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <p class="text-sm mb-2"><span class="text-secondary">Catégorie:</span> <span class="text-dark font-weight-bold">${cat}</span></p>
                   <p class="text-sm mb-2"><span class="text-secondary">Propriétaire:</span> <span class="text-dark font-weight-bold">${proprietaire}</span></p>
                   <p class="text-sm mb-2"><span class="text-secondary">Prix estimé:</span> <span class="text-dark font-weight-bold">${prix} Ar</span></p>
+                  <p class="text-sm mb-2"><span class="text-secondary">Demandes en attente:</span> <span class="text-dark font-weight-bold">${pendingCount}</span></p>
                   <hr class="horizontal dark my-3">
                   <p class="text-sm mb-0">${desc}</p>
                 </div>
                 <div class="modal-footer">
+                  <a href="${exchangeUrl}" class="btn bg-gradient-primary">Proposer un échange</a>
                   <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
               </div>

@@ -18,6 +18,13 @@ INSERT INTO tk_objets (id_proprietaire, id_categorie, title, description, prix_e
 (3, 3, 'Winter Jacket', 'Warm jacket for cold weather', 50.00, '2023-10-03 14:00:00'),
 (1, 4, 'Wooden Table', 'Dining table for 4 people', 150.00, '2023-10-04 15:00:00');
 
+INSERT INTO tk_objets (id_proprietaire, id_categorie, title, description, prix_estime, date_creation) VALUES
+(7, 1, 'Smartphone Android', 'Phone unlocked, 128GB storage', 180.00, '2023-10-10 09:15:00'),
+(7, 2, 'Roman Policier', 'A detective novel in very good condition', 12.00, '2023-10-10 09:25:00'),
+(7, 3, 'Sweat à capuche', 'Hoodie size L, barely worn', 22.50, '2023-10-10 09:35:00'),
+(7, 4, 'Chaise de bureau', 'Comfortable chair with adjustable height', 65.00, '2023-10-10 09:45:00'),
+(7, 2, 'BD Collection', 'Comic book volume 1-3', 18.00, '2023-10-10 09:55:00');
+
 -- Test data for tk_objet_img
 INSERT INTO tk_objet_img (id_objet, image) VALUES
 (1, 'laptop.jpg'),
