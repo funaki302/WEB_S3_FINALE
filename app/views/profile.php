@@ -231,12 +231,17 @@
               <h6 class="mb-1">Objets</h6>
               <p class="text-sm">Tous les objets a ma disposition</p>
             </div>
+            
             <!-- Liste des objet du user connecter -->
             <div class="card-body p-3">
-              <div class="row" id="liste">
-                
+              <div class="row" id="liste"> 
               </div>
             </div>
+            
+            <!-- Formulaire de newObjet -->
+            <div class="card-body p-3" id="form-newObjet">
+            </div>
+
           </div>
         </div>
       </div>
