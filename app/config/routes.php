@@ -32,14 +32,15 @@ $router->group('', function(Router $router) use ($app) {
 
 // route pour la page profile:
 	$router->get('/profile', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
 		$app->render('profile', []);
 	});
 
 // route pour la page sign-up :
 	$router->post('/sign', [UserController::class, 'register']);
-
-
-
 
 	$router->get('/messages', function() use ($app) {
 		// Vérifier que l'utilisateur est authentifié
@@ -60,6 +61,10 @@ $router->group('', function(Router $router) use ($app) {
 	});
 
 	$router->get('/dashboard', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
 		$app->render('dashboard', []);
 	});
 
@@ -68,15 +73,19 @@ $router->group('', function(Router $router) use ($app) {
 	});
 
 	$router->get('/tables', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
 		$app->render('tables', []);
 	});
 
 	$router->get('/billing', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
 		$app->render('billing', []);
-	});
-
-	$router->get('/virtual-reality', function() use ($app) {
-		$app->render('virtual-reality', []);
 	});
 
 	$router->get('/sign-in', function() use ($app) {

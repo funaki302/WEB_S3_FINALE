@@ -28,8 +28,8 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
     <div class="container">
-      <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="/dashboard">
-        Soft UI Dashboard 3
+      <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="">
+        ETU4169 - ETU4250
       </a>
       <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon mt-2">
@@ -40,18 +40,6 @@
       </button>
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="/dashboard">
-              <i class="fa fa-chart-pie opacity-6  me-1"></i>
-              Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link me-2" href="/profile">
-              <i class="fa fa-user opacity-6  me-1"></i>
-              Profile
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link me-2" href="/sign-up">
               <i class="fas fa-user-circle opacity-6  me-1"></i>
@@ -66,11 +54,11 @@
           </li>
         </ul>
         <li class="nav-item d-flex align-items-center">
-          <a class="btn btn-round btn-sm mb-0 btn-outline-white me-2" target="_blank" href="#">Online Builder</a>
+          <a class="btn btn-round btn-sm mb-0 btn-outline-white me-2" target="_blank" href="">Online Builder</a>
         </li>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
-            <a href="#" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Free download</a>
+            <a href="" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Free download</a>
           </li>
         </ul>
       </div>
