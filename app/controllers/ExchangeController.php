@@ -52,6 +52,10 @@ class ExchangeController {
             return ['ok' => false, 'error' => 'Paramètres invalides'];
         }
 
+        if ($this->exchangeModel->hasPendingExchangeForObject($objetProposer)) {
+            return ['ok' => false, 'error' => 'Ton objet est déjà engagé dans un échange en attente'];
+        }
+
         $proposerObj = $this->objetModel->findById($objetProposer);
         $requiseObj = $this->objetModel->findById($objetRequise);
 

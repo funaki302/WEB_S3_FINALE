@@ -26,6 +26,19 @@ class Exchange {
         return (int)$this->db->lastInsertId();
     }
 
+    public function hasPendingExchangeForObject($objetId) {
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) AS total
+            FROM tk_echanges e
+            WHERE e.status = 'attente'
+              AND e.objet_proposer = :oid
+        ");
+        $stmt->bindValue(':oid', (int)$objetId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return ((int)($row['total'] ?? 0)) > 0;
+    }
+
     public function getById($idEchange) {
         $stmt = $this->db->prepare("SELECT * FROM tk_echanges WHERE id_echange = ?");
         $stmt->execute([(int)$idEchange]);
@@ -117,6 +130,21 @@ class Exchange {
 
             $stmt = $this->db->prepare("UPDATE tk_echanges SET status = 'accepter' WHERE id_echange = ?");
             $stmt->execute([(int)$idEchange]);
+
+            $stmt = $this->db->prepare("
+                UPDATE tk_echanges
+                SET status = 'refuser'
+                WHERE status = 'attente'
+                  AND id_echange <> :id
+                  AND (
+                    objet_proposer IN (:o1, :o2)
+                    OR objet_requise IN (:o1, :o2)
+                  )
+            ");
+            $stmt->bindValue(':id', (int)$idEchange, PDO::PARAM_INT);
+            $stmt->bindValue(':o1', (int)$objetProposer, PDO::PARAM_INT);
+            $stmt->bindValue(':o2', (int)$objetRequise, PDO::PARAM_INT);
+            $stmt->execute();
 
             $stmt = $this->db->prepare("UPDATE tk_objets SET id_proprietaire = :owner WHERE id_objet = :obj");
             $stmt->execute([':owner' => $idReceveur, ':obj' => $objetProposer]);
