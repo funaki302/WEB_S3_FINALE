@@ -23,48 +23,23 @@ $router->group('', function(Router $router) use ($app) {
 
 
 	$router->get('/', function() use ($app) {
-		$app->render('dashboard', []);
+		$app->render('sign-in', []);
 	});
 
-	$router->post('/', [UserController::class, 'login']);
 
-	$router->get('/home', function() use ($app) {
-		if (!isset($_SESSION['user_id'])) {
-			$app->redirect('/');
-			return;
-		}
-		$app->render('index', []);
+// route pour la page login : 
+	$router->post('/login', [UserController::class, 'login']);
+
+// route pour la page profile:
+	$router->get('/profile', function() use ($app) {
+		$app->render('profile', []);
 	});
 
-	$router->get('/users', function() use ($app) {
-		$userController = new UserController();
-		$users = $userController->getAll();
-		$app->render('users', ['users' => $users]);
-	});
+// route pour la page sign-up :
+	$router->post('/sign', [UserController::class, 'register']);
 
-	$router->get('/analytics', function() use ($app) {
-		$app->render('analytics', []);
-	});
 
-	$router->get('/products', function() use ($app) {
-		$app->render('products', []);
-	});
 
-	$router->get('/settings', function() use ($app) {
-		$app->render('settings', []);
-	});
-
-	$router->get('/orders', function() use ($app) {
-		$app->render('orders', []);
-	});
-
-	$router->get('/forms', function() use ($app) {
-		$app->render('forms', []);
-	});
-
-	$router->get('/reports', function() use ($app) {
-		$app->render('reports', []);
-	});
 
 	$router->get('/messages', function() use ($app) {
 		// Vérifier que l'utilisateur est authentifié
@@ -84,12 +59,40 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($messages);
 	});
 
-	$router->get('/calendar', function() use ($app) {
-		$app->render('caledar', []);
+	$router->get('/dashboard', function() use ($app) {
+		$app->render('dashboard', []);
 	});
 
-	$router->get('/files', function() use ($app) {
-		$app->render('files', []);
+	$router->get('/sign-up', function() use ($app) {
+		$app->render('sign-up', []);
+	});
+
+	$router->get('/tables', function() use ($app) {
+		$app->render('tables', []);
+	});
+
+	$router->get('/billing', function() use ($app) {
+		$app->render('billing', []);
+	});
+
+	$router->get('/virtual-reality', function() use ($app) {
+		$app->render('virtual-reality', []);
+	});
+
+	$router->get('/sign-in', function() use ($app) {
+		$app->render('sign-in', []);
+	});
+	
+
+	$router->get('/api/check-email', function() use ($app) {
+		$email = Flight::request()->query['email'];
+		if (!$email) {
+			$app->json(['error' => 'Email parameter required']);
+			return;
+		}
+		$userController = new UserController();
+		$exists = $userController->checkEmailExists($email);
+		$app->json(['exists' => $exists]);
 	});
 	
 }, [ SecurityHeadersMiddleware::class ]);

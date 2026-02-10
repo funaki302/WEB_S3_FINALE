@@ -1,17 +1,4 @@
-<!--
-=========================================================
-* Soft UI Dashboard 3 - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,10 +11,10 @@
     Soft UI Dashboard 3 by Creative Tim
   </title>
   <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
+  <link href="#" rel="stylesheet" />
   <!-- Nucleo Icons -->
-  <link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <link href="#" rel="stylesheet" />
+  <link href="#" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
@@ -41,7 +28,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
     <div class="container">
-      <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="../pages/dashboard.html">
+      <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="/dashboard">
         Soft UI Dashboard 3
       </a>
       <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,36 +41,36 @@
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../pages/dashboard.html">
+            <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="/dashboard">
               <i class="fa fa-chart-pie opacity-6  me-1"></i>
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-2" href="../pages/profile.html">
+            <a class="nav-link me-2" href="/profile">
               <i class="fa fa-user opacity-6  me-1"></i>
               Profile
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-2" href="../pages/sign-up.html">
+            <a class="nav-link me-2" href="/sign-up">
               <i class="fas fa-user-circle opacity-6  me-1"></i>
               Sign Up
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-2" href="../pages/sign-in.html">
+            <a class="nav-link me-2" href="/sign-in">
               <i class="fas fa-key opacity-6  me-1"></i>
               Sign In
             </a>
           </li>
         </ul>
         <li class="nav-item d-flex align-items-center">
-          <a class="btn btn-round btn-sm mb-0 btn-outline-white me-2" target="_blank" href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online Builder</a>
+          <a class="btn btn-round btn-sm mb-0 btn-outline-white me-2" target="_blank" href="#">Online Builder</a>
         </li>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
-            <a href="https://www.creative-tim.com/product/soft-ui-dashboard" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Free download</a>
+            <a href="#" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Free download</a>
           </li>
         </ul>
       </div>
@@ -155,15 +142,23 @@
                 </div>
               </div>
               <div class="card-body">
-                <form role="form text-left">
-                  <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
+                <form role="form text-left" method="post" action="/sign" id="signupForm">
+                  <div class="mb-3 position-relative ">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="name-addon">
+                    <div id="nameError" class="text-danger small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
                   </div>
-                  <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                  <div class="mb-3 position-relative">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                    <div id="emailError" class="small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
                   </div>
-                  <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                   <div class="mb-3 position-relative">
+                    <input type="tel" name="phone" id="phone" class="form-control" placeholder="Phone" aria-label="Phone" aria-describedby="phone-addon">
+                    <div id="phoneError" class="small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
+                  </div>
+                  <div class="mb-3 position-relative">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
+                    <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;z-index: 10;"><img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
+                    <div id="passwordError" class="text-danger small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
                   </div>
                   <div class="form-check form-check-info text-left">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
@@ -172,7 +167,7 @@
                     </label>
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                    <button type="submit" id="signupBtn" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                   </div>
                   <p class="text-sm mt-3 mb-0">Already have an account? <a href="javascript:;" class="text-dark font-weight-bolder">Sign in</a></p>
                 </form>
@@ -252,9 +247,10 @@
     }
   </script>
   <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async defer src="#"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="/traitement-js/singup.js"></script>
 </body>
 
 </html>
