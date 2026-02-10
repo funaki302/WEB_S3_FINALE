@@ -65,6 +65,7 @@ function renderObjectsCards(objets) {
         const desc = escapeHtml(objet.description || '');
         const prix = escapeHtml(objet.prix_estime ?? '');
         const proprietaire = escapeHtml(objet.proprietaire ?? '-');
+        const exchangeUrl = `/exchange?target=${encodeURIComponent(String(id))}`;
 
         const card = document.createElement('div');
         card.className = 'objects-scroll-item';
@@ -82,7 +83,10 @@ function renderObjectsCards(objets) {
               </a>
               <p class="mb-3 text-sm">${desc}</p>
               <div class="d-flex align-items-center justify-content-between">
-                <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#modalObjet${id}">Voir</button>
+                <div class="d-flex align-items-center" style="gap: .5rem;">
+                  <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#modalObjet${id}">Voir</button>
+                  <a class="btn bg-gradient-primary btn-sm mb-0" href="${exchangeUrl}">Exchange</a>
+                </div>
                 <p class="text-sm text-dark font-weight-bold mb-0">${prix} Ar</p>
               </div>
             </div>
@@ -103,6 +107,7 @@ function renderObjectsCards(objets) {
                   <p class="text-sm mb-0">${desc}</p>
                 </div>
                 <div class="modal-footer">
+                  <a href="${exchangeUrl}" class="btn bg-gradient-primary">Proposer un échange</a>
                   <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
               </div>

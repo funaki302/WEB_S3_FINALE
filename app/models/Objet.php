@@ -126,11 +126,14 @@ class Objet {
             SELECT o.*, c.nom_categorie 
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
-            WHERE o.id_proprietaire = ?
+            WHERE o.id_proprietaire = :user_id
             ORDER BY o.date_creation DESC
-            LIMIT ? OFFSET ?
+            LIMIT :limit OFFSET :offset
         ");
-        $stmt->execute([$userId, $limit, $offset]);
+        $stmt->bindValue(':user_id', (int)$userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

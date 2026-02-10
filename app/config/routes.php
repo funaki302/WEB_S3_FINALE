@@ -4,6 +4,7 @@ use app\controllers\DiscussionController;
 use app\controllers\MessageController;
 use app\controllers\ObjetController;
 use app\controllers\CategorieController;
+use app\controllers\ExchangeController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -164,12 +165,74 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('listes_objects', ['objets' => $objets]);
 	});
 
+	$router->get('/exchange', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$app->render('exchange', []);
+	});
+
 	$router->get('/met_object', function() use ($app) {
 		if (!isset($_SESSION['user_id'])) {
 			$app->redirect('/');
 			return;
 		}
 		$app->render('met_object', []);
+	});
+
+	$router->get('/api/exchange/target', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(null);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->getTargetObjetJson());
+	});
+
+	$router->get('/api/exchange/my-objets', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json([]);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->getMyObjetsJson());
+	});
+
+	$router->post('/api/exchange/create', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['ok' => false, 'error' => 'Non connecté']);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->createExchangeJson());
+	});
+
+	$router->get('/api/exchange/received', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json([]);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->getReceivedExchangesJson());
+	});
+
+	$router->post('/api/exchange/accept', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['ok' => false, 'error' => 'Non connecté']);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->acceptExchangeJson());
+	});
+
+	$router->post('/api/exchange/refuse', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['ok' => false, 'error' => 'Non connecté']);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->refuseExchangeJson());
 	});
 
 	

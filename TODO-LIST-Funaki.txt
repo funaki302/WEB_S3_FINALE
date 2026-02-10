@@ -84,4 +84,17 @@ routes.php : gerer les chemins pour voir la listes des objects
 
 pages met_object : pour l'affichage des json faites
 
-considere bien le theme du template pour que ca fond dans la masse et dans le theme 
+
+pages exchange.php : enfaite voici mon but pour ce projet :
+On veut mettre en place un site qui permet de faire des échanges d’objet : Takalo-takalo.
+Les utilisateurs inscrits sur le site vont mettre en ligne leurs objets (vêtement, livre, DVD,
+etc…). Ils vont voir les objets des autres utilisateurs et proposer un échange entre 2 objets.
+Si l’autre utilisateur accepte, l’objet change de propriétaire
+
+maintenant je voudrais une pages exhange.php pour proceder a une echange . l'echange ne se fera pas directement mais sera 
+en attente d'abord et et si c'est accepter par le proprietaire de l'object ou on a fait la demande alors ca sera accepter et 
+entrera dans la tables tk_objet_history
+
+[] on ajoute un lien : exchange dans listes_objects.php qui envoie vers la page exchange :
+[] dans la page exchange.php on aura a gauche l'object qu'on veut et au milieu un logo de trade et a droite on put defiler de haut en 
+  bas nos objects et selectionner celle que l'on veut echanger a celui que l'on veut  
