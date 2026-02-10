@@ -1,16 +1,14 @@
 <?php
-// controllers/CategorieController.php
-
 namespace app\controllers;
-
+use Flight;
 use app\models\Categorie;
 
 class CategorieController {
 
     private $categorieModel;
 
-    public function __construct($db) {
-        $this->categorieModel = new Categorie($db);
+    public function __construct() {
+        $this->categorieModel = new Categorie();
     }
 
     public function index() {
@@ -117,5 +115,9 @@ class CategorieController {
 
     public function getCount() {
         return $this->categorieModel->getCount();
+    }
+
+    public function getAll() {
+        return $this->categorieModel->getAll();
     }
 }

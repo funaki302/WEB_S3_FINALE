@@ -1,8 +1,7 @@
 <?php
-// models/Categorie.php
-
 namespace app\models;
 
+use Flight;
 use PDO;
 use PDOException;
 
@@ -10,8 +9,8 @@ class Categorie {
 
     private $db;
 
-    public function __construct($db) {
-        $this->db = $db; // PDO instance
+    public function __construct() {
+        $this->db = Flight::db();
     }
 
     public function create($nom) {

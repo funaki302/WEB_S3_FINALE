@@ -125,5 +125,31 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	// Ajout de nouvel objet
+	$router->post('/api/add/objet', function() use ($app) {
+		$objetController = new ObjetController();
+		
+		// Récupérer les données JSON du corps de la requête
+		$json_input = file_get_contents('php://input');
+		$data = json_decode($json_input, true);
+		
+		$result = $objetController->create($data);
+		$app->json(['success' => $result !== false, 'id_objet' => $result]);
+	});
+
+	// Recupere tous les categories
+	$router->get('/api/getAll/categorie', function() use ($app){
+		$categorieController = new CategorieController();
+		$result = $categorieController->getAll();
+		$app->json($result);
+	});
+
+	// Recupere un user
+	$router->get('/api/get/user/@id', function($id) use ($app){
+		$userController = new UserController();
+		$result = $userController->getById($id);
+		$app->json($result);
+	});
+
 	
 }, [ SecurityHeadersMiddleware::class ]);

@@ -60,11 +60,16 @@ async function update(data) {
 }
 
 async function getObjet_User(id_user) {
-    const objets = await fetch(`/api/getObjet/${id_user}`);
-    if (!objets.ok) {
-        alert("Erreur lors de la recuperation des objets");
+    try {
+        const objets = await fetch(`/api/getObjet/${id_user}`);
+        if (!objets.ok) {
+            console.error(`Erreur HTTP: ${objets.status} - ${objets.statusText}`);
+            throw new Error("Erreur lors de la recuperation des objets");
+        }
+        const data = await objets.json();
+        return data;
+    } catch (error) {
+        console.error('Erreur getObjet_User:', error);
+        throw error;
     }
-
-    const data = await objets.json();
-    return data;
 }
