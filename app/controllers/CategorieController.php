@@ -1,12 +1,16 @@
 <?php
 // controllers/CategorieController.php
 
+namespace app\controllers;
+
+use app\models\Categorie;
+
 class CategorieController {
 
     private $categorieModel;
 
     public function __construct($db) {
-        $this->categorieModel = new Categorie_model($db);
+        $this->categorieModel = new Categorie($db);
     }
 
     public function index() {
@@ -109,5 +113,9 @@ class CategorieController {
             $options[$cat['id_categorie']] = $cat['nom_categorie'];
         }
         return $options;
+    }
+
+    public function getCount() {
+        return $this->categorieModel->getCount();
     }
 }

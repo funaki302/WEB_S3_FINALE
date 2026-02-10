@@ -3,6 +3,7 @@
 use app\controllers\DiscussionController;
 use app\controllers\MessageController;
 use app\controllers\ObjetController;
+use app\controllers\CategorieController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -66,7 +67,19 @@ $router->group('', function(Router $router) use ($app) {
 			$app->redirect('/');
 			return;
 		}
-		$app->render('dashboard', []);
+		$userController = new UserController();
+		$categorieController = new CategorieController(Flight::db());
+		$objetController = new ObjetController();
+		
+		$data = [
+			'count_users' => $userController->getCountUser(),
+			'count_admins' => $userController->getCountAdmin(),
+			'count_categories' => $categorieController->getCount(),
+			'count_objects' => $objetController->getCount(),
+			'count_exchanges' => $objetController->getCountExchanges()
+		];
+		
+		$app->render('dashboard', $data);
 	});
 
 	$router->get('/sign-up', function() use ($app) {

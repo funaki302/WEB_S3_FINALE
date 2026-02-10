@@ -1,16 +1,33 @@
 STATISTIQUE : 
+DATA :
+-[] creation de 2026-02-10-01-donneF.sql :
+    pour les donner de teste 
+
 
 page : Dashboard.php :
 
-- Ajouter une affichage pour :
-  -> nombre de Admin :
-     fonction : User.php -> getCountAdmin() ;
+-[] creation de met_user.js (pour fetch les json retourner apres)
+   -> [] function getCountAdmin() 
+   -> [] function getCountUser() 
 
-  -> nombre de User :
-     fonction : User.php -> getCountUser() ;
+-[] Ajouter une affichage pour :
+  -> [] nombre de Admin :
+    [] fonction : User.php -> getCountAdmin() ;
+                
+  -> [] nombre de User :
+    [] fonction : User.php -> getCountUser() ;
 
-  -> nombre de Categorie :
-     fonction : User.php -> getCountCategorie() ;
+  -> [] nombre de Categorie :
+    [] fonction : Categorie.php -> getCountCategorie() ;
 
-  -> nombre d'objet :
-     fonction : User.php -> getCountObject() ;
+  -> [] nombre d'objet :
+    [] fonction : object.php -> getCountObject() ;
+  
+ - [] contrroler :
+  -> []  Ajouter des controller pour chaque fonction 
+      - [] CategorieController.php 
+      - [] UserController.php
+      - [] objectController.php
+
+ - [] routes.php :
+  -> [] Ajouter les routes pour chaque fonction :

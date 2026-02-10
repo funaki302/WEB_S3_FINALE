@@ -143,10 +143,12 @@
                     <input type="tel" name="phone" id="phone" class="form-control" placeholder="Phone" aria-label="Phone" aria-describedby="phone-addon">
                     <div id="phoneError" class="small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
                   </div>
-                  <div class="mb-3 position-relative">
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
-                    <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;z-index: 10;"><img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
-                    <div id="passwordError" class="text-danger small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
+                  <div class="mb-3">
+                    <div class="position-relative">
+                      <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
+                      <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;z-index: 10;"><img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
+                    </div>
+                    <div id="passwordError" class="text-danger small"></div>
                   </div>
                   <div class="form-check form-check-info text-left">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>

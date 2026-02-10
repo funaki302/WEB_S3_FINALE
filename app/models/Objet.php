@@ -151,4 +151,30 @@ class Objet {
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getCount() {
+        $sql = "SELECT COUNT(*) as total FROM tk_objets";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error in Objet::getCount - " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getCountExchanges() {
+        $sql = "SELECT COUNT(*) as total FROM tk_echanges";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error in Objet::getCountExchanges - " . $e->getMessage());
+            return 0;
+        }
+    }
 }
