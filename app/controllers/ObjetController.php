@@ -1,16 +1,18 @@
 <?php
+namespace app\controllers;
+use app\models\Objet;
+use Flight;
 // controllers/ObjetController.php
 class ObjetController {
 
     private $objetModel;
     private $objetImgModel;
 
-    public function __construct($db) {
-        $this->objetModel    = new Objet_model($db);
-        $this->objetImgModel = new ObjetImg_model($db);
+    public function __construct() {
+        $this->objetModel    = new Objet();
     }
 
-    public function create($postData, $files = []) {
+    /* public function create($postData, $files = []) {
         $data = [
             'id_proprietaire' => $_SESSION['user_id'], // à adapter
             'id_categorie'    => $postData['categorie'],
@@ -38,7 +40,7 @@ class ObjetController {
         return ['success' => true, 'id_objet' => $id_objet];
     }
 
-    private function uploadImage($file) {
+    public function uploadImage($file) {
         // logique d'upload à implémenter (move_uploaded_file, vérif type/taille, etc.)
         // retourne le nom du fichier ou chemin relatif
         return 'uploads/objets/' . uniqid() . '_' . basename($file['name']);
@@ -46,5 +48,9 @@ class ObjetController {
 
     public function getMyObjects() {
         return $this->objetModel->getAllByUser($_SESSION['user_id']);
+    } */
+
+    public function getObjet_User($id_user){
+        return $this->objetModel->getObjet_User($id_user);
     }
 }
