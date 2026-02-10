@@ -13,6 +13,68 @@ class Objet {
         $this->db = Flight::db();
     }
 
+    public function getAllNotOwnedByUser($userId, $limit = 50, $offset = 0) {
+        $stmt = $this->db->prepare("
+            SELECT o.*, c.nom_categorie, u.name AS proprietaire
+            FROM tk_objets o
+            LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
+            LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
+            WHERE o.id_proprietaire <> :user_id
+            ORDER BY o.date_creation DESC
+            LIMIT :limit OFFSET :offset
+        ");
+        $stmt->bindValue(':user_id', (int)$userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllCategories() {
+        $stmt = $this->db->prepare("SELECT id_categorie, nom_categorie FROM tk_categorie ORDER BY nom_categorie ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchNotOwnedByUser($userId, $keyword = null, $categoryId = null, $limit = 60, $offset = 0) {
+        $conditions = ["o.id_proprietaire <> :user_id"];
+        $params = [];
+
+        $keyword = is_string($keyword) ? trim($keyword) : '';
+        if ($keyword !== '') {
+            $conditions[] = "(o.title LIKE :kw OR o.description LIKE :kw)";
+            $params[':kw'] = '%' . $keyword . '%';
+        }
+
+        if ($categoryId !== null && $categoryId !== '' && (int)$categoryId > 0) {
+            $conditions[] = "o.id_categorie = :cat_id";
+        }
+
+        $whereSql = implode(' AND ', $conditions);
+
+        $stmt = $this->db->prepare("
+            SELECT o.*, c.nom_categorie, u.name AS proprietaire
+            FROM tk_objets o
+            LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
+            LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
+            WHERE $whereSql
+            ORDER BY o.date_creation DESC
+            LIMIT :limit OFFSET :offset
+        ");
+
+        $stmt->bindValue(':user_id', (int)$userId, PDO::PARAM_INT);
+        if (array_key_exists(':kw', $params)) {
+            $stmt->bindValue(':kw', $params[':kw'], PDO::PARAM_STR);
+        }
+        if ($categoryId !== null && $categoryId !== '' && (int)$categoryId > 0) {
+            $stmt->bindValue(':cat_id', (int)$categoryId, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create($data) {
         $sql = "INSERT INTO tk_objets 
                 (id_proprietaire, id_categorie, title, description, prix_estime, date_creation)
