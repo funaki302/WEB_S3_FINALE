@@ -93,4 +93,32 @@ class ObjetController {
     public function getCountExchanges() {
         return $this->objetModel->getCountExchanges();
     }
+
+    public function create($postData) {
+        $data = [
+            'id_proprietaire' => trim($postData['id_proprietaire']), // à adapter
+            'id_categorie'    => $postData['id_categorie'],
+            'title'           => trim($postData['title']),
+            'description'     => trim($postData['description']),
+            'prix_estime'     => $postData['prix_estime'] ?? null,
+        ];
+
+        $id_objet = $this->objetModel->create($data);
+        if (!$id_objet) {
+            return ['success' => false];
+        }
+
+        // Gestion des images
+        /* if (!empty($files['images'])) {
+            foreach ($files['images'] as $img) {
+                // À adapter selon ta logique d'upload
+                $filename = $this->uploadImage($img); 
+                if ($filename) {
+                    $this->objetImgModel->addImage($id_objet, $filename);
+                }
+            }
+        } */
+
+        return ['success' => true, 'id_objet' => $id_objet];
+    }
 }

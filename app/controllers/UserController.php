@@ -143,4 +143,8 @@ class UserController
         return $this->userModel->getAll();
     }
 
+    public function getById($id_user)
+    {
+        return $this->userModel->getById($id_user);
+    }
 }
