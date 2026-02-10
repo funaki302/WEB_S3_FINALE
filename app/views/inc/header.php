@@ -127,3 +127,6 @@
         </div>
     </div>
 </nav>
+
+<!-- Les choses dont les scripts ont besoin -->
+<meta name="user-id" content="<?= htmlspecialchars($_SESSION['user_id'] ?? 0) ?>">

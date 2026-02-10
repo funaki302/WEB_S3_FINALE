@@ -1,11 +1,16 @@
 <?php
+namespace app\models;
+
+use Flight;
+use PDO;
+use PDOException;
 // models/Objet.php
 class Objet {
 
     private $db;
 
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct() {
+        $this->db = Flight::db();
     }
 
     public function create($data) {
@@ -133,5 +138,17 @@ class Objet {
         $stmt->execute([$objetId]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row && $row['id_proprietaire'] == $userId;
+    }
+
+    public function getObjet_User($userId) {
+        $stmt = $this->db->prepare("
+            SELECT o.*, c.nom_categorie 
+            FROM tk_objets o
+            LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
+            WHERE o.id_proprietaire = ?
+            ORDER BY o.date_creation DESC
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

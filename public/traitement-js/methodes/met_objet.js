@@ -1,3 +1,9 @@
+function buildUrl(path) {
+    const baseUrl = window.location.origin;
+    if (path.startsWith('/')) return `${baseUrl}${path}`;
+    return `${baseUrl}/${path}`;
+}
+
 async function getAllObjet() {
     const objets = await fetch('/api/getAll/objet');
     if (!objets.ok) {
@@ -51,4 +57,14 @@ async function update(data) {
         return false;
     }
     return true;
+}
+
+async function getObjet_User(id_user) {
+    const objets = await fetch(`/api/getObjet/${id_user}`);
+    if (!objets.ok) {
+        alert("Erreur lors de la recuperation des objets");
+    }
+
+    const data = await objets.json();
+    return data;
 }

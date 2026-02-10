@@ -2,6 +2,7 @@
 
 use app\controllers\DiscussionController;
 use app\controllers\MessageController;
+use app\controllers\ObjetController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -103,5 +104,13 @@ $router->group('', function(Router $router) use ($app) {
 		$exists = $userController->checkEmailExists($email);
 		$app->json(['exists' => $exists]);
 	});
+
+	// Prendre les objet d'un user
+	$router->get('/api/getObjet/@id', function($id) use ($app){
+		$objetController = new ObjetController();
+		$result = $objetController->getObjet_User($id);
+		$app->json($result);
+	});
+
 	
 }, [ SecurityHeadersMiddleware::class ]);
