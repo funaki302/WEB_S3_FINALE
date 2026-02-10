@@ -1,0 +1,16 @@
+STATISTIQUE : 
+
+page : Dashboard.php :
+
+- Ajouter une affichage pour :
+  -> nombre de Admin :
+     fonction : User.php -> getCountAdmin() ;
+
+  -> nombre de User :
+     fonction : User.php -> getCountUser() ;
+
+  -> nombre de Categorie :
+     fonction : User.php -> getCountCategorie() ;
+
+  -> nombre d'objet :
+     fonction : User.php -> getCountObject() ;

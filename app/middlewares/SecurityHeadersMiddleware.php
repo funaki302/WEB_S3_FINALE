@@ -27,7 +27,7 @@ class SecurityHeadersMiddleware
 
 		// Note: Using 'strict-dynamic' with a nonce will cause browsers to ignore host sources like 'self'
 		// and block scripts without a nonce. Since views currently don't attach nonce attributes to <script>
-		// tags, we omit 'strict-dynamic' to allow loading same-origin scripts (e.g. /traitement-js/singin.js).
+		// tags, we omit 'strict-dynamic' to allow loading same-origin scripts (e.g. /traitement-js/sign/singin.js).
 		$csp = "default-src 'self'; script-src 'self' 'nonce-{$nonce}'; style-src 'self' {$tracyCssBypass}; img-src 'self' data:;";
 		$this->app->response()->header('X-Frame-Options', 'SAMEORIGIN');
 		$this->app->response()->header("Content-Security-Policy", $csp);

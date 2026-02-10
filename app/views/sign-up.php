@@ -238,7 +238,7 @@
   <script async defer src="#"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-  <script src="/traitement-js/singup.js"></script>
+  <script src="/traitement-js/sign/singup.js"></script>
 </body>
 
 </html>
