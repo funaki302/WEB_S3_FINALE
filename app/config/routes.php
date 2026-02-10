@@ -125,5 +125,52 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	$router->get('/api/objets/others', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json([]);
+			return;
+		}
+		$objetController = new ObjetController();
+		$result = $objetController->getObjetsNotOwnedByCurrentUserJson();
+		$app->json($result);
+	});
+
+	$router->get('/api/objets/others/search', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json([]);
+			return;
+		}
+		$objetController = new ObjetController();
+		$result = $objetController->getObjetsNotOwnedByCurrentUserSearchJson();
+		$app->json($result);
+	});
+
+	$router->get('/api/objets/categories', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json([]);
+			return;
+		}
+		$objetController = new ObjetController();
+		$app->json($objetController->getCategoriesJson());
+	});
+
+	$router->get('/objets', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$objetController = new ObjetController();
+		$objets = $objetController->getObjetsNotOwnedByCurrentUser(60, 0);
+		$app->render('listes_objects', ['objets' => $objets]);
+	});
+
+	$router->get('/met_object', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$app->render('met_object', []);
+	});
+
 	
 }, [ SecurityHeadersMiddleware::class ]);
