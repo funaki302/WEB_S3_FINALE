@@ -40,7 +40,7 @@
 <body class="g-sidenav-show  bg-gray-100 virtual-reality">
   <div>
     <!-- Navbar -->
-     <?php $page = 'Virtual Reality'; ?>
+    <?php $page = 'Virtual Reality'; ?>
     <?php include __DIR__."/inc/header.php"; ?>
     <!-- End Navbar -->
   </div>

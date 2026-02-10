@@ -9,10 +9,8 @@ class CategorieController {
         $this->categorieModel = new Categorie_model($db);
     }
 
-    // Liste toutes les catégories (pour affichage public)
     public function index() {
         $categories = $this->categorieModel->getAllWithCount();
-        // → on renvoie souvent à une vue
         return [
             'success' => true,
             'categories' => $categories,
@@ -20,7 +18,6 @@ class CategorieController {
         ];
     }
 
-    // API / JSON - pour AJAX ou futur frontend
     public function apiList() {
         $categories = $this->categorieModel->getAll();
         header('Content-Type: application/json');
