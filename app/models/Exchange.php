@@ -174,4 +174,22 @@ class Exchange {
             return ['ok' => false, 'error' => 'Erreur serveur'];
         }
     }
+
+    public function EchangeAttente($id_receveur){
+        $sql = "
+            SELECT e.*,
+            u1.name name_proposeur, u1.email email_proposeur,
+            o1.title objet_proposer, o1.prix_estime prix_proposer,
+            o2.title objet_requise, o2.prix_estime prix_requise
+            FROM tk_echanges e
+            JOIN tk_user u1 ON e.id_proposeur = u1.id_user
+            JOIN tk_objets o1 ON e.objet_proposer = o1.id_objet
+            JOIN tk_objets o2 ON e.objet_requise = o2.id_objet
+            WHERE e.status = 'attente'
+              AND e.id_receveur = ?
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id_receveur]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

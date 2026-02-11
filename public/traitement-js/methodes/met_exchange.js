@@ -250,3 +250,14 @@ async function initExchangePage() {
 window.addEventListener('DOMContentLoaded', function () {
   initExchangePage();
 });
+
+async function EchangesAttente(id_user) {
+  const echanges = await fetch(`/api/getExchange/attente/${id_user}`);
+    if (!echanges.ok) {
+      alert("Echec de Echanges Attente "+id_user); 
+      return null;
+    }
+
+    const data = await echanges.json();
+    return data;
+}

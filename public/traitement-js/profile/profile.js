@@ -22,22 +22,24 @@ window.addEventListener('load', async function () {
       const info = await getUserById(id_user);
       loadInformation(info);
 
+      // Liste de demandes en attente
+      const listeDemande = await EchangesAttente(id_user);
+      loadListDemande(listeDemande);
+
       // Liste de ses objets
       const liste = await getObjet_User(id_user);
       await loadListObjet(liste);
 
-    } catch (err) {
-      console.error('Erreur chargement des objets:', err);
+    } catch (e) {
+      this.alert('Erreur chargement de la page :'+ (e && e.message ? e.message : String(e)));
     }
 });
 
 async function loadListObjet(liste) {
   try {
-    console.log('loadListObjet appelée avec:', liste);
     
     const listObjet = document.querySelector('#liste');
     if (!listObjet) {
-      console.error("Div #liste non trouvé");
       alert("Div #liste non trouvé");
       return;
     }
@@ -53,9 +55,7 @@ async function loadListObjet(liste) {
     
     // ajouter la liste des objets
     if (Array.isArray(liste) && liste.length > 0) {
-      console.log(`Affichage de ${liste.length} objets`);
       liste.forEach((objet, index) => {
-        console.log(`Objet ${index}:`, objet);
         
         const col = document.createElement('div');
         col.classList.add('col-xl-3', 'col-md-6', 'mb-xl-0', 'mb-4');
@@ -77,7 +77,7 @@ async function loadListObjet(liste) {
                 ${objet.description || 'Pas de description'}
               </p>
               <div class="d-flex align-items-center justify-content-between">
-                <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                <button type="button" class="btn btn-outline-primary btn-sm mb-0">Voir</button>
                 <div class="avatar-group mt-2">
                   <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
                     <img alt="Image placeholder" src="../assets/img/team-1.jpg">
@@ -128,7 +128,6 @@ async function loadListObjet(liste) {
     }
     
   } catch (error) {
-    console.error("Error de loadListObjet:", error);
     alert("Error de loadListObjet: " + error.message);
   }
 }
@@ -175,6 +174,12 @@ async function loadNewObjet() {
         <div class="form-group">
           <label class="form-label">Description</label>
           <textarea class="form-control border-radius-lg" name="description" rows="4" placeholder="Décrivez l'état, la couleur, les accessoires..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Photo de l'objet</label>
+          <input type="file" class="form-control border-radius-lg" name="image" accept="image/*" required>
+          <small class="text-muted">Formats acceptés: JPG, PNG, GIF, WebP (max 5MB)</small>
         </div>
 
         <div class="text-end mt-4">
@@ -231,7 +236,6 @@ async function loadNewObjet() {
 }
 
 async function createObjet(form) {
-  //alert("Ajouter Objet !!");
   try {
     const formData = new FormData(form);
     const data = {
@@ -256,10 +260,44 @@ async function createObjet(form) {
 
     const result = await response.json();
     if (result.success) {
-      //alert('Objet ajouté avec succès!');
-      // Vider le formulaire
+      const idObjet = result.id_objet;
+      console.log('Objet créé avec ID:', idObjet);
+      
+      const imageFile = formData.get('image');
+      console.log('Fichier image:', imageFile);
+      console.log('Taille fichier:', imageFile ? imageFile.size : 'null');
+      
+      if (imageFile && imageFile.size > 0) {
+        console.log('Début upload image...');
+        const imageFormData = new FormData();
+        imageFormData.append('image', imageFile);
+        imageFormData.append('id_objet', idObjet);
+
+        console.log('FormData contenu:');
+        for (let pair of imageFormData.entries()) {
+          console.log(pair[0] + ':', pair[1]);
+        }
+
+        const imageResponse = await fetch('/api/objet/upload-image', {
+          method: 'POST',
+          body: imageFormData
+        });
+
+        console.log('Response upload status:', imageResponse.status);
+        const imageResult = await imageResponse.json();
+        console.log('Response upload result:', imageResult);
+        
+        if (!imageResult.ok) {
+          console.warn('Image non uploadée:', imageResult.error);
+          alert('Erreur upload image: ' + imageResult.error);
+        } else {
+          console.log('Image uploadée avec succès!');
+        }
+      } else {
+        console.log('Aucune image à uploader');
+      }
+
       document.querySelector('#form-newObjet').innerHTML = "";
-      // Recharger la liste des objets
       const id_user = getCurrentUserId();
       const liste = await getObjet_User(id_user);
       loadListObjet(liste);
@@ -267,7 +305,6 @@ async function createObjet(form) {
       alert('Erreur: ' + (result.message || 'Échec de l\'ajout'));
     }
   } catch (error) {
-    console.error('Erreur:', error);
     alert('Erreur lors de l\'ajout de l\'objet');
   }
 }
@@ -295,4 +332,258 @@ function loadInformation(data) {
       <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Date inscription:</strong> &nbsp; ${data.join_date}</li>
     </ul>
   `;
+}
+
+function loadListDemande(demandes) {
+  const div_demande = document.querySelector('#liste-demande');
+  // Vider son contenue
+  div_demande.innerHTML = "";
+
+  // Ajouter le style CSS pour les animations
+  if (!document.querySelector('#demande-styles')) {
+    const style = document.createElement('style');
+    style.id = 'demande-styles';
+    style.textContent = `
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .demande-item {
+        border-left: 3px solid #e3f2fd !important;
+        background: #f8f9fa !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        padding: 12px 16px !important;
+        margin-bottom: 12px !important;
+      }
+      
+      .demande-item:hover {
+        border-left: 3px solid #2dce89 !important;
+        background: #ffffff !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        transform: translateX(5px);
+      }
+      
+      .demande-item.expanded {
+        border-left: 3px solid #fd7e14 !important;
+        background: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+      }
+      
+      .detail-demande {
+        background: #ffffff !important;
+        border: 2px solid #fd7e14 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 20px rgba(253, 126, 20, 0.15) !important;
+        animation: slideDown 0.3s ease-out !important;
+      }
+      
+      .list-group-scrollable {
+        max-height: 500px !important;
+        overflow-y: auto !important;
+        padding-right: 10px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar {
+        width: 6px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-track {
+        background: #f1f1f1 !important;
+        border-radius: 3px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-thumb {
+        background: #fd7e14 !important;
+        border-radius: 3px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-thumb:hover {
+        background: #e67100 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  if (Array.isArray(demandes) && demandes.length > 0) {
+    const ul = document.createElement('ul');
+    ul.classList.add('list-group', 'list-group-scrollable');
+
+    demandes.forEach(dm => {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item', 'border-0', 'd-flex', 'align-items-center', 'px-0', 'mb-2');
+      li.innerHTML = `
+        <div class="avatar me-3">
+          <img src="/assets/img/avatar.svg" alt="" class="border-radius-lg shadow">
+        </div>
+        <div class="d-flex align-items-start flex-column justify-content-center">
+          <h6 class="mb-0 text-sm">${dm.name_proposeur}</h6>
+          <p class="mb-0 text-xs">Propose son : <strong>${dm.objet_proposer}</strong> contre ton : <strong>${dm.objet_requise}</strong> </p>
+          <a href="#" class="text-primary text-xs mt-1" style="opacity: 0.85;">
+            Voir plus…
+          </a>
+        </div>
+      `;
+      
+      const voir = li.querySelector('a');
+      voir.addEventListener('click', function (e) {
+        e.preventDefault();
+        voirPlus(dm);
+      });
+      
+      ul.appendChild(li);
+    
+    });
+    div_demande.appendChild(ul);
+  } else{
+    div_demande.innerHTML = `
+      <p class="small">Aucune demande trouvee</p>
+    `;
+  }
+}
+
+function voirPlus(dm) {
+  // Fermer tous les autres détails ouverts
+  document.querySelectorAll('.detail-demande').forEach(detail => {
+    detail.remove();
+  });
+  
+  // Retirer la classe 'expanded' de tous les li
+  document.querySelectorAll('#liste-demande li').forEach(li => {
+    li.classList.remove('expanded');
+  });
+  
+  // Trouver le li actuel et ajouter la classe expanded
+  const liActuel = event.target.closest('li');
+  liActuel.classList.add('expanded');
+  
+  // Créer le contenu détaillé
+  const detailDiv = document.createElement('div');
+  detailDiv.className = 'detail-demande mt-3 p-3 bg-light rounded';
+  
+  detailDiv.innerHTML = `
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <div class="text-center mb-3">
+          <p class="text-xs text-muted mb-2">Objet proposé</p>
+          <img src="/assets/img/home-decor-1.jpg" alt="${dm.objet_proposer}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
+          <p class="mt-2 mb-0"><strong>${dm.objet_proposer}</strong></p>
+          <p class="text-xs text-muted mb-0">${dm.prix_proposer || 'Prix non spécifié'} Ar</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="text-center mb-3">
+          <p class="text-xs text-muted mb-2">Objet requis</p>
+          <img src="/assets/img/home-decor-1.jpg" alt="${dm.objet_requise}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
+          <p class="mt-2 mb-0"><strong>${dm.objet_requise}</strong></p>
+          <p class="text-xs text-muted mb-0">${dm.prix_requise || 'Prix non spécifié'} Ar</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="text-center">
+          <p class="text-xs text-muted mb-2">Date de la demande</p>
+          <p class="mb-3"><strong>${formatDate(dm.date_proposition)}</strong></p>
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-sm" id="btn-accept" >
+              <i class="fas fa-check me-1"></i>Accepter
+            </button>
+            <button class="btn btn-danger btn-sm" id="btn-refuse" >
+              <i class="fas fa-times me-1"></i>Refuser
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const btn_accept = detailDiv.querySelector('#btn-accept');
+  const btn_refus = detailDiv.querySelector('#btn-refuse');
+
+  btn_accept.addEventListener('click', function (e) {
+    e.preventDefault();
+    accepteDemande(dm.id_echange);
+  });
+  btn_refus.addEventListener('click', function (e) {
+    e.preventDefault();
+    refuseDemande(dm.id_echange);
+  });
+  
+  liActuel.parentNode.insertBefore(detailDiv, liActuel.nextSibling);
+}
+
+function formatDate(dateString) {
+  if (!dateString) return 'Date non spécifiée';
+  
+  const date = new Date(dateString);
+  const options = { 
+    day: '2-digit', 
+    month: 'short', 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  };
+  
+  return date.toLocaleDateString('fr-FR', options);
+}
+
+async function accepteDemande(idEchange) {
+  alert("Accepter");
+  /* try {
+    const response = await fetch('/api/exchange/accept', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_echange: idEchange })
+    });
+    
+    const result = await response.json();
+    if (result.ok) {
+      alert('Échange accepté avec succès!');
+      // Recharger la liste des demandes
+      const id_user = getCurrentUserId();
+      const listeDemande = await EchangesAttente(id_user);
+      loadListDemande(listeDemande);
+    } else {
+      alert('Erreur: ' + (result.error || 'Échec de l\'acceptation'));
+    }
+  } catch (error) {
+    alert('Erreur lors de l\'acceptation de l\'échange');
+  } */
+}
+
+async function refuseDemande(idEchange) {
+  alert("Refuser");
+  /* try {
+    const response = await fetch('/api/exchange/refuse', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_echange: idEchange })
+    });
+    
+    const result = await response.json();
+    if (result.ok) {
+      alert('Échange refusé avec succès!');
+      // Recharger la liste des demandes
+      const id_user = getCurrentUserId();
+      const listeDemande = await EchangesAttente(id_user);
+      loadListDemande(listeDemande);
+    } else {
+      alert('Erreur: ' + (result.error || 'Échec du refus'));
+    }
+  } catch (error) {
+    alert('Erreur lors du refus de l\'échange');
+  } */
 }
