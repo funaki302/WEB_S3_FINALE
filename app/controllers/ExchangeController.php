@@ -132,4 +132,20 @@ class ExchangeController {
     public function EchangesAttente($id_user){
         return $this->exchangeModel->EchangeAttente($id_user);
     }
+
+	public function getAllWithRequestedObjectDetails($status = null) {
+		return $this->exchangeModel->getAllWithRequestedObjectDetails($status);
+	}
+
+	public function getReceivedStatsByUser($userId) {
+		return $this->exchangeModel->getReceivedStatsByUser((int)$userId);
+	}
+
+	public function getSentStatsByUser($userId) {
+		return $this->exchangeModel->getSentStatsByUser((int)$userId);
+	}
+
+	public function getStatusStats() {
+		return $this->exchangeModel->getStatusStats();
+	}
 }

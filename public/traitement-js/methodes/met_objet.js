@@ -68,6 +68,7 @@ function renderObjectsCards(objets) {
         const exchangeUrl = `/exchange?target=${encodeURIComponent(String(id))}`;
         const pendingCount = parseInt(objet.pending_count || 0, 10) || 0;
         const pendingBadge = `<span class="badge bg-dark text-white ms-2" title="Demandes en attente">Demandes en attente: ${pendingCount}</span>`;
+        const imgSrc = objet.image ? "../uploads/objets/" + objet.image : "../assets/img/home-decor-1.jpg";
 
         const card = document.createElement('div');
         card.className = 'objects-scroll-item';
@@ -75,7 +76,7 @@ function renderObjectsCards(objets) {
           <div class="card card-blog card-plain">
             <div class="position-relative">
               <a class="d-block">
-                <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
+                <img src="${imgSrc}" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
               </a>
               <div class="position-absolute top-0 end-0 mt-2 me-2">
                 ${pendingCount > 0 ? `<span class=\"badge bg-dark text-white\">${pendingCount} demandes en attente</span>` : ''}

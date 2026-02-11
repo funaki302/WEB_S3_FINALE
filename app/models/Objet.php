@@ -16,6 +16,7 @@ class Objet {
     public function getAllNotOwnedByUser($userId, $limit = 50, $offset = 0) {
         $stmt = $this->db->prepare("
             SELECT o.*, c.nom_categorie, u.name AS proprietaire,
+                   (SELECT image FROM tk_objet_img WHERE id_objet = o.id_objet LIMIT 1) AS image,
                    (
                      SELECT COUNT(*)
                      FROM tk_echanges e
@@ -60,6 +61,7 @@ class Objet {
 
         $stmt = $this->db->prepare("
             SELECT o.*, c.nom_categorie, u.name AS proprietaire,
+                   (SELECT image FROM tk_objet_img WHERE id_objet = o.id_objet LIMIT 1) AS image,
                    (
                      SELECT COUNT(*)
                      FROM tk_echanges e
@@ -122,7 +124,8 @@ class Objet {
 
     public function getAll($limit = 20, $offset = 0, $orderBy = 'date_creation DESC') {
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nom_categorie, u.name AS proprietaire 
+            SELECT o.*, c.nom_categorie, u.name AS proprietaire,
+                   (SELECT image FROM tk_objet_img WHERE id_objet = o.id_objet LIMIT 1) AS image
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
@@ -135,7 +138,8 @@ class Objet {
 
     public function getAllByUser($userId, $limit = 50, $offset = 0) {
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nom_categorie 
+            SELECT o.*, c.nom_categorie,
+                   (SELECT image FROM tk_objet_img WHERE id_objet = o.id_objet LIMIT 1) AS image
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             WHERE o.id_proprietaire = :user_id
@@ -225,7 +229,8 @@ class Objet {
 
     public function getObjet_User($userId) {
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nom_categorie 
+            SELECT o.*, c.nom_categorie,
+                   (SELECT image FROM tk_objet_img WHERE id_objet = o.id_objet LIMIT 1) AS image
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             WHERE o.id_proprietaire = ?

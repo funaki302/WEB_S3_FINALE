@@ -181,19 +181,25 @@
         <div class="col-lg-6 col-12 mt-4 mt-lg-0">
           <div class="card shadow h-100">
             <div class="card-header pb-0 p-3">
-              <h6 class="mb-0">Reviews</h6>
+              <h6 class="mb-0">Demandes d'échange</h6>
             </div>
             <div class="card-body pb-0 p-3">
+              <?php
+                $exchange_stats = $exchange_stats ?? ['total' => 0, 'counts' => ['accepter' => 0, 'refuser' => 0, 'attente' => 0], 'percent' => ['accepter' => 0, 'refuser' => 0, 'attente' => 0]];
+                $pAccepted = (int)($exchange_stats['percent']['accepter'] ?? 0);
+                $pRefused = (int)($exchange_stats['percent']['refuser'] ?? 0);
+                $pPending = (int)($exchange_stats['percent']['attente'] ?? 0);
+              ?>
               <ul class="list-group">
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-0">
                   <div class="w-100">
                     <div class="d-flex mb-2">
-                      <span class="me-2 text-sm font-weight-bold text-dark">Positive Reviews</span>
-                      <span class="ms-auto text-sm font-weight-bold">80%</span>
+                      <span class="me-2 text-sm font-weight-bold text-dark">Acceptées</span>
+                      <span class="ms-auto text-sm font-weight-bold"><?= htmlspecialchars((string)$pAccepted) ?>%</span>
                     </div>
                     <div>
                       <div class="progress progress-md">
-                        <div class="progress-bar bg-primary w-80" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="<?= htmlspecialchars((string)$pAccepted) ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= htmlspecialchars((string)$pAccepted) ?>%;"></div>
                       </div>
                     </div>
                   </div>
@@ -201,12 +207,12 @@
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="w-100">
                     <div class="d-flex mb-2">
-                      <span class="me-2 text-sm font-weight-bold text-dark">Neutral Reviews</span>
-                      <span class="ms-auto text-sm font-weight-bold">17%</span>
+                      <span class="me-2 text-sm font-weight-bold text-dark">Sans réponse</span>
+                      <span class="ms-auto text-sm font-weight-bold"><?= htmlspecialchars((string)$pPending) ?>%</span>
                     </div>
                     <div>
                       <div class="progress progress-md">
-                        <div class="progress-bar bg-primary w-10" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="<?= htmlspecialchars((string)$pPending) ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= htmlspecialchars((string)$pPending) ?>%;"></div>
                       </div>
                     </div>
                   </div>
@@ -214,12 +220,12 @@
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="w-100">
                     <div class="d-flex mb-2">
-                      <span class="me-2 text-sm font-weight-bold text-dark">Negative Reviews</span>
-                      <span class="ms-auto text-sm font-weight-bold">3%</span>
+                      <span class="me-2 text-sm font-weight-bold text-dark">Refusées</span>
+                      <span class="ms-auto text-sm font-weight-bold"><?= htmlspecialchars((string)$pRefused) ?>%</span>
                     </div>
                     <div>
                       <div class="progress progress-md">
-                        <div class="progress-bar bg-primary w-5" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="<?= htmlspecialchars((string)$pRefused) ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= htmlspecialchars((string)$pRefused) ?>%;"></div>
                       </div>
                     </div>
                   </div>
@@ -229,15 +235,16 @@
             <div class="card-footer pt-0 p-3 d-flex align-items-center">
               <div class="w-60">
                 <p class="text-sm">
-                  More than <b>1,500,000</b> developers used Creative Tim's products and over <b>700,000</b> projects were created.
+                  Total: <b><?= htmlspecialchars((string)($exchange_stats['total'] ?? 0)) ?></b> demandes.
                 </p>
               </div>
               <div class="w-40 text-end">
-                <a class="btn btn-dark mb-0 text-end" href="javascript:;">View all reviews</a>
+                <a class="btn btn-dark mb-0 text-end" href="/tables">Voir détails</a>
               </div>
             </div>
           </div>
         </div>
+
       </div>
       <div class="row my-4">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-4">

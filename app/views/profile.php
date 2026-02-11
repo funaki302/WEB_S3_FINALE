@@ -49,8 +49,8 @@
     <!-- End Navbar -->
 
     <div class="container-fluid">
-      <div class="page-header min-height-250 border-radius-lg mt-4 d-flex flex-column justify-content-end">
-        <span class="mask bg-primary opacity-9"></span>
+      <div class="page-header min-height-250 border-radius-lg mt-4 d-flex flex-column justify-content-end" style="background-image: url('../assets/img/curved-images/curved14.jpg');">
+        <span class="mask bg-gradient-dark opacity-6"></span>
         <div class="w-100 position-relative p-3">
           <div class="d-flex justify-content-between align-items-end">
             <div class="d-flex align-items-center">
@@ -64,6 +64,17 @@
                 <p class="mb-0 text-white text-sm">
                   <?= $_SESSION['user_email'] ?> 
                 </p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap justify-content-end" style="min-width: 320px;">
+              <div class="card shadow-sm mb-0" style="min-width: 280px; min-height: 140px; background: linear-gradient(135deg, rgba(251,207,51,0.28), rgba(253,126,20,0.18)); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.35);">
+                <div class="card-body p-4" id="profile-exchange-received">
+                </div>
+              </div>
+              <div class="card shadow-sm mb-0" style="min-width: 280px; min-height: 140px; background: linear-gradient(135deg, rgba(17,17,17,0.40), rgba(203,12,159,0.16), rgba(131,102,252,0.14)); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.22);">
+                <div class="card-body p-4" id="profile-exchange-sent">
+                </div>
               </div>
             </div>
           </div>

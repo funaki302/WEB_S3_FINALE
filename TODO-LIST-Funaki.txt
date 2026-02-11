@@ -97,6 +97,4 @@ entrera dans la tables tk_objet_history
 
 [] on ajoute un lien : exchange dans listes_objects.php qui envoie vers la page exchange :
 [] dans la page exchange.php on aura a gauche l'object qu'on veut et au milieu un logo de trade et a droite on put defiler de haut en 
-  bas nos objects et selectionner celle que l'on veut echanger a celui que l'on veut  
-
-quand je fait le demande de exchange les echanges seront entrer dans tk_object_history seulement quand c'est accepter ; 
+  bas nos objects et selectionner celle que l'on veut echanger a celui que l'on 
