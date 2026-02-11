@@ -262,7 +262,6 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($controller->refuseExchangeJson());
 	});
 
-
 	// Qui recupere la liste des demandes en attente d'un user
 	$router->get('/api/getExchange/attente/@id', function($id) use ($app){
 		$exchangeController = new ExchangeController();
@@ -299,6 +298,4 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($controller->deleteImageJson());
 	});
 
-
-	
 }, [ SecurityHeadersMiddleware::class ]);
