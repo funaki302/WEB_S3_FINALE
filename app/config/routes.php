@@ -151,7 +151,10 @@ $router->group('', function(Router $router) use ($app) {
 			$app->redirect('/');
 			return;
 		}
-		$app->render('billing', []);
+		$exchangeModel = new \app\models\Exchange();
+		$sent = $exchangeModel->getSentByUser((int)$_SESSION['user_id']);
+		$partners = $exchangeModel->getPartnersCountByUser((int)$_SESSION['user_id'], 50);
+		$app->render('billing', ['sent_exchanges' => $sent, 'partners' => $partners]);
 	});
 
 	$router->get('/sign-in', function() use ($app) {

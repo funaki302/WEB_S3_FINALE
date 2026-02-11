@@ -47,6 +47,10 @@
     <?php include __DIR__."/inc/header.php"; ?>
 
     <div class="container-fluid py-4">
+      <?php
+        $sent_exchanges = isset($sent_exchanges) && is_array($sent_exchanges) ? $sent_exchanges : [];
+        $partners = isset($partners) && is_array($partners) ? $partners : [];
+      ?>
       <div class="row">
         <div class="col-lg-8">
           <div class="row">
@@ -217,47 +221,51 @@
         <div class="col-md-7 mt-4">
           <div class="card">
             <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">Billing Information</h6>
+              <h6 class="mb-0">Partenaires de transaction</h6>
             </div>
-            <div class="card-body pt-4 p-3">
-              <ul class="list-group">
-                <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">Oliver Liam</h6>
-                    <span class="mb-2 text-xs">Company Name: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                    <span class="mb-2 text-xs">Email Address: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                    <span class="text-xs">VAT Number: <span class="text-dark ms-sm-2 font-weight-bold">FRB1235476</span></span>
-                  </div>
-                  <div class="ms-auto text-end">
-                    <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                    <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex p-4 mb-2 mt-3 bg-gray-100 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">Lucas Harper</h6>
-                    <span class="mb-2 text-xs">Company Name: <span class="text-dark font-weight-bold ms-sm-2">Stone Tech Zone</span></span>
-                    <span class="mb-2 text-xs">Email Address: <span class="text-dark ms-sm-2 font-weight-bold">lucas@stone-tech.com</span></span>
-                    <span class="text-xs">VAT Number: <span class="text-dark ms-sm-2 font-weight-bold">FRB1235476</span></span>
-                  </div>
-                  <div class="ms-auto text-end">
-                    <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                    <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex p-4 mb-2 mt-3 bg-gray-100 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">Ethan James</h6>
-                    <span class="mb-2 text-xs">Company Name: <span class="text-dark font-weight-bold ms-sm-2">Fiber Notion</span></span>
-                    <span class="mb-2 text-xs">Email Address: <span class="text-dark ms-sm-2 font-weight-bold">ethan@fiber.com</span></span>
-                    <span class="text-xs">VAT Number: <span class="text-dark ms-sm-2 font-weight-bold">FRB1235476</span></span>
-                  </div>
-                  <div class="ms-auto text-end">
-                    <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                    <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
-                  </div>
-                </li>
-              </ul>
+            <div class="card-body pt-4 p-3" style="overflow: hidden;">
+              <div style="height: 480px; overflow: auto; padding-right: 4px;">
+                <ul class="list-group">
+                <?php if (empty($partners)) : ?>
+                  <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-sm">Aucun partenaire</h6>
+                      <span class="text-xs">Vous n'avez pas encore fait de transaction avec d'autres utilisateurs.</span>
+                    </div>
+                  </li>
+                <?php else : ?>
+                  <?php foreach ($partners as $p) : ?>
+                    <?php
+                      $partnerName = (string)($p['partner_name'] ?? 'Utilisateur');
+                      $partnerEmail = (string)($p['partner_email'] ?? '');
+                      $totalTx = (int)($p['total_transactions'] ?? 0);
+                      $acc = (int)($p['total_accepter'] ?? 0);
+                      $ref = (int)($p['total_refuser'] ?? 0);
+                      $att = (int)($p['total_attente'] ?? 0);
+                    ?>
+                    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-sm">
+                          <?= htmlspecialchars($partnerName) ?>
+                          <span class="badge bg-dark text-white ms-2"><?= htmlspecialchars((string)$totalTx) ?> transaction(s)</span>
+                        </h6>
+                        <?php if ($partnerEmail !== '') : ?>
+                          <span class="mb-1 text-xs">Email: <span class="text-dark font-weight-bold ms-sm-2"><?= htmlspecialchars($partnerEmail) ?></span></span>
+                        <?php endif; ?>
+                        <span class="text-xs">
+                          Accepté: <span class="text-success font-weight-bold ms-1"><?= htmlspecialchars((string)$acc) ?></span>
+                          <span class="ms-3">Refusé: <span class="text-danger font-weight-bold ms-1"><?= htmlspecialchars((string)$ref) ?></span></span>
+                          <span class="ms-3">En attente: <span class="text-secondary font-weight-bold ms-1"><?= htmlspecialchars((string)$att) ?></span></span>
+                        </span>
+                      </div>
+                      <div class="ms-auto text-end">
+                        <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;">Voir</a>
+                      </div>
+                    </li>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -266,93 +274,71 @@
             <div class="card-header pb-0 px-3">
               <div class="row">
                 <div class="col-md-6">
-                  <h6 class="mb-0">Your Transaction's</h6>
+                  <h6 class="mb-0">Vos transactions</h6>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-center">
                   <i class="far fa-calendar-alt me-2"></i>
-                  <small>23 - 30 March 2020</small>
+                  <small>Historique</small>
                 </div>
               </div>
             </div>
-            <div class="card-body pt-4 p-3">
-              <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Newest</h6>
-              <ul class="list-group">
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-down"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Netflix</h6>
-                      <span class="text-xs">27 March 2020, at 12:30 PM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-                    - $ 2,500
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Apple</h6>
-                      <span class="text-xs">27 March 2020, at 04:30 AM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                    + $ 2,000
-                  </div>
-                </li>
-              </ul>
-              <h6 class="text-uppercase text-body text-xs font-weight-bolder my-3">Yesterday</h6>
-              <ul class="list-group">
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Stripe</h6>
-                      <span class="text-xs">26 March 2020, at 13:45 PM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                    + $ 750
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">HubSpot</h6>
-                      <span class="text-xs">26 March 2020, at 12:30 PM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                    + $ 1,000
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Creative Tim</h6>
-                      <span class="text-xs">26 March 2020, at 08:30 AM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                    + $ 2,500
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <button class="btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-exclamation"></i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">Webflow</h6>
-                      <span class="text-xs">26 March 2020, at 05:00 AM</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-dark text-sm font-weight-bold">
-                    Pending
-                  </div>
-                </li>
-              </ul>
+            <div class="card-body pt-4 p-3" style="overflow: hidden;">
+              <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Mes demandes</h6>
+              <div style="max-height: 480px; overflow: auto; padding-right: 4px;">
+                <ul class="list-group">
+                  <?php if (empty($sent_exchanges)) : ?>
+                    <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm">Aucune transaction</h6>
+                        <span class="text-xs">Vous n'avez pas encore proposé d'échange.</span>
+                      </div>
+                    </li>
+                  <?php else : ?>
+                    <?php foreach ($sent_exchanges as $ex) : ?>
+                      <?php
+                        $status = strtolower((string)($ex['status'] ?? 'attente'));
+                        $objetTitle = (string)($ex['objet_requise_title'] ?? 'Objet');
+                        $prix = $ex['objet_requise_prix'] ?? null;
+
+                        $statusLabel = $status;
+                        if ($status === 'accepter') { $statusLabel = 'Accepté'; }
+                        elseif ($status === 'refuser') { $statusLabel = 'Refusé'; }
+                        elseif ($status === 'attente') { $statusLabel = 'En attente'; }
+
+                        $btnClass = 'btn-outline-secondary';
+                        $textClass = 'text-secondary';
+                        $iconClass = 'fas fa-hourglass-half';
+                        $amountClass = 'text-secondary';
+                        if ($status === 'accepter') {
+                          $btnClass = 'btn-outline-success';
+                          $textClass = 'text-success text-gradient';
+                          $amountClass = 'text-success text-gradient';
+                          $iconClass = 'fas fa-check';
+                        } elseif ($status === 'refuser') {
+                          $btnClass = 'btn-outline-danger';
+                          $textClass = 'text-danger text-gradient';
+                          $amountClass = 'text-danger text-gradient';
+                          $iconClass = 'fas fa-xmark';
+                        }
+                      ?>
+                      <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                        <div class="d-flex align-items-center">
+                          <button class="btn btn-icon-only btn-rounded <?= htmlspecialchars($btnClass) ?> mb-0 me-3 btn-sm d-flex align-items-center justify-content-center" type="button" aria-label="status">
+                            <i class="<?= htmlspecialchars($iconClass) ?>"></i>
+                          </button>
+                          <div class="d-flex flex-column">
+                            <h6 class="mb-1 text-dark text-sm"><?= htmlspecialchars($objetTitle) ?></h6>
+                            <span class="text-xs">Statut: <span class="<?= htmlspecialchars($textClass) ?>" style="font-weight:700;"><?= htmlspecialchars($statusLabel) ?></span></span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center <?= htmlspecialchars($amountClass) ?> text-sm font-weight-bold">
+                          <?= htmlspecialchars($prix !== null && $prix !== '' ? ((string)$prix . ' Ar') : '—') ?>
+                        </div>
+                      </li>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -362,73 +348,73 @@
   <?php include __DIR__."/inc/footer.php"; ?>
 
     </div>
-  </main>
-  <div class="fixed-plugin">
-    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-      <i class="fa fa-cog py-2"> </i>
-    </a>
-    <div class="card shadow-lg ">
-      <div class="card-header pb-0 pt-3 ">
-        <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-          <p>See our dashboard options.</p>
-        </div>
-        <div class="float-end mt-4">
-          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-            <i class="fa fa-close"></i>
-          </button>
-        </div>
-        <!-- End Toggle Button -->
-      </div>
-      <hr class="horizontal dark my-1">
-      <div class="card-body pt-sm-3 pt-0">
-        <!-- Sidebar Backgrounds -->
-        <div>
-          <h6 class="mb-0">Sidebar Colors</h6>
-        </div>
-        <a href="javascript:void(0)" class="switch-trigger background-color">
-          <div class="badge-colors my-2 text-start">
-            <span class="badge filter bg-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+    <div class="fixed-plugin">
+      <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+        <i class="fa fa-cog py-2"> </i>
+      </a>
+      <div class="card shadow-lg ">
+        <div class="card-header pb-0 pt-3 ">
+          <div class="float-start">
+            <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
+            <p>See our dashboard options.</p>
           </div>
-        </a>
-        <!-- Sidenav Type -->
-        <div class="mt-3">
-          <h6 class="mb-0">Sidenav Type</h6>
-          <p class="text-sm">Choose between 2 different sidenav types.</p>
+          <div class="float-end mt-4">
+            <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+              <i class="fa fa-close"></i>
+            </button>
+          </div>
+          <!-- End Toggle Button -->
         </div>
-        <div class="d-flex">
-          <button class="btn btn-primary w-100 px-3 mb-2 active" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
-          <button class="btn btn-primary w-100 px-3 mb-2 ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
-        </div>
-        <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
-        <!-- Navbar Fixed -->
-        <div class="mt-3">
-          <h6 class="mb-0">Navbar Fixed</h6>
-        </div>
-        <div class="form-check form-switch ps-0">
-          <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
-        </div>
-        <hr class="horizontal dark my-sm-4">
-        <a class="btn bg-gradient-dark w-100" href="#">Free Download</a>
-        <a class="btn btn-outline-dark w-100" href="#">View documentation</a>
-        <div class="w-100 text-center">
-          <a class="github-button" href="#" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/soft-ui-dashboard on GitHub">Star</a>
-          <h6 class="mt-3">Thank you for sharing!</h6>
-          <a href="#" class="btn btn-dark mb-0 me-2" target="_blank">
-            <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
+        <hr class="horizontal dark my-1">
+        <div class="card-body pt-sm-3 pt-0">
+          <!-- Sidebar Backgrounds -->
+          <div>
+            <h6 class="mb-0">Sidebar Colors</h6>
+          </div>
+          <a href="javascript:void(0)" class="switch-trigger background-color">
+            <div class="badge-colors my-2 text-start">
+              <span class="badge filter bg-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
+              <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
+              <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
+              <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
+              <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
+              <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+            </div>
           </a>
-          <a href="#" class="btn btn-dark mb-0 me-2" target="_blank">
-            <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-          </a>
+          <!-- Sidenav Type -->
+          <div class="mt-3">
+            <h6 class="mb-0">Sidenav Type</h6>
+            <p class="text-sm">Choose between 2 different sidenav types.</p>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-primary w-100 px-3 mb-2 active" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
+            <button class="btn btn-primary w-100 px-3 mb-2 ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+          </div>
+          <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+          <!-- Navbar Fixed -->
+          <div class="mt-3">
+            <h6 class="mb-0">Navbar Fixed</h6>
+          </div>
+          <div class="form-check form-switch ps-0">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
+          </div>
+          <hr class="horizontal dark my-sm-4">
+          <a class="btn bg-gradient-dark w-100" href="#">Free Download</a>
+          <a class="btn btn-outline-dark w-100" href="#">View documentation</a>
+          <div class="w-100 text-center">
+            <a class="github-button" href="#" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/soft-ui-dashboard on GitHub">Star</a>
+            <h6 class="mt-3">Thank you for sharing!</h6>
+            <a href="#" class="btn btn-dark mb-0 me-2" target="_blank">
+              <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
+            </a>
+            <a href="#" class="btn btn-dark mb-0 me-2" target="_blank">
+              <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
   <!--   Core JS Files   -->
   <script src="/assets/js/core/popper.min.js"></script>
   <script src="/assets/js/core/bootstrap.min.js"></script>
