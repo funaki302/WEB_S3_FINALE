@@ -128,4 +128,8 @@ class ExchangeController {
         $this->exchangeModel->updateStatus($idEchange, 'refuser');
         return ['ok' => true];
     }
+
+    public function EchangesAttente($id_user){
+        return $this->exchangeModel->EchangeAttente($id_user);
+    }
 }

@@ -1,7 +1,7 @@
 / 10 fevrier 2026 /
 PROFILE :
-[] afficher les informations du user connecter
-[] afficher la liste de tous ses objets{
+[ok] afficher les informations du user connecter (en tete)
+[ok] afficher la liste de tous ses objets{
 
   [ok] creer un script met_objet.js{
     [ok] fonction getObjet_User(id_user)
@@ -64,5 +64,32 @@ PROFILE :
     [ok] '/api/getUser/@id_user'
      - appel getById() de UserController
      - return le user en json
+  }
+}
+
+[] afficher la liste des demandes en attente{
+  [] ajouter fonctions dans profile.js{
+    [ok] mettre dans une constante la listeDemande obtenue
+    [ok] fonction loadDemande(listeDemande)
+     - affiche la liste des utilisateurs qui ont fais une demande 
+      d echange avec les objets du user connecter
+     - mettre un lien 'Voir plus' pour afficher les details
+    [] fonction voirPlus()
+     - affiche l'image de l'objet proposer et l'image de l'objet requise 
+     - afficher la date de la demande
+     - mettre un bouton 'Accepter' et 'Refuser'
+     - lorsqu on clique sur 'Accepter' on appel la fonction accepteDemande()
+     - lorsqu on clique sur 'Refuser' on appel la fonction refuserDemande()
+    [] fonction accepteDemande()
+     - fecth vers '/api/accepte/demande/@id_demande'
+     - return true / false
+    [] fonction refuserDemande()
+     - fecth vers '/api/refuser/demande/@id_demande'
+     - return true / false
+  }
+  [] script met_exchange.js{
+    [ok] fonction EchangesAttente(id_user)
+      - fetch vers (`/api/getExchange/attente/${id_user}`)
+      - return la liste en json
   }
 }

@@ -5,6 +5,7 @@ use app\controllers\MessageController;
 use app\controllers\ObjetController;
 use app\controllers\CategorieController;
 use app\controllers\ExchangeController;
+use app\controllers\ObjetImgController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -135,7 +136,7 @@ $router->group('', function(Router $router) use ($app) {
 		$data = json_decode($json_input, true);
 		
 		$result = $objetController->create($data);
-		$app->json(['success' => $result !== false, 'id_objet' => $result]);
+		$app->json($result);
 	});
 
 	// Recupere tous les categories
@@ -207,7 +208,6 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('met_object', []);
 	});
 
-
 	$router->get('/api/exchange/target', function() use ($app) {
 		if (!isset($_SESSION['user_id'])) {
 			$app->json(null);
@@ -260,6 +260,43 @@ $router->group('', function(Router $router) use ($app) {
 		}
 		$controller = new ExchangeController();
 		$app->json($controller->refuseExchangeJson());
+	});
+
+
+	// Qui recupere la liste des demandes en attente d'un user
+	$router->get('/api/getExchange/attente/@id', function($id) use ($app){
+		$exchangeController = new ExchangeController();
+		$result = $exchangeController->EchangesAttente($id);
+		$app->json($result);
+	});
+
+	// Routes pour les images d'objets
+	$router->post('/api/objet/upload-image', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['ok' => false, 'error' => 'Non connecté']);
+			return;
+		}
+		$controller = new ObjetImgController();
+		$app->json($controller->uploadImageJson());
+	});
+
+	$router->get('/api/objet/images', function() use ($app) {
+		$controller = new ObjetImgController();
+		$app->json($controller->getImagesByObjetJson());
+	});
+
+	$router->get('/api/objet/first-image', function() use ($app) {
+		$controller = new ObjetImgController();
+		$app->json($controller->getFirstImageByObjetJson());
+	});
+
+	$router->post('/api/objet/delete-image', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['ok' => false, 'error' => 'Non connecté']);
+			return;
+		}
+		$controller = new ObjetImgController();
+		$app->json($controller->deleteImageJson());
 	});
 
 
