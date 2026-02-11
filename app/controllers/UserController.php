@@ -140,7 +140,12 @@ class UserController
 
     public function getAll()
     {
-        return $this->userModel->getAll();
+        $args = func_get_args();
+        $options = [];
+        if (isset($args[0]) && is_array($args[0])) {
+            $options = $args[0];
+        }
+        return $this->userModel->getAll($options);
     }
 
     public function getById($id_user)

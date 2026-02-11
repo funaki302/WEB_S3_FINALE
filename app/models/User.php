@@ -28,27 +28,36 @@ class User {
     public function getAll($options = []) {
         $sql = "SELECT * FROM {$this->table}";
         $params = [];
+        $conditions = [];
         
         // Filtres
         if (!empty($options['role'])) {
-            $sql .= " WHERE role = ?";
+            $conditions[] = "role = ?";
             $params[] = $options['role'];
         }
         
         if (!empty($options['status'])) {
-            $sql .= (empty($params) ? " WHERE" : " AND") . " status = ?";
+            $conditions[] = "status = ?";
             $params[] = $options['status'];
+        }
+
+        if (!empty($options['exclude_id'])) {
+            $conditions[] = "id_user <> ?";
+            $params[] = (int)$options['exclude_id'];
         }
         
         // no department column in tk_user
         
         // Recherche
         if (!empty($options['search'])) {
-            $sql .= (empty($params) ? " WHERE" : " AND") . " 
-                (name LIKE ? OR email LIKE ?)";
+            $conditions[] = "(name LIKE ? OR email LIKE ?)";
             $searchTerm = '%' . $options['search'] . '%';
             $params[] = $searchTerm;
             $params[] = $searchTerm;
+        }
+
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
         }
         
         // Tri

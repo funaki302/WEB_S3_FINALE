@@ -73,6 +73,60 @@ class Exchange {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getReceivedStatsByUser($userId) {
+        $sql = "
+            SELECT *
+            FROM tk_v_exchange_received_stats
+            WHERE id_user = ?
+            LIMIT 1
+        ";
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int)$userId]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error in Exchange::getReceivedStatsByUser - ' . $e->getMessage());
+            $row = null;
+        }
+
+        return $row ?: [
+            'id_user' => (int)$userId,
+            'total_demandes' => 0,
+            'total_accepter' => 0,
+            'total_refuser' => 0,
+            'total_attente' => 0,
+            'total_non_reponse' => 0,
+        ];
+    }
+
+    public function getSentStatsByUser($userId) {
+        $sql = "
+            SELECT *
+            FROM tk_v_exchange_sent_stats
+            WHERE id_user = ?
+            LIMIT 1
+        ";
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int)$userId]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error in Exchange::getSentStatsByUser - ' . $e->getMessage());
+            $row = null;
+        }
+
+        return $row ?: [
+            'id_user' => (int)$userId,
+            'total_demandes' => 0,
+            'total_accepter' => 0,
+            'total_refuser' => 0,
+            'total_attente' => 0,
+            'total_non_reponse' => 0,
+        ];
+    }
+
     public function updateStatus($idEchange, $status) {
         $stmt = $this->db->prepare("UPDATE tk_echanges SET status = :status WHERE id_echange = :id");
         $stmt->bindValue(':status', $status, PDO::PARAM_STR);
@@ -136,14 +190,10 @@ class Exchange {
                 SET status = 'refuser'
                 WHERE status = 'attente'
                   AND id_echange <> :id
-                  AND (
-                    objet_proposer IN (:o1, :o2)
-                    OR objet_requise IN (:o1, :o2)
-                  )
+                  AND objet_requise = :orq
             ");
             $stmt->bindValue(':id', (int)$idEchange, PDO::PARAM_INT);
-            $stmt->bindValue(':o1', (int)$objetProposer, PDO::PARAM_INT);
-            $stmt->bindValue(':o2', (int)$objetRequise, PDO::PARAM_INT);
+            $stmt->bindValue(':orq', (int)$objetRequise, PDO::PARAM_INT);
             $stmt->execute();
 
             $stmt = $this->db->prepare("UPDATE tk_objets SET id_proprietaire = :owner WHERE id_objet = :obj");
@@ -192,4 +242,96 @@ class Exchange {
         $stmt->execute([$id_receveur]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+	public function getAllWithRequestedObjectDetails($status = null) {
+		$sql = "
+			SELECT
+				e.id_echange,
+				e.id_proposeur,
+				e.id_receveur,
+				e.objet_proposer,
+				e.objet_requise,
+				e.status,
+				e.date_proposition,
+				orq.title AS objet_requise_title,
+				orq.prix_estime AS objet_requise_prix,
+				(
+					SELECT oi.image
+					FROM tk_objet_img oi
+					WHERE oi.id_objet = orq.id_objet
+					ORDER BY oi.id_objet_img ASC
+					LIMIT 1
+				) AS objet_requise_image,
+				u1.name AS proposeur_name,
+				u2.name AS receveur_name
+			FROM tk_echanges e
+			LEFT JOIN tk_objets orq ON e.objet_requise = orq.id_objet
+			LEFT JOIN tk_user u1 ON e.id_proposeur = u1.id_user
+			LEFT JOIN tk_user u2 ON e.id_receveur = u2.id_user
+		";
+
+		$params = [];
+		if ($status !== null && $status !== '') {
+			$sql .= " WHERE e.status = ? ";
+			$params[] = $status;
+		}
+
+		$sql .= " ORDER BY e.date_proposition DESC ";
+
+		try {
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute($params);
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			error_log('Error in Exchange::getAllWithRequestedObjectDetails - ' . $e->getMessage());
+			return [];
+		}
+	}
+
+	public function getStatusStats() {
+		$sql = "
+			SELECT status, COUNT(*) AS total
+			FROM tk_echanges
+			GROUP BY status
+		";
+		try {
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			error_log('Error in Exchange::getStatusStats - ' . $e->getMessage());
+			$rows = [];
+		}
+
+		$counts = [
+			'attente' => 0,
+			'accepter' => 0,
+			'refuser' => 0,
+		];
+		foreach ($rows as $r) {
+			$st = strtolower((string)($r['status'] ?? ''));
+			$val = (int)($r['total'] ?? 0);
+			if (array_key_exists($st, $counts)) {
+				$counts[$st] = $val;
+			}
+		}
+
+		$total = array_sum($counts);
+		$percent = [
+			'attente' => 0,
+			'accepter' => 0,
+			'refuser' => 0,
+		];
+		if ($total > 0) {
+			foreach ($counts as $k => $v) {
+				$percent[$k] = (int)round(($v * 100) / $total);
+			}
+		}
+
+		return [
+			'total' => $total,
+			'counts' => $counts,
+			'percent' => $percent,
+		];
+	}
 }

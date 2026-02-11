@@ -71,15 +71,18 @@ $router->group('', function(Router $router) use ($app) {
 			return;
 		}
 		$userController = new UserController();
-		$categorieController = new CategorieController(Flight::db());
+		$categorieController = new CategorieController();
 		$objetController = new ObjetController();
+		$exchangeController = new ExchangeController();
+		$exchangeStats = $exchangeController->getStatusStats();
 		
 		$data = [
 			'count_users' => $userController->getCountUser(),
 			'count_admins' => $userController->getCountAdmin(),
 			'count_categories' => $categorieController->getCount(),
 			'count_objects' => $objetController->getCount(),
-			'count_exchanges' => $objetController->getCountExchanges()
+			'count_exchanges' => $objetController->getCountExchanges(),
+			'exchange_stats' => $exchangeStats,
 		];
 		
 		$app->render('dashboard', $data);
@@ -94,7 +97,53 @@ $router->group('', function(Router $router) use ($app) {
 			$app->redirect('/');
 			return;
 		}
-		$app->render('tables', []);
+		$userController = new UserController();
+		$role = Flight::request()->query['role'] ?? '';
+		$search = Flight::request()->query['search'] ?? '';
+		$options = [
+			'exclude_id' => (int)($_SESSION['user_id'] ?? 0),
+		];
+		if (is_string($role) && $role !== '') {
+			$options['role'] = $role;
+		}
+		if (is_string($search) && trim($search) !== '') {
+			$options['search'] = trim($search);
+		}
+		$users = $userController->getAll($options);
+		$exchangeController = new ExchangeController();
+		$exchanges = $exchangeController->getAllWithRequestedObjectDetails();
+		$app->render('tables', [
+			'users' => $users,
+			'filters' => [
+				'role' => $role,
+				'search' => $search,
+			],
+			'exchanges' => $exchanges,
+		]);
+	});
+
+	$router->get('/detailsprofill/@id', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+
+		$userController = new UserController();
+		$objetController = new ObjetController();
+		$exchangeController = new ExchangeController();
+
+		$userId = (int)$id;
+		$user = $userController->getById($userId);
+		$objets = $objetController->getObjet_User($userId);
+		$receivedStats = $exchangeController->getReceivedStatsByUser($userId);
+		$sentStats = $exchangeController->getSentStatsByUser($userId);
+
+		$app->render('Detailsprofill', [
+			'user_profile' => $user,
+			'objets' => $objets,
+			'received_stats' => $receivedStats,
+			'sent_stats' => $sentStats,
+		]);
 	});
 
 	$router->get('/billing', function() use ($app) {
@@ -151,6 +200,32 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/api/get/user/@id', function($id) use ($app){
 		$userController = new UserController();
 		$result = $userController->getById($id);
+		$app->json($result);
+	});
+
+	// Recupere tous les users
+	$router->get('/api/get/users', function() use ($app){
+		$userController = new UserController();
+		$role = Flight::request()->query['role'] ?? '';
+		$search = Flight::request()->query['search'] ?? '';
+		$options = [];
+		if (!empty($_SESSION['user_id'])) {
+			$options['exclude_id'] = (int)$_SESSION['user_id'];
+		}
+		if (is_string($role) && $role !== '') {
+			$options['role'] = $role;
+		}
+		if (is_string($search) && trim($search) !== '') {
+			$options['search'] = trim($search);
+		}
+		$result = $userController->getAll($options);
+		$app->json($result);
+	});
+
+	$router->get('/api/get/exchanges', function() use ($app){
+		$exchangeController = new ExchangeController();
+		$status = Flight::request()->query['status'] ?? null;
+		$result = $exchangeController->getAllWithRequestedObjectDetails($status);
 		$app->json($result);
 	});
 
@@ -243,6 +318,24 @@ $router->group('', function(Router $router) use ($app) {
 		}
 		$controller = new ExchangeController();
 		$app->json($controller->getReceivedExchangesJson());
+	});
+
+	$router->get('/api/exchange/stats/received', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(null);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->getReceivedStatsByUser((int)$_SESSION['user_id']));
+	});
+
+	$router->get('/api/exchange/stats/sent', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(null);
+			return;
+		}
+		$controller = new ExchangeController();
+		$app->json($controller->getSentStatsByUser((int)$_SESSION['user_id']));
 	});
 
 	$router->post('/api/exchange/accept', function() use ($app) {

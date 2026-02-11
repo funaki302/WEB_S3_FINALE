@@ -53,7 +53,35 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Authors table</h6>
+              <?php
+                $filters = $filters ?? [];
+                $searchVal = (string)($filters['search'] ?? '');
+                $roleVal = (string)($filters['role'] ?? '');
+              ?>
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                <div>
+                  <h6 class="mb-1">Tous Les Utilisateurs sur le plateforme</h6>
+                  <p class="text-sm text-secondary mb-0">
+                    <i class="fa fa-circle-info me-1"></i>
+                    Clique sur l’avatar ou le nom pour voir le profil.
+                  </p>
+                </div>
+                <form method="get" action="/tables" class="d-flex align-items-center gap-2" style="min-width: 320px;">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" id="users-search" name="search" placeholder="Rechercher un nom..." value="<?= htmlspecialchars($searchVal) ?>">
+                  </div>
+                  <select class="form-select form-select-sm" id="users-role" name="role" style="max-width: 150px;">
+                    <option value="" <?= $roleVal === '' ? 'selected' : '' ?>>Tous</option>
+                    <option value="user" <?= $roleVal === 'user' ? 'selected' : '' ?>>User</option>
+                    <option value="admin" <?= $roleVal === 'admin' ? 'selected' : '' ?>>Admin</option>
+                  </select>
+                  <button type="submit" class="btn btn-outline-primary btn-sm mb-0">
+                    <i class="fa fa-filter me-1"></i>
+                    Filtrer
+                  </button>
+                </form>
+              </div>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -67,175 +95,67 @@
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="users-tbody">
+                    <?php $users = $users ?? []; ?>
+                    <?php foreach ($users as $user): ?>
+                    <?php
+                      $idUser = (int)($user['id_user'] ?? 0);
+                      $name = (string)($user['name'] ?? '');
+                      $email = (string)($user['email'] ?? '');
+                      $role = (string)($user['role'] ?? 'user');
+                      $phone = (string)($user['phone'] ?? '');
+                      $status = strtolower((string)($user['status'] ?? 'inactive'));
+                      $joinDate = (string)($user['join_date'] ?? '');
+                      $badgeClass = $status === 'active' ? 'bg-gradient-success' : 'bg-gradient-secondary';
+                      $statusLabel = $status === 'active' ? 'Online' : 'Offline';
+                      $teamImages = [
+                        '../assets/img/team-2.jpg',
+                        '../assets/img/team-3.jpg',
+                        '../assets/img/team-4.jpg',
+                      ];
+                      $avatar = $teamImages[$idUser % count($teamImages)];
+                      $formattedJoinDate = '';
+                      if ($joinDate !== '') {
+                        $ts = strtotime($joinDate);
+                        $formattedJoinDate = $ts ? date('d/m/y', $ts) : $joinDate;
+                      }
+                    ?>
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="/assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
+                            <a href="/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-decoration-none">
+                              <img src="<?= htmlspecialchars($avatar) ?>" class="avatar avatar-sm me-3" alt="user<?= htmlspecialchars((string)$idUser) ?>">
+                            </a>
                           </div>
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">John Michael</h6>
-                            <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
+                            <h6 class="mb-0 text-sm">
+                              <a href="/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-dark text-decoration-none">
+                                <?= htmlspecialchars($name) ?>
+                              </a>
+                            </h6>
+                            <p class="text-xs text-secondary mb-0"><?= htmlspecialchars($email) ?></p>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Organization</p>
+                        <p class="text-xs font-weight-bold mb-0"><?= htmlspecialchars(ucfirst($role)) ?></p>
+                        <p class="text-xs text-secondary mb-0"><?= htmlspecialchars($phone !== '' ? $phone : '—') ?></p>
                       </td>
                       <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Online</span>
+                        <span class="badge badge-sm <?= htmlspecialchars($badgeClass) ?>"><?= htmlspecialchars($statusLabel) ?></span>
                       </td>
                       <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                        <span class="text-secondary text-xs font-weight-bold"><?= htmlspecialchars($formattedJoinDate !== '' ? $formattedJoinDate : '—') ?></span>
                       </td>
                       <td class="align-middle">
                         <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <i class="fa fa-pen me-1"></i>
                           Edit
                         </a>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="/assets/img/team-3.jpg" class="avatar avatar-sm me-3" alt="user2">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Alexa Liras</h6>
-                            <p class="text-xs text-secondary mb-0">alexa@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programator</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">11/01/19</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="/assets/img/team-4.jpg" class="avatar avatar-sm me-3" alt="user3">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Laurent Perrier</h6>
-                            <p class="text-xs text-secondary mb-0">laurent@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Executive</p>
-                        <p class="text-xs text-secondary mb-0">Projects</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Online</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">19/09/17</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="/assets/img/team-3.jpg" class="avatar avatar-sm me-3" alt="user4">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Michael Levi</h6>
-                            <p class="text-xs text-secondary mb-0">michael@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programator</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Online</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">24/12/08</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="/assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user5">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Richard Gran</h6>
-                            <p class="text-xs text-secondary mb-0">richard@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Executive</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">04/10/21</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="/assets/img/team-4.jpg" class="avatar avatar-sm me-3" alt="user6">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Miriam Eric</h6>
-                            <p class="text-xs text-secondary mb-0">miriam@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programtor</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">14/09/20</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
@@ -247,7 +167,7 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Projects table</h6>
+              <h6>Listes des demandes d'echange et leurs status</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -262,95 +182,65 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <?php $exchanges = $exchanges ?? []; ?>
+                    <?php foreach ($exchanges as $ex): ?>
+                    <?php
+                      $idExchange = (int)($ex['id_echange'] ?? 0);
+                      $status = strtolower((string)($ex['status'] ?? ''));
+                      $title = (string)($ex['objet_requise_title'] ?? '');
+                      $prix = $ex['objet_requise_prix'] ?? null;
+                      $image = (string)($ex['objet_requise_image'] ?? '');
+                      $imgUrl = $image !== '' ? ('/uploads/objets/' . ltrim($image, '/\\')) : '../assets/img/home-decor-1.jpg';
+                      $badgeClass = 'bg-gradient-secondary';
+                      $statusLabel = $status;
+                      $progressClass = 'bg-gradient-secondary';
+                      $progressPct = 20;
+                      if ($status === 'attente') {
+                        $badgeClass = 'bg-gradient-info';
+                        $statusLabel = 'attente';
+                        $progressClass = 'bg-gradient-info';
+                        $progressPct = 50;
+                      } elseif ($status === 'accepter') {
+                        $badgeClass = 'bg-gradient-success';
+                        $statusLabel = 'accepter';
+                        $progressClass = 'bg-gradient-success';
+                        $progressPct = 100;
+                      } elseif ($status === 'refuser') {
+                        $badgeClass = 'bg-gradient-danger';
+                        $statusLabel = 'refuser';
+                        $progressClass = 'bg-gradient-danger';
+                        $progressPct = 100;
+                      }
+                    ?>
                     <tr>
                       <td>
                         <div class="d-flex px-2">
                           <div>
-                            <img src="/assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                            <img src="<?= htmlspecialchars($imgUrl) ?>" class="avatar avatar-sm rounded-circle me-2" alt="exchange<?= htmlspecialchars((string)$idExchange) ?>">
                           </div>
                           <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Spotify</h6>
+                            <h6 class="mb-0 text-sm">
+                              <i class="fa fa-right-left me-1"></i>
+                              <?= htmlspecialchars($title !== '' ? $title : ('Demande #' . $idExchange)) ?>
+                            </h6>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p class="text-sm font-weight-bold mb-0">$2,500</p>
+                        <p class="text-sm font-weight-bold mb-0"><?= htmlspecialchars($prix !== null && $prix !== '' ? ($prix . ' Ar') : '—') ?></p>
                       </td>
                       <td>
-                        <span class="text-xs font-weight-bold">working</span>
+                        <span class="badge badge-sm <?= htmlspecialchars($badgeClass) ?>">
+                          <i class="fa fa-circle-dot me-1"></i>
+                          <?= htmlspecialchars($statusLabel) ?>
+                        </span>
                       </td>
                       <td class="align-middle text-center">
                         <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">60%</span>
+                          <span class="me-2 text-xs font-weight-bold"><?= htmlspecialchars((string)$progressPct) ?>%</span>
                           <div>
                             <div class="progress">
-                              <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0">
-                          <i class="fa fa-ellipsis-v text-xs"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2">
-                          <div>
-                            <img src="/assets/img/small-logos/logo-invision.svg" class="avatar avatar-sm rounded-circle me-2" alt="invision">
-                          </div>
-                          <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Invision</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">$5,000</p>
-                      </td>
-                      <td>
-                        <span class="text-xs font-weight-bold">done</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">100%</span>
-                          <div>
-                            <div class="progress">
-                              <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                          <i class="fa fa-ellipsis-v text-xs"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2">
-                          <div>
-                            <img src="/assets/img/small-logos/logo-jira.svg" class="avatar avatar-sm rounded-circle me-2" alt="jira">
-                          </div>
-                          <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Jira</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">$3,400</p>
-                      </td>
-                      <td>
-                        <span class="text-xs font-weight-bold">canceled</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">30%</span>
-                          <div>
-                            <div class="progress">
-                              <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" style="width: 30%;"></div>
+                              <div class="progress-bar <?= htmlspecialchars($progressClass) ?>" role="progressbar" aria-valuenow="<?= htmlspecialchars((string)$progressPct) ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= htmlspecialchars((string)$progressPct) ?>%;"></div>
                             </div>
                           </div>
                         </div>
@@ -361,105 +251,7 @@
                         </button>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2">
-                          <div>
-                            <img src="/assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm rounded-circle me-2" alt="slack">
-                          </div>
-                          <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Slack</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">$1,000</p>
-                      </td>
-                      <td>
-                        <span class="text-xs font-weight-bold">canceled</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">0%</span>
-                          <div>
-                            <div class="progress">
-                              <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width: 0%;"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                          <i class="fa fa-ellipsis-v text-xs"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2">
-                          <div>
-                            <img src="/assets/img/small-logos/logo-webdev.svg" class="avatar avatar-sm rounded-circle me-2" alt="webdev">
-                          </div>
-                          <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Webdev</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">$14,000</p>
-                      </td>
-                      <td>
-                        <span class="text-xs font-weight-bold">working</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">80%</span>
-                          <div>
-                            <div class="progress">
-                              <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="80" style="width: 80%;"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                          <i class="fa fa-ellipsis-v text-xs"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2">
-                          <div>
-                            <img src="/assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm rounded-circle me-2" alt="xd">
-                          </div>
-                          <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Adobe XD</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">$2,300</p>
-                      </td>
-                      <td>
-                        <span class="text-xs font-weight-bold">done</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">100%</span>
-                          <div>
-                            <div class="progress">
-                              <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                          <i class="fa fa-ellipsis-v text-xs"></i>
-                        </button>
-                      </td>
-                    </tr>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
@@ -556,9 +348,10 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
 
-  
+  <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="/traitement-js/users_table_search.js"></script>
+
 </body>
 
 </html>

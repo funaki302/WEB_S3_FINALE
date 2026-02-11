@@ -11,6 +11,62 @@ function getCurrentUserId() {
     return Number.isFinite(id) ? id : 0;
 }
 
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function calcRate(num, den) {
+  const d = parseInt(den || 0, 10);
+  if (!d) return 0;
+  return Math.round((parseInt(num || 0, 10) * 100) / d);
+}
+
+function renderExchangeStats(el, title, stats) {
+  if (!el) return;
+
+  const total = parseInt(stats?.total_demandes || 0, 10);
+  const acc = parseInt(stats?.total_accepter || 0, 10);
+  const ref = parseInt(stats?.total_refuser || 0, 10);
+  const non = parseInt(stats?.total_non_reponse || 0, 10);
+
+  const accRate = calcRate(acc, total);
+  const refRate = calcRate(ref, total);
+  const nonRate = calcRate(non, total);
+
+  el.innerHTML = `
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <div class="text-sm mb-1" style="color: rgba(255,255,255,0.92); font-weight: 600;"><i class="fa fa-right-left me-1"></i>${escapeHtml(title)}</div>
+        <div class="h4 mb-0" style="color: #fff; font-weight: 800;">${escapeHtml(String(total))}</div>
+        <div class="text-xs" style="color: rgba(255,255,255,0.82);">Total demandes</div>
+      </div>
+      <div class="text-end">
+        <div class="d-flex gap-2 justify-content-end flex-wrap">
+          <span class="badge" style="background: rgba(45,206,137,0.15); color:#2dce89; font-weight:700;">
+            A ${escapeHtml(String(accRate))}%
+          </span>
+          <span class="badge" style="background: rgba(245,54,92,0.15); color:#f5365c; font-weight:700;">
+            R ${escapeHtml(String(refRate))}%
+          </span>
+          <span class="badge" style="background: rgba(17,205,239,0.15); color:#11cdef; font-weight:700;">
+            N ${escapeHtml(String(nonRate))}%
+          </span>
+        </div>
+        <div class="text-xs mt-2" style="color: rgba(255,255,255,0.88);">
+          <span class="me-2"><i class="fa fa-check text-success me-1"></i>${escapeHtml(String(acc))}</span>
+          <span class="me-2"><i class="fa fa-xmark text-danger me-1"></i>${escapeHtml(String(ref))}</span>
+          <span><i class="fa fa-clock text-info me-1"></i>${escapeHtml(String(non))}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 window.addEventListener('load', async function () {
     try {
       const id_user = getCurrentUserId();
@@ -29,6 +85,19 @@ window.addEventListener('load', async function () {
       // Liste de ses objets
       const liste = await getObjet_User(id_user);
       await loadListObjet(liste);
+
+      // Stats échanges
+      try {
+        const receivedRes = await fetch('/api/exchange/stats/received', { headers: { 'Accept': 'application/json' } });
+        const sentRes = await fetch('/api/exchange/stats/sent', { headers: { 'Accept': 'application/json' } });
+        const received = receivedRes.ok ? await receivedRes.json() : null;
+        const sent = sentRes.ok ? await sentRes.json() : null;
+
+        renderExchangeStats(document.querySelector('#profile-exchange-received'), 'Reçues', received);
+        renderExchangeStats(document.querySelector('#profile-exchange-sent'), 'Envoyées', sent);
+      } catch (e) {
+        // ignore
+      }
 
     } catch (e) {
       this.alert('Erreur chargement de la page :'+ (e && e.message ? e.message : String(e)));
@@ -57,13 +126,16 @@ async function loadListObjet(liste) {
     if (Array.isArray(liste) && liste.length > 0) {
       liste.forEach((objet, index) => {
         
+        const rawImg = objet && (objet.image || objet.img || objet.photo) ? String(objet.image || objet.img || objet.photo) : '';
+        const imgUrl = rawImg.trim() !== '' ? ('/uploads/objets/' + rawImg.replace(/^[/\\]+/, '')) : '../assets/img/home-decor-1.jpg';
+        
         const col = document.createElement('div');
         col.classList.add('col-xl-3', 'col-md-6', 'mb-xl-0', 'mb-4');
         col.innerHTML = `
           <div class="card card-blog card-plain">
             <div class="position-relative">
               <a class="d-block">
-                <img src="" alt="" class="img-fluid shadow border-radius-md">
+                <img src="${escapeHtml(imgUrl)}" alt="" class="img-fluid shadow border-radius-md" style="width:100%; height:180px; object-fit:cover;">
               </a>
             </div>
             <div class="card-body px-1 pb-0">

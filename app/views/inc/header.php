@@ -1,3 +1,23 @@
+<?php
+
+use app\models\User;
+
+$connectedUserName = null;
+$connectedUserRole = null;
+
+if (!empty($_SESSION['user_id'])) {
+    $userModel = new User();
+    $connectedUser = $userModel->getById((int) $_SESSION['user_id']);
+    if (!empty($connectedUser)) {
+        $connectedUserName = $connectedUser['name'] ?? null;
+        $connectedUserRole = $connectedUser['role'] ?? null;
+    }
+}
+
+$isAdmin = ($connectedUserRole === 'admin');
+$onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
+?>
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
     navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
@@ -9,6 +29,13 @@
             <h6 class="font-weight-bolder mb-0"><?= $page ?></h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+            <?php if (!empty($connectedUserName)) : ?>
+                <div class="d-flex align-items-center mx-auto">
+                    <span class="d-inline-block me-2 <?= $onlineDotClass ?>" style="width: 8px; height: 8px; border-radius: 50%;"></span>
+                    <span class="text-sm text-dark font-weight-bold mb-0"><?= htmlspecialchars($connectedUserName) ?></span>
+                    <span class="text-xs text-secondary ms-2">En ligne</span>
+                </div>
+            <?php endif; ?>
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group">
                    <!--  <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span> -->
