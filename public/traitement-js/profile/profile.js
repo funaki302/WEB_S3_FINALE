@@ -516,8 +516,9 @@ function voirPlus(dm) {
       //alert('Échange accepté avec succès!');
       // Recharger la liste des demandes
       const id_user = getCurrentUserId();
-      const listeDemande = await EchangesAttente(id_user);
+      const listeObjet = await getObjet_User(id_user);
       loadListDemande(listeDemande);
+      loadListObjet(listeObjet);
     }
   });
   btn_refus.addEventListener('click',async function (e) {
@@ -528,7 +529,9 @@ function voirPlus(dm) {
       // Recharger la liste des demandes
       const id_user = getCurrentUserId();
       const listeDemande = await EchangesAttente(id_user);
+      const listeObjet = await getObjet_User(id_user);
       loadListDemande(listeDemande);
+      loadListObjet(listeObjet);
     }
   });
   
