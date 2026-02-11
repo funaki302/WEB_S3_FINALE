@@ -6,6 +6,7 @@ use app\controllers\ObjetController;
 use app\controllers\CategorieController;
 use app\controllers\ExchangeController;
 use app\controllers\ObjetImgController;
+use app\controllers\ObjetHistoryController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -327,6 +328,17 @@ $router->group('', function(Router $router) use ($app) {
 		}
 		$objetImgController = new ObjetImgController();
 		$result = $objetImgController->getByObjet($id);
+		$app->json($result);
+	});
+
+	// Recuperer les historiques d'un objet
+	$router->get('/api/get/objethistory/@id', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$objetHistoryController = new ObjetHistoryController();
+		$result = $objetHistoryController->getObjetHistory($id);
 		$app->json($result);
 	});
 

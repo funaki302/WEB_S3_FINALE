@@ -24,10 +24,12 @@ window.addEventListener('load', async function () {
 
       const donnees = await getObjetById(id_objet);
       const images = await getAllImg(id_objet);
+      const historiques = await getAllHistory(id_objet);
       loadObjet(donnees);
       loadProprio(donnees);
       loadImages(images);
       loadDescription(donnees);
+      loadHistory(historiques);
     } catch (e) {
       this.alert('Erreur chargement de la page :'+ (e && e.message ? e.message : String(e)));
     }
@@ -91,7 +93,7 @@ function loadImages(images) {
         imageElement.alt = "Image de l'objet";
         
         // ← Modification principale ici
-        imageElement.style.maxHeight = '320px';       // ← 320px au lieu de 400px (ou mets 280px si tu veux plus petit)
+        imageElement.style.maxHeight = '280px';       // ← 280px pour s'adapter à la hauteur réduite
         imageElement.style.objectFit = 'cover';
         imageElement.style.borderRadius = '0.75rem';  // un peu plus doux que juste 'rounded'
 
@@ -188,3 +190,111 @@ function loadDescription(data) {
     container.appendChild(div_desc);
 }
 
+function loadHistory(historiques) {
+  const div_historique = document.querySelector('#info-historique');
+  // Vider son contenue
+  div_historique.innerHTML = "";
+
+  // Ajouter le style CSS pour les animations
+  if (!document.querySelector('#demande-styles')) {
+    const style = document.createElement('style');
+    style.id = 'demande-styles';
+    style.textContent = `
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .demande-item {
+        border-left: 3px solid #e3f2fd !important;
+        background: #f8f9fa !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        padding: 12px 16px !important;
+        margin-bottom: 12px !important;
+      }
+      
+      .demande-item:hover {
+        border-left: 3px solid #2dce89 !important;
+        background: #ffffff !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        transform: translateX(5px);
+      }
+      
+      .demande-item.expanded {
+        border-left: 3px solid #fd7e14 !important;
+        background: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+      }
+      
+      .detail-demande {
+        background: #ffffff !important;
+        border: 2px solid #fd7e14 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 20px rgba(253, 126, 20, 0.15) !important;
+        animation: slideDown 0.3s ease-out !important;
+      }
+      
+      .list-group-scrollable {
+        max-height: 100% !important;
+        overflow-y: auto !important;
+        padding-right: 10px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar {
+        width: 6px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-track {
+        background: #f1f1f1 !important;
+        border-radius: 3px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-thumb {
+        background: #fd7e14 !important;
+        border-radius: 3px !important;
+      }
+      
+      .list-group-scrollable::-webkit-scrollbar-thumb:hover {
+        background: #e67100 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  if (Array.isArray(historiques) && historiques.length > 0) {
+    const ul = document.createElement('ul');
+    ul.classList.add('list-group', 'list-group-scrollable');
+
+    historiques.forEach(histo => {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item', 'border-0', 'd-flex', 'align-items-center', 'px-0', 'mb-2');
+      li.innerHTML = `
+        <div class="avatar me-3">
+          <img src="/assets/img/avatar.svg" alt="" class="border-radius-lg shadow">
+        </div>
+        <div class="d-flex align-items-start flex-column justify-content-center">
+          <h6 class="mb-0 text-sm">${histo.proprietaire_nom}</h6>
+          <p class="mb-0 text-xs">Etait son proprietaire a la date <strong>${histo.date_echange}</strong> </p>
+        </div>
+      `;
+      
+      ul.appendChild(li);
+    
+    });
+    div_historique.appendChild(ul);
+  } else{
+    div_historique.innerHTML = `
+      <p class="small">Aucune historique trouvee</p>
+    `;
+  }
+}

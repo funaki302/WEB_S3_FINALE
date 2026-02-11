@@ -50,24 +50,32 @@
 
     <div class="container-fluid py-4">
         <div class="row">
-          <div class="col-lg-8">
-            <div class="card mb-4">
+          <div class="col-lg-6">
+            <div class="card mb-4" style="height: 90vh;">
                 <!-- Information de l'objet -->
               <div class="card-header pb-0" id="info-objet">
               </div>
-              <!-- Image de l'objet -->
-              <div class="card-body" id="info-img">
+              <!-- Image et description de l'objet -->
+              <div class="card-body" id="info-img" style="height: calc(100% - 60px); overflow-y: auto;">
               </div>
             </div>
           </div>
           
-          <div class="col-lg-4">
-            <div class="card mb-4">
+          <div class="col-lg-6">
+            <!-- Information du propriétaire -->
+            <div class="card mb-4" style="height: 45vh;">
               <div class="card-header pb-0">
-                <h6 class="text-uppercase text-secondary text-sm font-weight-bolder">Propriétaire</h6>
+                <h6 class="text-uppercase text-secondary text-sm font-weight-bolder">Propriétaire Actuel</h6>
               </div>
-              <!-- Information du propriétaire -->
-              <div class="card-body" id="info-proprio">
+              <div class="card-body" id="info-proprio" style="height: calc(100% - 60px); overflow-y: auto;">
+              </div>
+            </div>
+            <!-- Historique de l'objet -->
+            <div class="card mb-4" style="height: 45vh;">
+              <div class="card-header pb-0">
+                <h6 class="text-uppercase text-secondary text-sm font-weight-bolder">Historique</h6>
+              </div>
+              <div class="card-body" id="info-historique" style="height: calc(100% - 60px); overflow-y: auto;">
               </div>
             </div>
           </div>
@@ -96,7 +104,7 @@
   <!-- Mes script -->
   <script src="/traitement-js/methodes/met_objetImg.js"></script>
   <script src="/traitement-js/methodes/met_objet.js"></script>
-
+  <script src="/traitement-js/methodes/met_objetHistory.js"></script>
 
   <script src="/traitement-js/ficheObjet/ficheObjet.js"></script>
 
