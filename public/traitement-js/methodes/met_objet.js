@@ -183,7 +183,7 @@ async function add(data) {
     return true;
 }
 
-async function delet(id_objet) {
+async function deleteObjet(id_objet) {
     const objet = await fetch(`/api/delete/objet/${id_objet}`);
     if (!objet.ok) {
         alert("Echec de delete objet "+id_objet); 

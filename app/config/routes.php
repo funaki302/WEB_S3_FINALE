@@ -452,5 +452,14 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	// Supprimer un objet /api/delete/objet/@id
+	$router->post('/api/delete/objet/@id', function($id) use ($app) {		
+		$objetController = new ObjetController();
+		
+		$result = $objetController->deleteObjet($id);
+		
+		$app->json($result);
+	});
+
 
 }, [ SecurityHeadersMiddleware::class ]);

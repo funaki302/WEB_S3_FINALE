@@ -134,23 +134,26 @@ function loadObjet(data){
                 <button class="btn btn-sm btn-outline-primary" title="Modifier">
                     <i class="fas fa-edit"></i> Modifier
                 </button>
-                <button class="btn btn-sm btn-outline-danger" title="Supprimer">
-                    <i class="fas fa-trash"></i> Supprimer
-                </button>
+                
             </div>
             ` : '<small class="text-muted">Vous n’êtes pas propriétaire</small>'}
         </div>
     `;
     const btn_modofier = div_objet.querySelector('.btn-outline-primary');
-    const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
+    /* 
+    <button class="btn btn-sm btn-outline-danger" title="Supprimer">
+        <i class="fas fa-trash"></i> Supprimer
+    </button>
+    */
+    //const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
     btn_modofier.addEventListener('click',async function (e) {
       e.preventDefault();
       await editObjet(data.id_objet);
     });
-    btn_supprimer.addEventListener('click', function (e) {
+    /* btn_supprimer.addEventListener('click',async function (e) {
       e.preventDefault();
-      deleteObjet(data.id_objet);
-    });
+      await deleteObjet(data.id_objet);
+    }); */
 }
 
 function loadProprio(data){
@@ -276,30 +279,12 @@ async function editObjet(idObjet) {
   loadForm(data);
 }
 
-function deleteObjet(idObjet) {
-  alert("Supprimer Objet "+idObjet);
-    /* if (confirm('Êtes-vous sûr de vouloir supprimer cet objet ? Cette action est irréversible.')) {
-        // Appel API pour supprimer l'objet
-        fetch(`/api/delete/objet/${idObjet}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.ok) {
-                alert('Objet supprimé avec succès');
-                window.location.href = '/'; // Rediriger vers la page d'accueil
-            } else {
-                alert('Erreur lors de la suppression: ' + (data.error || 'Erreur inconnue'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Erreur lors de la suppression');
-        });
-    } */
+async function deleteObjet(idObjet) {
+    try {
+        await deleteObjet(idObjet);
+    }catch(error) {
+        alert('Erreur lors de la suppression');
+    }
 }
 
 async function loadForm(data) {

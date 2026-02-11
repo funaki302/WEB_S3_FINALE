@@ -80,4 +80,8 @@ class ObjetController {
     public function updateObjet($id, $data){
         return $this->objetModel->update($id, $data);
     }
+
+    public function deleteObjet($id){
+        return $this->objetModel->delete($id);
+    }
 }
