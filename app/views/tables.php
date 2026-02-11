@@ -124,9 +124,11 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
+
                             <a href="/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-decoration-none">
                               <img src="<?= htmlspecialchars($avatar) ?>" class="avatar avatar-sm me-3" alt="user<?= htmlspecialchars((string)$idUser) ?>">
                             </a>
+
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">
@@ -150,7 +152,6 @@
                       </td>
                       <td class="align-middle">
                         <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          <i class="fa fa-pen me-1"></i>
                           Edit
                         </a>
                       </td>
@@ -246,7 +247,7 @@
                         </div>
                       </td>
                       <td class="align-middle">
-                        <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-link text-secondary mb-0">
                           <i class="fa fa-ellipsis-v text-xs"></i>
                         </button>
                       </td>

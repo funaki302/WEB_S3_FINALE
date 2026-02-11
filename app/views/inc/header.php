@@ -18,6 +18,287 @@ $isAdmin = ($connectedUserRole === 'admin');
 $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
 ?>
 
+<style>
+    html.dark-mode {
+        color-scheme: dark;
+    }
+    html.dark-mode body {
+        background-color: #0b0f17 !important;
+        color: rgba(255, 255, 255, 0.88) !important;
+    }
+    body.dark-mode {
+        background-color: #0b0f17 !important;
+        color: rgba(255, 255, 255, 0.88) !important;
+    }
+    html.dark-mode .bg-gray-100 {
+        background-color: #0b0f17 !important;
+    }
+    body.dark-mode .bg-gray-100 {
+        background-color: #0b0f17 !important;
+    }
+    html.dark-mode .bg-white,
+    html.dark-mode .bg-light {
+        background-color: rgba(17, 24, 39, 0.80) !important;
+    }
+    body.dark-mode .bg-white,
+    body.dark-mode .bg-light {
+        background-color: rgba(17, 24, 39, 0.80) !important;
+    }
+    html.dark-mode .navbar-main {
+        background: rgba(17, 24, 39, 0.60) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .navbar-main {
+        background: rgba(17, 24, 39, 0.60) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    html.dark-mode .navbar-main .text-dark,
+    html.dark-mode .navbar-main .text-body {
+        color: rgba(255, 255, 255, 0.86) !important;
+    }
+    body.dark-mode .navbar-main .text-dark,
+    body.dark-mode .navbar-main .text-body {
+        color: rgba(255, 255, 255, 0.86) !important;
+    }
+
+    body.dark-mode .breadcrumb .breadcrumb-item,
+    body.dark-mode .breadcrumb .breadcrumb-item a,
+    body.dark-mode .breadcrumb .breadcrumb-item.active {
+        color: rgba(255, 255, 255, 0.72) !important;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode h4,
+    body.dark-mode h5,
+    body.dark-mode h6 {
+        color: rgba(255, 255, 255, 0.92) !important;
+    }
+    body.dark-mode .text-dark {
+        color: rgba(255, 255, 255, 0.88) !important;
+    }
+    body.dark-mode .text-secondary {
+        color: rgba(255, 255, 255, 0.60) !important;
+    }
+    body.dark-mode a {
+        color: rgba(255, 255, 255, 0.86);
+    }
+    body.dark-mode a:hover {
+        color: rgba(255, 255, 255, 0.96);
+    }
+    body.dark-mode .border,
+    body.dark-mode .border-radius-lg,
+    body.dark-mode .border-radius-md,
+    body.dark-mode .border-radius-xl {
+        border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+
+    body.dark-mode .sidenav,
+    body.dark-mode .navbar-vertical {
+        background: rgba(17, 24, 39, 0.90) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .navbar-vertical .nav-link,
+    body.dark-mode .navbar-vertical .nav-link i {
+        color: rgba(255, 255, 255, 0.72) !important;
+    }
+    body.dark-mode .navbar-vertical .nav-link.active,
+    body.dark-mode .navbar-vertical .nav-link.active i {
+        color: rgba(255, 255, 255, 0.92) !important;
+    }
+    body.dark-mode .navbar-vertical .nav-link.active {
+        background: rgba(255, 255, 255, 0.06) !important;
+    }
+
+    body.dark-mode .navbar-vertical .icon,
+    body.dark-mode .navbar-vertical .nav-link i,
+    body.dark-mode .navbar-vertical .nav-link .ni,
+    body.dark-mode .navbar-vertical .nav-link .fa {
+        color: rgba(255, 255, 255, 0.82) !important;
+        opacity: 0.95;
+    }
+    body.dark-mode .navbar-vertical .nav-link svg,
+    body.dark-mode .navbar-vertical .nav-link svg * {
+        fill: rgba(255, 255, 255, 0.82) !important;
+        stroke: rgba(255, 255, 255, 0.82) !important;
+    }
+    body.dark-mode .navbar-vertical .nav-link img {
+        filter: brightness(0) invert(1);
+        opacity: 0.92;
+    }
+
+    body.dark-mode .navbar-vertical .icon {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .navbar-vertical .navbar-brand span {
+        color: rgba(255, 255, 255, 0.86) !important;
+    }
+    body.dark-mode .navbar-vertical .navbar-brand-img {
+        filter: brightness(0) invert(1);
+        opacity: 0.95;
+    }
+
+    body.dark-mode .card {
+        background: rgba(17, 24, 39, 0.75) !important;
+        color: rgba(255, 255, 255, 0.88) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .card-header,
+    body.dark-mode .card-footer {
+        background: transparent !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    body.dark-mode .table {
+        color: rgba(255, 255, 255, 0.84) !important;
+    }
+    body.dark-mode .table thead th {
+        color: rgba(255, 255, 255, 0.60) !important;
+    }
+    body.dark-mode .table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+    body.dark-mode .table td,
+    body.dark-mode .table th {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    body.dark-mode .form-control,
+    body.dark-mode .form-select,
+    body.dark-mode .input-group-text {
+        background-color: rgba(15, 23, 42, 0.70) !important;
+        border-color: rgba(255, 255, 255, 0.10) !important;
+        color: rgba(255, 255, 255, 0.88) !important;
+    }
+    body.dark-mode .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.45) !important;
+    }
+    body.dark-mode .dropdown-menu {
+        background: rgba(17, 24, 39, 0.95) !important;
+        border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .dropdown-divider {
+        border-top-color: rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .dropdown-item {
+        color: rgba(255, 255, 255, 0.82) !important;
+    }
+
+    body.dark-mode .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+    }
+    body.dark-mode .btn.btn-outline-primary {
+        border-color: rgba(255, 255, 255, 0.22) !important;
+        color: rgba(255, 255, 255, 0.84) !important;
+    }
+
+    body.dark-mode .btn.btn-outline-primary:hover {
+        border-color: rgba(255, 255, 255, 0.30) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+    body.dark-mode .nav-link.text-body,
+    body.dark-mode .nav-link.text-body i {
+        color: rgba(255, 255, 255, 0.82) !important;
+    }
+    body.dark-mode .shadow,
+    body.dark-mode .shadow-sm,
+    body.dark-mode .shadow-lg {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+    }
+    body.dark-mode .progress {
+        background: rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .list-group-item {
+        background: rgba(17, 24, 39, 0.70) !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        color: rgba(255, 255, 255, 0.82) !important;
+    }
+    body.dark-mode .fixed-plugin .card {
+        background: rgba(17, 24, 39, 0.92) !important;
+    }
+    body.dark-mode .page-header .mask {
+        opacity: 0.75 !important;
+    }
+
+    body.dark-mode .modal-content {
+        background: rgba(17, 24, 39, 0.96) !important;
+        color: rgba(255, 255, 255, 0.90) !important;
+        border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .modal-header,
+    body.dark-mode .modal-footer {
+        border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .modal-title {
+        color: rgba(255, 255, 255, 0.92) !important;
+    }
+    body.dark-mode .modal .text-dark {
+        color: rgba(255, 255, 255, 0.88) !important;
+    }
+    body.dark-mode .modal .text-secondary {
+        color: rgba(255, 255, 255, 0.52) !important;
+    }
+    body.dark-mode .modal hr,
+    body.dark-mode .modal .horizontal {
+        border-color: rgba(255, 255, 255, 0.10) !important;
+        opacity: 1;
+    }
+    body.dark-mode .modal .btn-close {
+        filter: invert(1);
+        opacity: 0.85;
+    }
+    body.dark-mode .modal .btn-close:hover {
+        opacity: 1;
+    }
+
+    body.dark-mode .swal2-popup {
+        background: rgba(17, 24, 39, 0.96) !important;
+        color: rgba(255, 255, 255, 0.90) !important;
+        border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    }
+    body.dark-mode .swal2-title {
+        color: rgba(255, 255, 255, 0.92) !important;
+    }
+    body.dark-mode .swal2-html-container {
+        color: rgba(255, 255, 255, 0.82) !important;
+    }
+    body.dark-mode .swal2-icon {
+        filter: brightness(1.05);
+    }
+
+    #dark-mode-toggle .theme-icon {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        vertical-align: -2px;
+        filter: none;
+        opacity: 0.92;
+    }
+    body.dark-mode #dark-mode-toggle .theme-icon {
+        filter: invert(1) drop-shadow(0 1px 1px rgba(0,0,0,0.35));
+        opacity: 0.95;
+    }
+</style>
+
+<script>
+    (function () {
+        try {
+            var stored = localStorage.getItem('theme');
+            if (stored === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+                if (document.body) {
+                    document.body.classList.add('dark-mode');
+                }
+            }
+        } catch (e) {
+            // ignore
+        }
+    })();
+</script>
+<br>
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
     navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
@@ -48,21 +329,19 @@ $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
                         href="#">Online Builder</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
+                    <button type="button" id="dark-mode-toggle" class="btn btn-outline-primary btn-sm mb-0 me-3" aria-label="Toggle dark mode">
+                        <img src="/assets/icons/theme-icon/moon-stars-fill.svg" alt="" class="theme-icon me-1" id="dark-mode-icon" />
+                        <span class="d-sm-inline d-none" id="dark-mode-label">Dark</span>
+                    </button>
+                </li>
+
+                <li class="nav-item d-flex align-items-center">
                     <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/objets">Objets</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <a href="/" class="nav-link text-body font-weight-bold px-0">
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">Sign Out</span>
-                    </a>
-                </li>
-                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                        <div class="sidenav-toggler-inner">
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                        </div>
                     </a>
                 </li>
                 <li class="nav-item px-3 d-flex align-items-center">
@@ -157,6 +436,54 @@ $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
         </div>
     </div>
 </nav>
+
+<script>
+    (function () {
+        function updateToggleUi(isDark) {
+            var icon = document.getElementById('dark-mode-icon');
+            var label = document.getElementById('dark-mode-label');
+            if (icon && icon.tagName && icon.tagName.toLowerCase() === 'img') {
+                icon.setAttribute('src', isDark
+                    ? '/assets/icons/theme-icon/brightness-high-fill.svg'
+                    : '/assets/icons/theme-icon/moon-stars-fill.svg'
+                );
+            }
+            if (label) {
+                label.textContent = isDark ? 'Light' : 'Dark';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var btn = document.getElementById('dark-mode-toggle');
+            if (!btn) return;
+
+            var isDark = document.body.classList.contains('dark-mode') || document.documentElement.classList.contains('dark-mode');
+            try {
+                var stored = localStorage.getItem('theme');
+                if (stored === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                    document.body.classList.add('dark-mode');
+                    isDark = true;
+                }
+            } catch (e) {
+                // ignore
+            }
+            updateToggleUi(isDark);
+
+            btn.addEventListener('click', function () {
+                var nowDark = !(document.body.classList.contains('dark-mode') || document.documentElement.classList.contains('dark-mode'));
+                document.documentElement.classList.toggle('dark-mode', nowDark);
+                document.body.classList.toggle('dark-mode', nowDark);
+                updateToggleUi(nowDark);
+                try {
+                    localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+                } catch (e) {
+                    // ignore
+                }
+            });
+        });
+    })();
+</script>
 
 <!-- Les choses dont les scripts ont besoin -->
 <meta name="user-id" content="<?= htmlspecialchars($_SESSION['user_id'] ?? 0) ?>">

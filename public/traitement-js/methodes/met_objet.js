@@ -77,6 +77,7 @@ function renderObjectsCards(objets) {
             <div class="position-relative">
               <a class="d-block">
                 <img src="${imgSrc}" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
+              </a>
               <div class="position-absolute top-0 end-0 mt-2 me-2">
                 ${pendingCount > 0 ? `<span class=\"badge bg-dark text-white\">${pendingCount} demandes en attente</span>` : ''}
               </div>

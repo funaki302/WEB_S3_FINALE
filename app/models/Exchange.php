@@ -47,28 +47,60 @@ class Exchange {
 
     public function getReceivedByUser($userId, $status = null) {
         $sql = "
-            SELECT e.*, 
-                   op.title AS objet_proposer_title,
-                   orq.title AS objet_requise_title,
-                   u.name AS proposeur_name
-            FROM tk_echanges e
-            LEFT JOIN tk_objets op ON e.objet_proposer = op.id_objet
-            LEFT JOIN tk_objets orq ON e.objet_requise = orq.id_objet
-            LEFT JOIN tk_user u ON e.id_proposeur = u.id_user
-            WHERE e.id_receveur = :uid
+            SELECT *
+            FROM tk_v_exchange_received_details
+            WHERE id_receveur = :uid
         ";
 
         if ($status !== null && $status !== '') {
-            $sql .= " AND e.status = :status ";
+            $sql .= " AND status = :status ";
         }
 
-        $sql .= " ORDER BY e.date_proposition DESC ";
+        $sql .= " ORDER BY date_proposition DESC ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':uid', (int)$userId, PDO::PARAM_INT);
         if ($status !== null && $status !== '') {
             $stmt->bindValue(':status', $status, PDO::PARAM_STR);
         }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSentByUser($userId, $status = null) {
+        $sql = "
+            SELECT *
+            FROM tk_v_exchange_sent_details
+            WHERE id_proposeur = :uid
+        ";
+
+        if ($status !== null && $status !== '') {
+            $sql .= " AND status = :status ";
+        }
+
+        $sql .= " ORDER BY date_proposition DESC ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':uid', (int)$userId, PDO::PARAM_INT);
+        if ($status !== null && $status !== '') {
+            $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPartnersCountByUser($userId, $limit = 50) {
+        $sql = "
+            SELECT *
+            FROM tk_v_exchange_partners_count
+            WHERE user_id = :uid
+            ORDER BY total_transactions DESC, partner_name ASC
+            LIMIT :lim
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':uid', (int)$userId, PDO::PARAM_INT);
+        $stmt->bindValue(':lim', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

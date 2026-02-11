@@ -68,3 +68,29 @@ LEFT JOIN tk_objets op ON e.objet_proposer = op.id_objet
 LEFT JOIN tk_objets orq ON e.objet_requise = orq.id_objet
 LEFT JOIN tk_user u ON e.id_receveur = u.id_user;
 
+DROP VIEW IF EXISTS tk_v_exchange_partners_count;
+CREATE VIEW tk_v_exchange_partners_count AS
+SELECT
+  t.user_id,
+  t.partner_id,
+  u.name AS partner_name,
+  u.email AS partner_email,
+  COUNT(*) AS total_transactions,
+  SUM(CASE WHEN t.status = 'accepter' THEN 1 ELSE 0 END) AS total_accepter,
+  SUM(CASE WHEN t.status = 'refuser' THEN 1 ELSE 0 END) AS total_refuser,
+  SUM(CASE WHEN t.status = 'attente' THEN 1 ELSE 0 END) AS total_attente
+FROM (
+  SELECT
+    e.id_proposeur AS user_id,
+    e.id_receveur AS partner_id,
+    e.status AS status
+  FROM tk_echanges e
+  UNION ALL
+  SELECT
+    e.id_receveur AS user_id,
+    e.id_proposeur AS partner_id,
+    e.status AS status
+  FROM tk_echanges e
+) t
+JOIN tk_user u ON u.id_user = t.partner_id
+GROUP BY t.user_id, t.partner_id, u.name, u.email;
