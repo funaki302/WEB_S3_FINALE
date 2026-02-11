@@ -94,3 +94,27 @@ PROFILE :
      - return true / false
   }
 }
+[] lier le bouton 'Voir' de chaque objet du user connecter vers '/view/objet'{
+  [] ajouter url dans routes
+   - rediriger vers le view fiche_objet.php
+  [] creer un view fiche_objet.php
+}
+
+/ 11 fevrier 2026 /
+FICHE_OBJET:
+[] afficher les informations de l objet{
+  [] ajouter fonctions dans met_objet.js{
+    [] getObjetById(id_objet)
+     - faire appel a fecth vers '/api/getObjet/' avec data={id_objet}
+     - return objet en json
+  }
+  [] ajouter url dans routes.php{
+    [] '/api/getObjet/' avec data={id_objet}
+     - appel getById() de ObjetController
+     - return l objet en json
+  } 
+  [] recupere les informations de l objet {
+    [] mettre dans une constante l objet obtenue
+    [] afficher les informations de l objet
+  }
+}

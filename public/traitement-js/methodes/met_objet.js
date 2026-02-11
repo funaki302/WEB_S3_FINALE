@@ -75,7 +75,7 @@ function renderObjectsCards(objets) {
           <div class="card card-blog card-plain">
             <div class="position-relative">
               <a class="d-block">
-                <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
+                <img src="/assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-md">
               </a>
               <div class="position-absolute top-0 end-0 mt-2 me-2">
                 ${pendingCount > 0 ? `<span class=\"badge bg-dark text-white\">${pendingCount} demandes en attente</span>` : ''}
@@ -248,3 +248,27 @@ window.addEventListener('DOMContentLoaded', function () {
     loadJsonIntoPre();
     initObjetsSearchPage();
 });
+
+async function getObjetById(id_objet) {
+    try {
+        const url = buildUrl("/api/get/objet");
+        const donne = {'id_objet': id_objet};
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(donne)
+        };
+        const objet = await fetch(url, options);
+        if (!objet.ok){
+            alert("Erreur de getObjetById: "+id_objet);
+            return null;
+        }
+        const data = await objet.json();
+        return data;
+    } catch (error) {
+        console.error('Erreur getObjetById:('+id_objet+") "+ error);
+        throw error;
+    }
+}

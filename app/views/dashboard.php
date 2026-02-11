@@ -18,8 +18,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
   <title>
     Soft UI Dashboard 3 by Creative Tim
   </title>
@@ -31,7 +31,7 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -57,7 +57,7 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <img src="../assets/icons/dashbord-icon/user.svg" alt="Users" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
+                        <img src="/assets/icons/dashbord-icon/user.svg" alt="Users" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
                         <?php echo $count_users ?? 0; ?>
@@ -88,7 +88,7 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <img src="../assets/icons/dashbord-icon/Admin.svg" alt="Admins" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
+                        <img src="/assets/icons/dashbord-icon/Admin.svg" alt="Admins" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
                         <?php echo $count_admins ?? 0; ?>
@@ -121,7 +121,7 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <img src="../assets/icons/dashbord-icon/objects.svg" alt="Objects" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
+                        <img src="/assets/icons/dashbord-icon/objects.svg" alt="Objects" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
                         <?php echo $count_objects ?? 0; ?>
@@ -152,7 +152,7 @@
                   <div class="row">
                     <div class="col-8 text-start">
                       <div class="icon icon-shape bg-white shadow text-center border-radius-2xl">
-                        <img src="../assets/icons/dashbord-icon/exchange.svg" alt="Exchanges" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
+                        <img src="/assets/icons/dashbord-icon/exchange.svg" alt="Exchanges" class="text-dark text-gradient text-lg opacity-10" style="width: 20px; height: 20px; margin-top: 12px;">
                       </div>
                       <h5 class="text-white font-weight-bolder mb-0 mt-3">
                         <?php echo $count_exchanges ?? 0; ?>
@@ -281,7 +281,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
+                            <img src="/assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
@@ -291,16 +291,16 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="../assets/img/team-1.jpg" alt="team1">
+                            <img src="/assets/img/team-1.jpg" alt="team1">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="../assets/img/team-2.jpg" alt="team2">
+                            <img src="/assets/img/team-2.jpg" alt="team2">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith">
-                            <img src="../assets/img/team-3.jpg" alt="team3">
+                            <img src="/assets/img/team-3.jpg" alt="team3">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="../assets/img/team-4.jpg" alt="team4">
+                            <img src="/assets/img/team-4.jpg" alt="team4">
                           </a>
                         </div>
                       </td>
@@ -324,7 +324,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-atlassian.svg" class="avatar avatar-sm me-3" alt="atlassian">
+                            <img src="/assets/img/small-logos/logo-atlassian.svg" class="avatar avatar-sm me-3" alt="atlassian">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Add Progress Track</h6>
@@ -334,10 +334,10 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="../assets/img/team-2.jpg" alt="team5">
+                            <img src="/assets/img/team-2.jpg" alt="team5">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="../assets/img/team-4.jpg" alt="team6">
+                            <img src="/assets/img/team-4.jpg" alt="team6">
                           </a>
                         </div>
                       </td>
@@ -361,7 +361,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm me-3" alt="team7">
+                            <img src="/assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm me-3" alt="team7">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
@@ -371,10 +371,10 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="../assets/img/team-3.jpg" alt="team8">
+                            <img src="/assets/img/team-3.jpg" alt="team8">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="../assets/img/team-1.jpg" alt="team9">
+                            <img src="/assets/img/team-1.jpg" alt="team9">
                           </a>
                         </div>
                       </td>
@@ -398,7 +398,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm me-3" alt="spotify">
+                            <img src="/assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm me-3" alt="spotify">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
@@ -408,16 +408,16 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="../assets/img/team-4.jpg" alt="user1">
+                            <img src="/assets/img/team-4.jpg" alt="user1">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="../assets/img/team-3.jpg" alt="user2">
+                            <img src="/assets/img/team-3.jpg" alt="user2">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith">
-                            <img src="../assets/img/team-4.jpg" alt="user3">
+                            <img src="/assets/img/team-4.jpg" alt="user3">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="../assets/img/team-1.jpg" alt="user4">
+                            <img src="/assets/img/team-1.jpg" alt="user4">
                           </a>
                         </div>
                       </td>
@@ -441,7 +441,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-jira.svg" class="avatar avatar-sm me-3" alt="jira">
+                            <img src="/assets/img/small-logos/logo-jira.svg" class="avatar avatar-sm me-3" alt="jira">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
@@ -451,7 +451,7 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="../assets/img/team-4.jpg" alt="user5">
+                            <img src="/assets/img/team-4.jpg" alt="user5">
                           </a>
                         </div>
                       </td>
@@ -475,7 +475,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
-                            <img src="../assets/img/small-logos/logo-invision.svg" class="avatar avatar-sm me-3" alt="invision">
+                            <img src="/assets/img/small-logos/logo-invision.svg" class="avatar avatar-sm me-3" alt="invision">
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
@@ -485,10 +485,10 @@
                       <td>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="../assets/img/team-1.jpg" alt="user6">
+                            <img src="/assets/img/team-1.jpg" alt="user6">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="../assets/img/team-4.jpg" alt="user7">
+                            <img src="/assets/img/team-4.jpg" alt="user7">
                           </a>
                         </div>
                       </td>
@@ -602,9 +602,9 @@
                 </div>
                 <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
                   <div class="bg-primary border-radius-lg h-100">
-                    <img src="../assets/img/shapes/waves-white.svg" class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
+                    <img src="/assets/img/shapes/waves-white.svg" class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
                     <div class="position-relative d-flex align-items-center justify-content-center h-100">
-                      <img class="w-100 position-relative z-index-2 pt-4" src="../assets/img/illustrations/rocket-white.png" alt="rocket">
+                      <img class="w-100 position-relative z-index-2 pt-4" src="/assets/img/illustrations/rocket-white.png" alt="rocket">
                     </div>
                   </div>
                 </div>
@@ -614,7 +614,7 @@
         </div>
         <div class="col-lg-5">
           <div class="card h-100 p-3">
-            <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../assets/img/ivancik.jpg');">
+            <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('/assets/img/ivancik.jpg');">
               <span class="mask bg-gradient-dark"></span>
               <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
                 <h5 class="text-white font-weight-bolder mb-4 pt-2">Work with the rockets</h5>
@@ -833,11 +833,11 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
+  <script src="/assets/js/core/popper.min.js"></script>
+  <script src="/assets/js/core/bootstrap.min.js"></script>
+  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="/assets/js/plugins/chartjs.min.js"></script>
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 
@@ -1020,7 +1020,7 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
 
   
 </body>

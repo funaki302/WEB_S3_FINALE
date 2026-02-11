@@ -114,11 +114,11 @@ final class DeferredContent
 	private function buildJsCss(): string
 	{
 		$css = array_map('file_get_contents', array_merge([
-			__DIR__ . '/../assets/reset.css',
+			__DIR__ . '//assets/reset.css',
 			__DIR__ . '/../Bar/assets/bar.css',
-			__DIR__ . '/../assets/toggle.css',
-			__DIR__ . '/../assets/table-sort.css',
-			__DIR__ . '/../assets/tabs.css',
+			__DIR__ . '//assets/toggle.css',
+			__DIR__ . '//assets/table-sort.css',
+			__DIR__ . '//assets/tabs.css',
 			__DIR__ . '/../Dumper/assets/dumper-light.css',
 			__DIR__ . '/../Dumper/assets/dumper-dark.css',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.css',
@@ -126,10 +126,10 @@ final class DeferredContent
 
 		$js1 = array_map(fn($file) => '(function() {' . file_get_contents($file) . '})();', [
 			__DIR__ . '/../Bar/assets/bar.js',
-			__DIR__ . '/../assets/toggle.js',
-			__DIR__ . '/../assets/table-sort.js',
-			__DIR__ . '/../assets/tabs.js',
-			__DIR__ . '/../assets/helpers.js',
+			__DIR__ . '//assets/toggle.js',
+			__DIR__ . '//assets/table-sort.js',
+			__DIR__ . '//assets/tabs.js',
+			__DIR__ . '//assets/helpers.js',
 			__DIR__ . '/../Dumper/assets/dumper.js',
 			__DIR__ . '/../BlueScreen/assets/bluescreen.js',
 		]);

@@ -298,5 +298,36 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($controller->deleteImageJson());
 	});
 
-	
+	// Recuperer un objet par son id 
+	$router->post('/api/get/objet', function() use ($app) {
+		$objetController = new ObjetController();
+		
+		// Récupérer les données JSON du corps de la requête
+		$json_input = file_get_contents('php://input');
+		$data = json_decode($json_input, true);
+		
+		$result = $objetController->getObjetById($data['id_objet']);
+		$app->json($result);
+	});
+
+	// Diriger vers fiche_objet.php
+	$router->get('/view/objet/@id', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$app->render('fiche_objet', ['id_objet' => $id]);
+	});
+
+	// Recuperer les images d'un objet 
+	$router->get('/api/get/img/@id', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$objetImgController = new ObjetImgController();
+		$result = $objetImgController->getByObjet($id);
+		$app->json($result);
+	});
+
 }, [ SecurityHeadersMiddleware::class ]);

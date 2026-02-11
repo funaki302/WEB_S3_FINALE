@@ -77,25 +77,31 @@ async function loadListObjet(liste) {
                 ${objet.description || 'Pas de description'}
               </p>
               <div class="d-flex align-items-center justify-content-between">
-                <button type="button" class="btn btn-outline-primary btn-sm mb-0">Voir</button>
+                <button type="button" id="voir" class="btn btn-outline-primary btn-sm mb-0">Voir</button>
                 <div class="avatar-group mt-2">
                   <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                    <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                    <img alt="Image placeholder" src="/assets/img/team-1.jpg">
                   </a>
                   <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                    <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                    <img alt="Image placeholder" src="/assets/img/team-2.jpg">
                   </a>
                   <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                    <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                    <img alt="Image placeholder" src="/assets/img/team-3.jpg">
                   </a>
                   <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                    <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                    <img alt="Image placeholder" src="/assets/img/team-4.jpg">
                   </a>
                 </div>
               </div>
             </div>
           </div>
         `;
+
+        const btn_voir = col.querySelector('#voir');
+        btn_voir.addEventListener('click', async function (e) {
+          e.preventDefault();
+          voir_fiche(objet.id_objet);
+        });
         
         listObjet.appendChild(col);
       });
@@ -552,4 +558,9 @@ function formatDate(dateString) {
   };
   
   return date.toLocaleDateString('fr-FR', options);
+}
+
+function voir_fiche(id_objet) {
+  const url = `/view/objet/${id_objet}`;
+  window.location.href = url;
 }

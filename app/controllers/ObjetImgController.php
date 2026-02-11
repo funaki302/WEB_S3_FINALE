@@ -86,4 +86,8 @@ class ObjetImgController {
         $success = $this->objetImgModel->delete((int)$idObjetImg);
         return ['ok' => $success];
     }
+
+    public function getByObjet($id_objet) {
+        return $this->objetImgModel->getByObjet($id_objet);
+    }
 }
