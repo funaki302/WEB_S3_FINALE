@@ -298,6 +298,5 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($controller->deleteImageJson());
 	});
 
-
 	
 }, [ SecurityHeadersMiddleware::class ]);
