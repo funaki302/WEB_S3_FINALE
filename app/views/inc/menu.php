@@ -11,7 +11,7 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="#"
            >
-            <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+            <img src="/assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold">Soft UI Dashboard 3</span>
         </a>
     </div>
@@ -154,7 +154,7 @@
                     <span class="nav-link-text ms-1">Profile</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link <?php echo $isActive('/sign-in') ? 'active' : ''; ?>" href="/sign-in">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -211,7 +211,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Sign Up</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </aside>

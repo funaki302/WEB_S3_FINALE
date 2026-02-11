@@ -249,3 +249,27 @@ window.addEventListener('DOMContentLoaded', function () {
     loadJsonIntoPre();
     initObjetsSearchPage();
 });
+
+async function getObjetById(id_objet) {
+    try {
+        const url = buildUrl("/api/get/objet");
+        const donne = {'id_objet': id_objet};
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(donne)
+        };
+        const objet = await fetch(url, options);
+        if (!objet.ok){
+            alert("Erreur de getObjetById: "+id_objet);
+            return null;
+        }
+        const data = await objet.json();
+        return data;
+    } catch (error) {
+        console.error('Erreur getObjetById:('+id_objet+") "+ error);
+        throw error;
+    }
+}

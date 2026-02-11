@@ -48,7 +48,7 @@ function renderTarget(obj) {
 
   el.innerHTML = `
     <div class="position-relative mb-3">
-      <img src="../assets/img/home-decor-1.jpg" alt="img" class="img-fluid shadow border-radius-lg" style="width:100%; height:260px; object-fit:cover;">
+      <img src="/assets/img/home-decor-1.jpg" alt="img" class="img-fluid shadow border-radius-lg" style="width:100%; height:260px; object-fit:cover;">
     </div>
     <p class="text-secondary mb-1 text-sm">${cat}</p>
     <h5 class="font-weight-bolder mb-2">${title}</h5>

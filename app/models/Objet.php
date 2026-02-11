@@ -265,4 +265,16 @@ class Objet {
             return 0;
         }
     }
+
+    // Information complet
+    public function getObjetById($id) {
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM tk_v_info_objet o
+            WHERE o.id_objet = ?
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    
 }
