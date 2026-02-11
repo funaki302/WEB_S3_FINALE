@@ -261,3 +261,47 @@ async function EchangesAttente(id_user) {
     const data = await echanges.json();
     return data;
 }
+
+async function acceptEchange(idEchange) {
+  const url = buildUrl("/api/exchange/accept");
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id_echange: idEchange })
+  };
+  const send = await fetch(url, options);
+  if (!send.ok){
+    alert("Erreur du processus accept echange");
+    return false;
+  }
+  const result = await send.json();
+  if (!result.ok) {
+    alert("Erreur: " + (result.error || "Échec de l'acceptation"));
+    return false;
+  }
+  return true;
+}
+
+async function refusEchange(idEchange) {
+  const url = buildUrl("/api/exchange/refuse");
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id_echange: idEchange })
+  };
+  const send = await fetch(url, options);
+  if (!send.ok){
+    alert("Erreur du processus refus echange");
+    return false;
+  }
+  const result = await send.json();
+  if (!result.ok) {
+    alert("Erreur: " + (result.error || "Échec du refus"));
+    return false;
+  }
+  return true;
+}

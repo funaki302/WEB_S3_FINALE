@@ -509,13 +509,27 @@ function voirPlus(dm) {
   const btn_accept = detailDiv.querySelector('#btn-accept');
   const btn_refus = detailDiv.querySelector('#btn-refuse');
 
-  btn_accept.addEventListener('click', function (e) {
+  btn_accept.addEventListener('click',async function (e) {
     e.preventDefault();
-    accepteDemande(dm.id_echange);
+    const success = await acceptEchange(dm.id_echange);
+    if (success) {
+      //alert('Échange accepté avec succès!');
+      // Recharger la liste des demandes
+      const id_user = getCurrentUserId();
+      const listeDemande = await EchangesAttente(id_user);
+      loadListDemande(listeDemande);
+    }
   });
-  btn_refus.addEventListener('click', function (e) {
+  btn_refus.addEventListener('click',async function (e) {
     e.preventDefault();
-    refuseDemande(dm.id_echange);
+    const success = await refusEchange(dm.id_echange);
+    if (success) {
+      //alert('Échange refusé avec succès!');
+      // Recharger la liste des demandes
+      const id_user = getCurrentUserId();
+      const listeDemande = await EchangesAttente(id_user);
+      loadListDemande(listeDemande);
+    }
   });
   
   liActuel.parentNode.insertBefore(detailDiv, liActuel.nextSibling);
@@ -534,56 +548,4 @@ function formatDate(dateString) {
   };
   
   return date.toLocaleDateString('fr-FR', options);
-}
-
-async function accepteDemande(idEchange) {
-  alert("Accepter");
-  /* try {
-    const response = await fetch('/api/exchange/accept', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ id_echange: idEchange })
-    });
-    
-    const result = await response.json();
-    if (result.ok) {
-      alert('Échange accepté avec succès!');
-      // Recharger la liste des demandes
-      const id_user = getCurrentUserId();
-      const listeDemande = await EchangesAttente(id_user);
-      loadListDemande(listeDemande);
-    } else {
-      alert('Erreur: ' + (result.error || 'Échec de l\'acceptation'));
-    }
-  } catch (error) {
-    alert('Erreur lors de l\'acceptation de l\'échange');
-  } */
-}
-
-async function refuseDemande(idEchange) {
-  alert("Refuser");
-  /* try {
-    const response = await fetch('/api/exchange/refuse', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ id_echange: idEchange })
-    });
-    
-    const result = await response.json();
-    if (result.ok) {
-      alert('Échange refusé avec succès!');
-      // Recharger la liste des demandes
-      const id_user = getCurrentUserId();
-      const listeDemande = await EchangesAttente(id_user);
-      loadListDemande(listeDemande);
-    } else {
-      alert('Erreur: ' + (result.error || 'Échec du refus'));
-    }
-  } catch (error) {
-    alert('Erreur lors du refus de l\'échange');
-  } */
 }
