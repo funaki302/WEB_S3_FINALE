@@ -102,19 +102,44 @@ PROFILE :
 
 / 11 fevrier 2026 /
 FICHE_OBJET:
-[] afficher les informations de l objet{
-  [] ajouter fonctions dans met_objet.js{
-    [] getObjetById(id_objet)
+[ok] afficher les informations de l objet{
+  [ok] ajouter fonctions dans met_objet.js{
+    [ok] getObjetById(id_objet)
      - faire appel a fecth vers '/api/getObjet/' avec data={id_objet}
      - return objet en json
   }
-  [] ajouter url dans routes.php{
-    [] '/api/getObjet/' avec data={id_objet}
+  [ok] ajouter url dans routes.php{
+    [ok] '/api/getObjet/' avec data={id_objet}
      - appel getById() de ObjetController
      - return l objet en json
   } 
-  [] recupere les informations de l objet {
-    [] mettre dans une constante l objet obtenue
-    [] afficher les informations de l objet
+  [ok] recupere les informations de l objet {
+    [ok] mettre dans une constante l objet obtenue
+    [ok] afficher les informations de l objet
+  }
+  [ok] creer script met_objetHistory.js{
+    [ok] fonction getHistoryById(id_objet)
+     - faire appel a fecth vers '/api/getHistory/' avec data={id_objet}
+     - return l historique en json
+  }
+  [ok] ajouter url dans routes.php{
+    [ok] '/api/getHistory/' avec data={id_objet}
+     - appel getById() de ObjetController
+     - return l historique en json
+  }
+  [ok] ajouter fonction dans ficheObjet.js{
+    [ok] loadObjet()
+     - affiche le titre et categorie
+    [ok] loadImg()
+     - affiche ces images
+    [ok] loadHistory()
+     - affiche l historique de proprietaire
+    [ok] loadProprio()
+     - affiche les informations du proprio actuel
   }
 }
+
+[] ajouter plus de couleur et de style dans les pages que j ai creer{
+  [] profile.php
+  [] fiche_objet.php
+} 

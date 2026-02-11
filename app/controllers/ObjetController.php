@@ -76,4 +76,8 @@ class ObjetController {
     public function getObjetById($id) {
         return $this->objetModel->getObjetById($id);
     }
+
+    public function updateObjet($id, $data){
+        return $this->objetModel->update($id, $data);
+    }
 }

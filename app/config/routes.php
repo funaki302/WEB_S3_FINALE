@@ -435,4 +435,16 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	// Modifier un objet 
+	$router->post('/api/update/objet/@id', function($id) use ($app) {
+		$objetController = new ObjetController();
+		
+		// Récupérer les données JSON du corps de la requête
+		$json_input = file_get_contents('php://input');
+		$data = json_decode($json_input, true);
+		
+		$result = $objetController->updateObjet($id, $data);
+		$app->json($result);
+	});
+
 }, [ SecurityHeadersMiddleware::class ]);

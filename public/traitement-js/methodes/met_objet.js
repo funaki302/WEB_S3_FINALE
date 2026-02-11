@@ -193,8 +193,8 @@ async function delet(id_objet) {
     return true;
 }
 
-async function update(data) {
-    const url = buildUrl("/api/update/objet");
+async function update(id_objet,data) {
+    const url = buildUrl(`/api/update/objet/${id_objet}`);
     const options = {
         method: 'POST',
         headers: {

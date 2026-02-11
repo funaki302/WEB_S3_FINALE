@@ -36,6 +36,8 @@
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 </head>
+<!-- Style -->
+<?php include __DIR__."/inc/style.php"; ?>
 
 <body class="g-sidenav-show bg-gray-100">
 
@@ -105,6 +107,8 @@
   <script src="/traitement-js/methodes/met_objetImg.js"></script>
   <script src="/traitement-js/methodes/met_objet.js"></script>
   <script src="/traitement-js/methodes/met_objetHistory.js"></script>
+  <script src="/traitement-js/methodes/met_categorie.js"></script>
+
 
   <script src="/traitement-js/ficheObjet/ficheObjet.js"></script>
 
