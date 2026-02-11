@@ -194,8 +194,9 @@ async function delet(id_objet) {
     return true;
 }
 
-async function update(id_objet,data) {
+async function updateObjet(id_objet,data) {
     const url = buildUrl(`/api/update/objet/${id_objet}`);
+    
     const options = {
         method: 'POST',
         headers: {
@@ -203,25 +204,32 @@ async function update(id_objet,data) {
         },
         body: JSON.stringify(data)
     };
-    const send = await fetch(url, options);
-    if (!send.ok){
-        alert("Update Objet non reussi");
-        return false;
+    
+    try {
+        const send = await fetch(url, options);
+
+        if (!send.ok){
+            const errorText = await send.text();
+            alert("Update Objet non reussi - Status: " + send.status);
+            return false;
+        }
+        
+        const result = await send.json();
+        return true;
+    } catch (error) {
+        throw error;
     }
-    return true;
 }
 
 async function getObjet_User(id_user) {
     try {
         const objets = await fetch(`/api/getObjet/${id_user}`);
         if (!objets.ok) {
-            console.error(`Erreur HTTP: ${objets.status} - ${objets.statusText}`);
             throw new Error("Erreur lors de la recuperation des objets");
         }
         const data = await objets.json();
         return data;
     } catch (error) {
-        console.error('Erreur getObjet_User:', error);
         throw error;
     }
 }
@@ -269,7 +277,6 @@ async function getObjetById(id_objet) {
         const data = await objet.json();
         return data;
     } catch (error) {
-        console.error('Erreur getObjetById:('+id_objet+") "+ error);
         throw error;
     }
 }

@@ -383,9 +383,58 @@ async function loadForm(data) {
     loadDescription(donnees);
   });
 
-  // Soumission du formulaire
+
+// Soumission du formulaire
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    alert("Modifier!!");
+    
+    const id_objet = getIdObjet();    
+    
+    // Récupérer les données du formulaire
+    const formData = new FormData(form);
+    const data = {
+        title: formData.get('titre'),
+        prix_estime: formData.get('prix'),
+        id_categorie: formData.get('categorie'),
+        description: formData.get('description')
+    };
+
+    try {
+      
+      // 1. Mettre à jour l'objet avec la fonction normale
+      const updateResult = await updateObjet(id_objet, data);
+      
+      if (!updateResult) {
+        alert('Erreur lors de la modification de l\'objet');
+        return;
+      }
+
+      // 2. Vérifier si une image a été sélectionnée
+      const imageFile = form.querySelector('input[name="image"]').files[0];
+      
+      if (imageFile && imageFile.size > 0) {
+        console.log('Upload image en cours...');
+        // 3. Uploader la nouvelle image
+        const uploadResult = await uploadImage(id_objet, imageFile);
+        if (!uploadResult.ok) {
+          alert('Objet modifié mais erreur lors de l\'upload de l\'image: ' + (uploadResult.error || 'Erreur inconnue'));
+        } else {
+          alert('Objet modifié et image ajoutée avec succès !');
+        }
+      } else {
+        alert('Objet modifié avec succès !');
+      }
+
+      // 4. Recharger les données pour afficher les modifications
+      const donnees = await getObjetById(id_objet);
+      const images = await getAllImg(id_objet);
+      loadObjet(donnees);
+      loadImages(images);
+      loadDescription(donnees);
+
+    } catch (error) {
+      console.error('Erreur détaillée:', error);
+      alert('Erreur lors de la modification: ' + error.message);
+    }
   });
 }

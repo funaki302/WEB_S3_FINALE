@@ -184,6 +184,8 @@ class Objet {
     }
 
     public function update($id, $data) {
+        error_log("Update modèle appelé avec ID: " . $id . " et data: " . print_r($data, true));
+        
         $fields = [];
         $values = [];
 
@@ -192,13 +194,27 @@ class Objet {
             $values[":$key"] = $value;
         }
 
-        if (empty($fields)) return false;
+        if (empty($fields)) {
+            error_log("Aucun champ à mettre à jour");
+            return false;
+        }
 
         $sql = "UPDATE tk_objets SET " . implode(', ', $fields) . " WHERE id_objet = :id";
         $values[':id'] = $id;
+        
+        error_log("SQL: " . $sql);
+        error_log("Values: " . print_r($values, true));
 
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute($values);
+        try {
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute($values);
+            error_log("Execute result: " . ($result ? 'true' : 'false'));
+            error_log("Error info: " . print_r($stmt->errorInfo(), true));
+            return $result;
+        } catch (PDOException $e) {
+            error_log("PDOException: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function delete($id) {
