@@ -30,6 +30,7 @@ class UserController
 
         $email = $data['Email'] ?? '';
         $pwd = $data['password'] ?? '';
+		$wantAdmin = isset($data['want_admin']) && ($data['want_admin'] === '1' || $data['want_admin'] === 1 || $data['want_admin'] === 'on');
 
 
         // Voir si le user existe deja
@@ -45,15 +46,25 @@ class UserController
                 $_SESSION['user_email'] = $existingUser['email'];
                 $_SESSION['user_role'] = $existingUser['role'];
                 $_SESSION['login_time'] = time();
-                Flight::redirect('/profile');
+				$role = (string)($existingUser['role'] ?? 'user');
+				if ($wantAdmin && $role !== 'admin') {
+					$_SESSION = [];
+					Flight::redirect('/?error=not_admin');
+					return;
+				}
+				if ($role === 'admin') {
+					Flight::redirect('/dashboard');
+					return;
+				}
+				Flight::redirect('/profile');
                 return;
             }
-            Flight::redirect('/');
+			Flight::redirect('/?error=invalid');
             return;
 
         }
 
-        Flight::redirect('/');
+		Flight::redirect('/?error=invalid');
         return;
     }
 

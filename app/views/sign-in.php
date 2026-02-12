@@ -76,6 +76,18 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
+                  <?php
+                    $err = $_GET['error'] ?? '';
+                    $errMsg = '';
+                    if ($err === 'not_admin') {
+                      $errMsg = "Erreur: vous n'êtes pas admin.";
+                    } elseif ($err === 'invalid') {
+                      $errMsg = "Email ou mot de passe incorrect.";
+                    }
+                  ?>
+                  <?php if ($errMsg !== '') : ?>
+                    <div class="alert alert-danger text-white" role="alert"><?= htmlspecialchars($errMsg) ?></div>
+                  <?php endif; ?>
                   <form id="signInForm" role="form" action="/login" method="post">
                     <label>Email</label>
                     <div class="mb-3">
@@ -89,9 +101,10 @@
                         <img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
                     </div>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                      <label class="form-check-label" for="rememberMe">Remember me</label>
+                      <input class="form-check-input" type="checkbox" id="rememberMe" name="want_admin" value="1">
+                      <label class="form-check-label" for="rememberMe">Se connecter en tant qu'admin</label>
                     </div>
+                    <div class="text-xs mt-1" id="adminStatus" style="display:none;"></div>
                     <div class="text-center">
                       <button type="submit" id="signInBtn" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
                     </div>

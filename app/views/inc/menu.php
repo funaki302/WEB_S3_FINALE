@@ -18,6 +18,7 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
+            <?php if (($_SESSION['user_role'] ?? '') === 'admin') : ?>
             <li class="nav-item">
                 <a class="nav-link <?php echo $isActive('/dashboard') ? 'active' : ''; ?>" href="/dashboard">
                     <div
@@ -44,6 +45,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+            <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link <?php echo $isActive('/tables') ? 'active' : ''; ?>" href="/tables">
                     <div

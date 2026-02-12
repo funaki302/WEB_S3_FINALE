@@ -67,6 +67,27 @@ class Exchange {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getUserTransactions($userId, $limit = 50) {
+        $sql = "
+            SELECT *
+            FROM tk_v_exchange_user_transactions
+            WHERE user_id = :uid
+            ORDER BY date_proposition DESC
+            LIMIT :lim
+        ";
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':uid', (int)$userId, PDO::PARAM_INT);
+            $stmt->bindValue(':lim', (int)$limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error in Exchange::getUserTransactions - ' . $e->getMessage());
+            return [];
+        }
+    }
+
     public function getSentByUser($userId, $status = null) {
         $sql = "
             SELECT *

@@ -18,6 +18,8 @@ use app\controllers\UserController;
  * @var Engine $app
  */
 
+$app = isset($app) ? $app : \Flight::app();
+
 // This wraps all routes in the group with the SecurityHeadersMiddleware
 $router->group('', function(Router $router) use ($app) {
 	/*
@@ -68,6 +70,10 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/dashboard', function() use ($app) {
 		if (!isset($_SESSION['user_id'])) {
 			$app->redirect('/');
+			return;
+		}
+		if (($_SESSION['user_role'] ?? '') !== 'admin') {
+			$app->redirect('/profile');
 			return;
 		}
 		$userController = new UserController();
@@ -152,9 +158,17 @@ $router->group('', function(Router $router) use ($app) {
 			return;
 		}
 		$exchangeModel = new \app\models\Exchange();
+		$objetModel = new \app\models\Objet();
 		$sent = $exchangeModel->getSentByUser((int)$_SESSION['user_id']);
+		$transactions = $exchangeModel->getUserTransactions((int)$_SESSION['user_id'], 50);
 		$partners = $exchangeModel->getPartnersCountByUser((int)$_SESSION['user_id'], 50);
-		$app->render('billing', ['sent_exchanges' => $sent, 'partners' => $partners]);
+		$objetStats = $objetModel->getStatsByUser((int)$_SESSION['user_id']);
+		$app->render('billing', [
+			'sent_exchanges' => $sent,
+			'transactions' => $transactions,
+			'partners' => $partners,
+			'objet_stats' => $objetStats,
+		]);
 	});
 
 	$router->get('/sign-in', function() use ($app) {

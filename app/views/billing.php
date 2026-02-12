@@ -49,7 +49,12 @@
     <div class="container-fluid py-4">
       <?php
         $sent_exchanges = isset($sent_exchanges) && is_array($sent_exchanges) ? $sent_exchanges : [];
+        $transactions = isset($transactions) && is_array($transactions) ? $transactions : [];
         $partners = isset($partners) && is_array($partners) ? $partners : [];
+
+        $objet_stats = isset($objet_stats) && is_array($objet_stats) ? $objet_stats : [];
+        $totalObjets = (int)($objet_stats['total_objets'] ?? 0);
+        $totalPrix = (float)($objet_stats['total_prix'] ?? 0);
       ?>
       <div class="row">
         <div class="col-lg-8">
@@ -90,10 +95,10 @@
                       </div>
                     </div>
                     <div class="card-body pt-0 p-3 text-center">
-                      <h6 class="text-center mb-0">Salary</h6>
-                      <span class="text-xs">Belong Interactive</span>
+                      <h6 class="text-center mb-0">Objets</h6>
+                      <span class="text-xs">Nombre total</span>
                       <hr class="horizontal dark my-3">
-                      <h5 class="mb-0">+$2000</h5>
+                      <h5 class="mb-0"><?= htmlspecialchars((string)$totalObjets) ?></h5>
                     </div>
                   </div>
                 </div>
@@ -105,10 +110,10 @@
                       </div>
                     </div>
                     <div class="card-body pt-0 p-3 text-center">
-                      <h6 class="text-center mb-0">Paypal</h6>
-                      <span class="text-xs">Freelance Payment</span>
+                      <h6 class="text-center mb-0">Valeur</h6>
+                      <span class="text-xs">Somme des prix estimés</span>
                       <hr class="horizontal dark my-3">
-                      <h5 class="mb-0">$455.00</h5>
+                      <h5 class="mb-0"><?= htmlspecialchars(number_format($totalPrix, 0, '.', ' ')) ?> Ar</h5>
                     </div>
                   </div>
                 </div>
@@ -153,7 +158,7 @@
             <div class="card-header pb-0 p-3">
               <div class="row">
                 <div class="col-6 d-flex align-items-center">
-                  <h6 class="mb-0">Invoices</h6>
+                  <h6 class="mb-0">Transactions</h6>
                 </div>
                 <div class="col-6 text-end">
                   <button class="btn btn-outline-primary btn-sm mb-0">View All</button>
@@ -161,62 +166,83 @@
               </div>
             </div>
             <div class="card-body p-3 pb-0">
-              <ul class="list-group">
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark font-weight-bold text-sm">March, 01, 2020</h6>
-                    <span class="text-xs">#MS-415646</span>
-                  </div>
-                  <div class="d-flex align-items-center text-sm">
-                    $180
-                    <button class="btn btn-link text-dark text-sm mb-0 px-0 ms-4"><i class="fas fa-file-pdf text-lg me-1"></i> PDF</button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="text-dark mb-1 font-weight-bold text-sm">February, 10, 2021</h6>
-                    <span class="text-xs">#RV-126749</span>
-                  </div>
-                  <div class="d-flex align-items-center text-sm">
-                    $250
-                    <button class="btn btn-link text-dark text-sm mb-0 px-0 ms-4"><i class="fas fa-file-pdf text-lg me-1"></i> PDF</button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="text-dark mb-1 font-weight-bold text-sm">April, 05, 2020</h6>
-                    <span class="text-xs">#FB-212562</span>
-                  </div>
-                  <div class="d-flex align-items-center text-sm">
-                    $560
-                    <button class="btn btn-link text-dark text-sm mb-0 px-0 ms-4"><i class="fas fa-file-pdf text-lg me-1"></i> PDF</button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="text-dark mb-1 font-weight-bold text-sm">June, 25, 2019</h6>
-                    <span class="text-xs">#QW-103578</span>
-                  </div>
-                  <div class="d-flex align-items-center text-sm">
-                    $120
-                    <button class="btn btn-link text-dark text-sm mb-0 px-0 ms-4"><i class="fas fa-file-pdf text-lg me-1"></i> PDF</button>
-                  </div>
-                </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="text-dark mb-1 font-weight-bold text-sm">March, 01, 2019</h6>
-                    <span class="text-xs">#AR-803481</span>
-                  </div>
-                  <div class="d-flex align-items-center text-sm">
-                    $300
-                    <button class="btn btn-link text-dark text-sm mb-0 px-0 ms-4"><i class="fas fa-file-pdf text-lg me-1"></i> PDF</button>
-                  </div>
-                </li>
-              </ul>
+              <div style="max-height: 345px; overflow: auto; padding-right: 4px;">
+                <ul class="list-group">
+                  <?php if (empty($transactions)) : ?>
+                    <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm">Aucune transaction</h6>
+                        <span class="text-xs">Aucun échange trouvé pour votre compte.</span>
+                      </div>
+                    </li>
+                  <?php else : ?>
+                    <?php foreach ($transactions as $tx) : ?>
+                      <?php
+                        $status = strtolower((string)($tx['status'] ?? 'attente'));
+                        $receivedTitle = (string)($tx['received_objet_title'] ?? 'Objet reçu');
+                        $givenTitle = (string)($tx['given_objet_title'] ?? 'Objet échangé');
+                        $partnerName = (string)($tx['partner_name'] ?? 'Utilisateur');
+                        $dateProp = (string)($tx['date_proposition'] ?? '');
+
+                        $badgeClass = 'bg-secondary';
+                        $statusLabel = $status;
+                        if ($status === 'accepter') { $badgeClass = 'bg-success'; $statusLabel = 'Accepté'; }
+                        elseif ($status === 'refuser') { $badgeClass = 'bg-danger'; $statusLabel = 'Refusé'; }
+                        elseif ($status === 'attente') { $badgeClass = 'bg-secondary'; $statusLabel = 'En attente'; }
+
+                        $receivedImg = (string)($tx['received_objet_image'] ?? '');
+                        $givenImg = (string)($tx['given_objet_image'] ?? '');
+                      ?>
+                      <li class="list-group-item border-0 ps-0 mb-2 border-radius-lg">
+                        <div class="d-flex justify-content-between align-items-start">
+                          <div class="d-flex flex-column">
+                            <h6 class="mb-1 text-dark font-weight-bold text-sm">
+                              <?= htmlspecialchars($partnerName) ?>
+                              <span class="badge <?= htmlspecialchars($badgeClass) ?> ms-2"><?= htmlspecialchars($statusLabel) ?></span>
+                            </h6>
+                            <?php if ($dateProp !== '') : ?>
+                              <span class="text-xs"><?= htmlspecialchars($dateProp) ?></span>
+                            <?php endif; ?>
+                          </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                          <div class="d-flex align-items-center" style="min-width: 0;">
+                            <?php if ($receivedImg !== '') : ?>
+                              <img src="/uploads/objets/<?= htmlspecialchars($receivedImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="me-2">
+                            <?php endif; ?>
+                            <div class="d-flex flex-column" style="min-width:0;">
+                              <span class="text-xs text-secondary">Reçu</span>
+                              <span class="text-sm text-dark" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;"> <?= htmlspecialchars($receivedTitle) ?></span>
+                            </div>
+                          </div>
+
+                          <div class="text-center" style="width: 42px;">
+                            <img src="/assets/icons/icon-exchange/arrow-left-right.svg" alt="exchange" style="width:18px;height:18px;">
+                          </div>
+
+                          <div class="d-flex align-items-center justify-content-end" style="min-width: 0;">
+                            <div class="d-flex flex-column text-end" style="min-width:0;">
+                              <span class="text-xs text-secondary">Donné</span>
+                              <span class="text-sm text-dark" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;">
+                                <?= htmlspecialchars($givenTitle) ?>
+                              </span>
+                            </div>
+                            <?php if ($givenImg !== '') : ?>
+                              <img src="/uploads/objets/<?= htmlspecialchars($givenImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="ms-2">
+                            <?php endif; ?>
+                          </div>
+                        </div>
+                      </li>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-7 mt-4">
           <div class="card">
