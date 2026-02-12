@@ -461,5 +461,18 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	// Logout
+	$router->get('/logout', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$userController = new UserController();
+		$result = $userController->logout($_SESSION['user_id']);
+		if ($result) {
+			$app->redirect('/');
+			return;
+		}
+	});
 
 }, [ SecurityHeadersMiddleware::class ]);
