@@ -195,7 +195,7 @@ class Objet {
                 COUNT(*) AS total_objets,
                 COALESCE(SUM(prix_estime), 0) AS total_prix
             FROM tk_objets
-            WHERE id_proprietaire = ?
+            WHERE id_proprietaire = ? AND date_inactif IS NULL
         ";
 
         try {

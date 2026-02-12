@@ -1,5 +1,9 @@
 
 DROP VIEW IF EXISTS tk_v_exchange_user_transactions;
+
+ALTER TABLE tk_categorie
+  ADD COLUMN date_inactif DATETIME NULL;
+
 CREATE VIEW tk_v_exchange_user_transactions AS
 SELECT
   u.id_user AS user_id,
