@@ -10,6 +10,8 @@ function __singinInit() {
 	const emailError = document.getElementById('emailError');
 	const signInBtn = document.getElementById('signInBtn');
 	const toggle = document.getElementById('togglePassword');
+	const adminCheck = document.getElementById('rememberMe');
+	const adminStatus = document.getElementById('adminStatus');
 
 	if (!form || !email || !password) return;
 
@@ -69,6 +71,23 @@ function __singinInit() {
 				email.focus();
 			}
 		});
+	}
+
+	function updateAdminUi() {
+		if (!adminStatus) return;
+		if (adminCheck && adminCheck.checked) {
+			adminStatus.style.display = 'block';
+			adminStatus.className = 'text-xs text-info';
+			adminStatus.textContent = "Mode admin activé : si votre compte n'est pas admin, une erreur sera affichée.";
+		} else {
+			adminStatus.style.display = 'none';
+			adminStatus.textContent = '';
+		}
+	}
+
+	if (adminCheck) {
+		adminCheck.addEventListener('change', updateAdminUi);
+		updateAdminUi();
 	}
 
 	if (toggle) {

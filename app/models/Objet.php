@@ -183,6 +183,30 @@ class Objet {
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 
+    public function getStatsByUser($userId) {
+        $sql = "
+            SELECT
+                COUNT(*) AS total_objets,
+                COALESCE(SUM(prix_estime), 0) AS total_prix
+            FROM tk_objets
+            WHERE id_proprietaire = ?
+        ";
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int)$userId]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error in Objet::getStatsByUser - ' . $e->getMessage());
+            $row = null;
+        }
+
+        return [
+            'total_objets' => (int)($row['total_objets'] ?? 0),
+            'total_prix' => (float)($row['total_prix'] ?? 0),
+        ];
+    }
+
     public function update($id, $data) {
         $fields = [];
         $values = [];
@@ -214,7 +238,7 @@ class Objet {
 
             $this->db->commit();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->db->rollBack();
             return false;
         }
