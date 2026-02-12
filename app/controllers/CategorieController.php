@@ -103,6 +103,14 @@ class CategorieController {
         return ['success' => true, 'message' => 'Catégorie supprimée'];
     }
 
+    public function archive($id) {
+        $result = $this->categorieModel->archive($id);
+        if ($result === false) {
+            return ['success' => false, 'message' => "Erreur lors de l'archivage"];
+        }
+        return ['success' => true, 'message' => 'Catégorie archivée'];
+    }
+
     // Pour un select dans un formulaire d'ajout d'objet
     public function getForSelect() {
         $cats = $this->categorieModel->getAll('nom_categorie ASC');

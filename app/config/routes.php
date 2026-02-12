@@ -213,6 +213,82 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	$router->get('/api/admin/categories', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['success' => false, 'message' => 'Non connecté']);
+			return;
+		}
+		if (($_SESSION['user_role'] ?? '') !== 'admin') {
+			$app->json(['success' => false, 'message' => 'Accès refusé']);
+			return;
+		}
+		try {
+			$categorieController = new CategorieController();
+			$app->json($categorieController->index());
+		} catch (\Throwable $e) {
+			error_log('Error in GET /api/admin/categories - ' . $e->getMessage());
+			$app->json(['success' => false, 'message' => "Erreur serveur (catégories)" ]);
+		}
+	});
+
+	$router->post('/api/admin/categories', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['success' => false, 'message' => 'Non connecté']);
+			return;
+		}
+		if (($_SESSION['user_role'] ?? '') !== 'admin') {
+			$app->json(['success' => false, 'message' => 'Accès refusé']);
+			return;
+		}
+		try {
+			$json_input = file_get_contents('php://input');
+			$data = json_decode($json_input, true) ?: [];
+			$categorieController = new CategorieController();
+			$app->json($categorieController->create($data));
+		} catch (\Throwable $e) {
+			error_log('Error in POST /api/admin/categories - ' . $e->getMessage());
+			$app->json(['success' => false, 'message' => "Erreur serveur (création catégorie)" ]);
+		}
+	});
+
+	$router->post('/api/admin/categories/@id', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['success' => false, 'message' => 'Non connecté']);
+			return;
+		}
+		if (($_SESSION['user_role'] ?? '') !== 'admin') {
+			$app->json(['success' => false, 'message' => 'Accès refusé']);
+			return;
+		}
+		try {
+			$json_input = file_get_contents('php://input');
+			$data = json_decode($json_input, true) ?: [];
+			$categorieController = new CategorieController();
+			$app->json($categorieController->update((int)$id, $data));
+		} catch (\Throwable $e) {
+			error_log('Error in POST /api/admin/categories/@id - ' . $e->getMessage());
+			$app->json(['success' => false, 'message' => "Erreur serveur (modification catégorie)" ]);
+		}
+	});
+
+	$router->post('/api/admin/categories/@id/archive', function($id) use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->json(['success' => false, 'message' => 'Non connecté']);
+			return;
+		}
+		if (($_SESSION['user_role'] ?? '') !== 'admin') {
+			$app->json(['success' => false, 'message' => 'Accès refusé']);
+			return;
+		}
+		try {
+			$categorieController = new CategorieController();
+			$app->json($categorieController->archive((int)$id));
+		} catch (\Throwable $e) {
+			error_log('Error in POST /api/admin/categories/@id/archive - ' . $e->getMessage());
+			$app->json(['success' => false, 'message' => "Erreur serveur (archivage catégorie)" ]);
+		}
+	});
+
 	// Recupere un user
 	$router->get('/api/get/user/@id', function($id) use ($app){
 		$userController = new UserController();
