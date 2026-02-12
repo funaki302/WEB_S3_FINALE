@@ -73,7 +73,6 @@
                   <h6 class="mb-1">Objets disponibles</h6>
                   <p class="text-sm mb-0">Tous les objets qui n'appartiennent pas à votre compte</p>
                 </div>
-                <a href="/met_object" class="btn btn-outline-primary btn-sm mb-0">Voir JSON</a>
               </div>
             </div>
             <div class="card-body p-3">

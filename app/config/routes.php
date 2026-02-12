@@ -293,13 +293,6 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('exchange', []);
 	});
 
-	$router->get('/met_object', function() use ($app) {
-		if (!isset($_SESSION['user_id'])) {
-			$app->redirect('/');
-			return;
-		}
-		$app->render('met_object', []);
-	});
 
 	$router->get('/api/exchange/target', function() use ($app) {
 		if (!isset($_SESSION['user_id'])) {
