@@ -95,7 +95,7 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Billing</span>
+                    <span class="nav-link-text ms-1">Transaction</span>
                 </a>
             </li>
             <li class="nav-item">
