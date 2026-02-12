@@ -13,6 +13,8 @@ class ObjetImgController {
     }
 
     public function uploadImageJson() {
+        error_log('uploadImageJson appelé');
+        
         $userId = $_SESSION['user_id'] ?? null;
         if (!$userId) {
             error_log('Upload image: utilisateur non connecté');

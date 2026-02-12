@@ -80,4 +80,8 @@ class ObjetController {
     public function updateObjet($id, $data){
         return $this->objetModel->update($id, $data);
     }
+
+    public function update_inactif($id){
+        return $this->objetModel->update_inactif($id);
+    }
 }

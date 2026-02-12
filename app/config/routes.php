@@ -453,16 +453,40 @@ $router->group('', function(Router $router) use ($app) {
 	});
 
 	// Modifier un objet 
-	$router->post('/api/update/objet/@id', function($id) use ($app) {
+	$router->post('/api/update/objet/@id', function($id) use ($app) {		
 		$objetController = new ObjetController();
 		
 		// Récupérer les données JSON du corps de la requête
 		$json_input = file_get_contents('php://input');
+		
 		$data = json_decode($json_input, true);
 		
 		$result = $objetController->updateObjet($id, $data);
+		
 		$app->json($result);
 	});
 
+	// Rendre un objet inactif
+	$router->post('/api/inactif/objet/@id', function($id) use ($app) {		
+		$objetController = new ObjetController();
+		
+		$result = $objetController->update_inactif($id);
+		
+		$app->json($result);
+	});
+
+	// Logout
+	$router->get('/logout', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$userController = new UserController();
+		$result = $userController->logout($_SESSION['user_id']);
+		if ($result) {
+			$app->redirect('/');
+			return;
+		}
+	});
 
 }, [ SecurityHeadersMiddleware::class ]);

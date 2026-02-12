@@ -27,6 +27,7 @@ class Objet {
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
             WHERE o.id_proprietaire <> :user_id
+            AND o.date_inactif IS NULL
             ORDER BY o.date_creation DESC
             LIMIT :limit OFFSET :offset
         ");
@@ -72,6 +73,7 @@ class Objet {
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
             WHERE $whereSql
+            AND o.date_inactif IS NULL
             ORDER BY o.date_creation DESC
             LIMIT :limit OFFSET :offset
         ");
@@ -117,6 +119,7 @@ class Objet {
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
             WHERE o.id_objet = ?
+            AND o.date_inactif IS NULL
         ");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
@@ -129,6 +132,7 @@ class Objet {
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
+            WHERE o.date_inactif IS NULL
             ORDER BY $orderBy
             LIMIT ? OFFSET ?
         ");
@@ -143,6 +147,7 @@ class Objet {
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             WHERE o.id_proprietaire = :user_id
+            AND o.date_inactif IS NULL
               AND NOT EXISTS (
                 SELECT 1
                 FROM tk_echanges e
@@ -165,6 +170,7 @@ class Objet {
             FROM tk_objets o
             LEFT JOIN tk_user u ON o.id_proprietaire = u.id_user
             WHERE o.id_categorie = ?
+            AND o.date_inactif IS NULL
             ORDER BY o.date_creation DESC
             LIMIT ? OFFSET ?
         ");
@@ -173,12 +179,12 @@ class Objet {
     }
 
     public function countAll() {
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM tk_objets");
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM tk_objets WHERE date_inactif IS NULL");
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 
     public function countByUser($userId) {
-        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM tk_objets WHERE id_proprietaire = ?");
+        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM tk_objets WHERE id_proprietaire = ? AND date_inactif IS NULL");
         $stmt->execute([$userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
@@ -208,6 +214,8 @@ class Objet {
     }
 
     public function update($id, $data) {
+        error_log("Update modèle appelé avec ID: " . $id . " et data: " . print_r($data, true));
+        
         $fields = [];
         $values = [];
 
@@ -216,36 +224,51 @@ class Objet {
             $values[":$key"] = $value;
         }
 
-        if (empty($fields)) return false;
+        if (empty($fields)) {
+            error_log("Aucun champ à mettre à jour");
+            return false;
+        }
 
         $sql = "UPDATE tk_objets SET " . implode(', ', $fields) . " WHERE id_objet = :id";
         $values[':id'] = $id;
+        
+        error_log("SQL: " . $sql);
+        error_log("Values: " . print_r($values, true));
 
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute($values);
+        try {
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute($values);
+            error_log("Execute result: " . ($result ? 'true' : 'false'));
+            error_log("Error info: " . print_r($stmt->errorInfo(), true));
+            return $result;
+        } catch (PDOException $e) {
+            error_log("PDOException: " . $e->getMessage());
+            return false;
+        }
     }
 
-    public function delete($id) {
+    public function update_inactif($id) {
         $this->db->beginTransaction();
         try {
-            // Supprimer les images associées (optionnel - selon ta logique)
-            $stmt = $this->db->prepare("DELETE FROM tk_objet_img WHERE id_objet = ?");
-            $stmt->execute([$id]);
-
-            // Supprimer l'objet
-            $stmt = $this->db->prepare("DELETE FROM tk_objets WHERE id_objet = ?");
-            $stmt->execute([$id]);
+            // Rendre l'objet inactif
+            $stmt = $this->db->prepare("UPDATE tk_objets SET date_inactif = NOW() WHERE id_objet = ?");
+            $result = $stmt->execute([$id]);
+            
+            if (!$result) {
+                throw new Exception('Échec de la mise à jour');
+            }
 
             $this->db->commit();
             return true;
         } catch (\Exception $e) {
             $this->db->rollBack();
+            error_log("Erreur update_inactif: " . $e->getMessage());
             return false;
         }
     }
 
     public function belongsToUser($objetId, $userId) {
-        $stmt = $this->db->prepare("SELECT id_proprietaire FROM tk_objets WHERE id_objet = ?");
+        $stmt = $this->db->prepare("SELECT id_proprietaire FROM tk_objets WHERE id_objet = ? AND date_inactif IS NULL");
         $stmt->execute([$objetId]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row && $row['id_proprietaire'] == $userId;
@@ -258,6 +281,7 @@ class Objet {
             FROM tk_objets o
             LEFT JOIN tk_categorie c ON o.id_categorie = c.id_categorie
             WHERE o.id_proprietaire = ?
+            AND o.date_inactif IS NULL
             ORDER BY o.date_creation DESC
         ");
         $stmt->execute([$userId]);
@@ -265,7 +289,7 @@ class Objet {
     }
 
     public function getCount() {
-        $sql = "SELECT COUNT(*) as total FROM tk_objets";
+        $sql = "SELECT COUNT(*) as total FROM tk_objets WHERE date_inactif IS NULL";
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
@@ -295,7 +319,8 @@ class Objet {
         $stmt = $this->db->prepare("
             SELECT *
             FROM tk_v_info_objet o
-            WHERE o.id_objet = ?
+            WHERE o.id_objet = ? 
+            AND date_inactif IS NULL
         ");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;

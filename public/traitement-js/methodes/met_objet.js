@@ -183,19 +183,34 @@ async function add(data) {
     return true;
 }
 
-async function delet(id_objet) {
-    const objet = await fetch(`/api/delete/objet/${id_objet}`);
-    if (!objet.ok) {
-        alert("Echec de delete objet "+id_objet); 
+async function inactifObjet(id_objet) {
+    try {
+        const response = await fetch(`/api/inactif/objet/${id_objet}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('Echec de inactif objet', id_objet, 'Status:', response.status);
+            alert("Echec de la désactivation de l'objet "+id_objet); 
+            return false;
+        }
+
+        const result = await response.json();
+        console.log('Résultat inactifObjet:', result);
+        return result;
+    } catch (error) {
+        console.error('Erreur dans inactifObjet:', error);
+        alert("Erreur lors de la désactivation de l'objet "+id_objet); 
         return false;
     }
-
-    alert("Objet "+id_objet+" supprimer!"); 
-    return true;
 }
 
-async function update(id_objet,data) {
+async function updateObjet(id_objet,data) {
     const url = buildUrl(`/api/update/objet/${id_objet}`);
+    
     const options = {
         method: 'POST',
         headers: {
@@ -203,25 +218,32 @@ async function update(id_objet,data) {
         },
         body: JSON.stringify(data)
     };
-    const send = await fetch(url, options);
-    if (!send.ok){
-        alert("Update Objet non reussi");
-        return false;
+    
+    try {
+        const send = await fetch(url, options);
+
+        if (!send.ok){
+            const errorText = await send.text();
+            alert("Update Objet non reussi - Status: " + send.status);
+            return false;
+        }
+        
+        const result = await send.json();
+        return true;
+    } catch (error) {
+        throw error;
     }
-    return true;
 }
 
 async function getObjet_User(id_user) {
     try {
         const objets = await fetch(`/api/getObjet/${id_user}`);
         if (!objets.ok) {
-            console.error(`Erreur HTTP: ${objets.status} - ${objets.statusText}`);
             throw new Error("Erreur lors de la recuperation des objets");
         }
         const data = await objets.json();
         return data;
     } catch (error) {
-        console.error('Erreur getObjet_User:', error);
         throw error;
     }
 }
@@ -269,7 +291,6 @@ async function getObjetById(id_objet) {
         const data = await objet.json();
         return data;
     } catch (error) {
-        console.error('Erreur getObjetById:('+id_objet+") "+ error);
         throw error;
     }
 }
