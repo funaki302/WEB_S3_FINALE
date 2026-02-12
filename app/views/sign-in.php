@@ -5,15 +5,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= BASE_URL ?>/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="<?= BASE_URL ?>/assets/img/favicon.png">
   <title>
    EXAM FINAL BY 
   </title>
   <!--     Fonts and icons     -->
-  <link href="/assets/online/css/online.css" rel="stylesheet" />
+  <link href="<?= BASE_URL ?>/assets/online/css/online.css" rel="stylesheet" />
    <!-- CSS Files -->
-  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="<?= BASE_URL ?>/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
  
 </head>
 
@@ -37,13 +37,13 @@
             <div class="collapse navbar-collapse" id="navigation">
               <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
                 <li class="nav-item">
-                  <a class="nav-link me-2" href="/sign-up">
+                  <a class="nav-link me-2" href="<?= BASE_URL ?>/sign-up">
                     <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
                     Sign Up
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-2" href="/sign-in">
+                  <a class="nav-link me-2" href="<?= BASE_URL ?>/sign-in">
                     <i class="fas fa-key opacity-6 text-dark me-1"></i>
                     Sign In
                   </a>
@@ -88,7 +88,7 @@
                   <?php if ($errMsg !== '') : ?>
                     <div class="alert alert-danger text-white" role="alert"><?= htmlspecialchars($errMsg) ?></div>
                   <?php endif; ?>
-                  <form id="signInForm" role="form" action="/login" method="post">
+                  <form id="signInForm" role="form" action="<?= BASE_URL ?>/login" method="post">
                     <label>Email</label>
                     <div class="mb-3">
                       <input type="email" id="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
@@ -98,7 +98,7 @@
                     <div class="mb-3 position-relative">
                       <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
                       <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;">
-                        <img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
+                        <img src="<?= BASE_URL ?>/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" name="want_admin" value="1">
@@ -113,7 +113,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
-                    <a href="/sign-up" class="text-info text-gradient font-weight-bold">Sign up</a>
+                    <a href="<?= BASE_URL ?>/sign-up" class="text-info text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>
@@ -183,10 +183,10 @@
   </footer>
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <!--   Core JS Files   -->
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -199,8 +199,8 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-  <script src="/traitement-js/sign/singin.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="<?= BASE_URL ?>/traitement-js/sign/singin.js"></script>
 </body>
 
 </html>

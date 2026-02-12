@@ -114,6 +114,7 @@ function loadObjet(data){
     const div_objet = document.querySelector('#info-objet');
     const currentUserId = getCurrentUserId();
     const isOwner = currentUserId && String(data.id_proprietaire) === String(currentUserId);
+    const exchangeUrl = `/exchange?target=${data.id_objet}`;
     
     console.log("Debug propriétaire :", {
         currentUserId,
@@ -138,21 +139,25 @@ function loadObjet(data){
                     <i class="fas fa-trash"></i> Supprimer
                 </button>
             </div>
-            ` : '<small class="text-muted">Vous n’êtes pas propriétaire</small>'}
+            ` : `<div class="modal-footer">
+                  <a href="${exchangeUrl}" class="btn bg-gradient-primary">Proposer un échange</a>
+                </div>`
+            }
         </div>
     `;
-    
-    const btn_modofier = div_objet.querySelector('.btn-outline-primary');
-    btn_modofier.addEventListener('click',async function (e) {
-      e.preventDefault();
-      await editObjet(data.id_objet);
-    });
-
-    const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
-     btn_supprimer.addEventListener('click',async function (e) {
-      e.preventDefault();
-      await supObjet(data.id_objet);
-    });
+    if (isOwner) {
+      const btn_modofier = div_objet.querySelector('.btn-outline-primary');
+      btn_modofier.addEventListener('click',async function (e) {
+        e.preventDefault();
+        await editObjet(data.id_objet);
+      });
+  
+      const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
+       btn_supprimer.addEventListener('click',async function (e) {
+        e.preventDefault();
+        await supObjet(data.id_objet);
+      });
+    }
 }
 
 function loadProprio(data){

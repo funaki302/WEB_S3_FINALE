@@ -18,8 +18,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= BASE_URL ?>/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="<?= BASE_URL ?>/assets/img/favicon.png">
   <title>
     Soft UI Dashboard 3 by Creative Tim
   </title>
@@ -31,7 +31,7 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
-  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="<?= BASE_URL ?>/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -66,7 +66,7 @@
                     Clique sur l’avatar ou le nom pour voir le profil.
                   </p>
                 </div>
-                <form method="get" action="/tables" class="d-flex align-items-center gap-2" style="min-width: 320px;">
+                <form method="get" action="<?= BASE_URL ?>/tables" class="d-flex align-items-center gap-2" style="min-width: 320px;">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
                     <input type="text" class="form-control" id="users-search" name="search" placeholder="Rechercher un nom..." value="<?= htmlspecialchars($searchVal) ?>">
@@ -125,14 +125,14 @@
                         <div class="d-flex px-2 py-1">
                           <div>
 
-                            <a href="/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-decoration-none">
+                            <a href="<?= BASE_URL ?>/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-decoration-none">
                               <img src="<?= htmlspecialchars($avatar) ?>" class="avatar avatar-sm me-3" alt="user<?= htmlspecialchars((string)$idUser) ?>">
                             </a>
 
                           </div>
                           <div class="d-flex flex-column justify-content-center">
                             <h6 class="mb-0 text-sm">
-                              <a href="/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-dark text-decoration-none">
+                              <a href="<?= BASE_URL ?>/detailsprofill/<?= htmlspecialchars((string)$idUser) ?>" class="text-dark text-decoration-none">
                                 <?= htmlspecialchars($name) ?>
                               </a>
                             </h6>
@@ -333,10 +333,10 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -351,7 +351,7 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-  <script src="/traitement-js/users_table_search.js"></script>
+  <script src="<?= BASE_URL ?>/traitement-js/users_table_search.js"></script>
 
 </body>
 

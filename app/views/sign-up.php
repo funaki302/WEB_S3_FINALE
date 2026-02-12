@@ -5,8 +5,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= BASE_URL ?>/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="<?= BASE_URL ?>/assets/img/favicon.png">
   <title>
     Soft UI Dashboard 3 by Creative Tim
   </title>
@@ -18,7 +18,7 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
-  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="<?= BASE_URL ?>/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -41,13 +41,13 @@
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
           <li class="nav-item">
-            <a class="nav-link me-2" href="/sign-up">
+            <a class="nav-link me-2" href="<?= BASE_URL ?>/sign-up">
               <i class="fas fa-user-circle opacity-6  me-1"></i>
               Sign Up
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-2" href="/sign-in">
+            <a class="nav-link me-2" href="<?= BASE_URL ?>/sign-in">
               <i class="fas fa-key opacity-6  me-1"></i>
               Sign In
             </a>
@@ -130,7 +130,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <form role="form text-left" method="post" action="/sign" id="signupForm">
+                <form role="form text-left" method="post" action="<?= BASE_URL ?>/sign" id="signupForm">
                   <div class="mb-3 position-relative ">
                     <input type="text" name="name" id="name" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="name-addon">
                     <div id="nameError" class="text-danger small position-absolute" style="top: 100%; left: 0; z-index: 5;"></div>
@@ -146,7 +146,7 @@
                   <div class="mb-3">
                     <div class="position-relative">
                       <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
-                      <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;z-index: 10;"><img src="/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
+                      <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;z-index: 10;"><img src="<?= BASE_URL ?>/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
                     </div>
                     <div id="passwordError" class="text-danger small"></div>
                   </div>
@@ -159,7 +159,7 @@
                   <div class="text-center">
                     <button type="submit" id="signupBtn" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                   </div>
-                  <p class="text-sm mt-3 mb-0">Already have an account? <a href="/" class="text-dark font-weight-bolder">Sign in</a></p>
+                  <p class="text-sm mt-3 mb-0">Already have an account? <a href="<?= BASE_URL ?>/" class="text-dark font-weight-bolder">Sign in</a></p>
                 </form>
               </div>
             </div>
@@ -223,10 +223,10 @@
     <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   </main>
   <!--   Core JS Files   -->
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -239,8 +239,8 @@
   <!-- Github buttons -->
   <script async defer src="#"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
-  <script src="/traitement-js/sign/singup.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="<?= BASE_URL ?>/traitement-js/sign/singup.js"></script>
 </body>
 
 </html>

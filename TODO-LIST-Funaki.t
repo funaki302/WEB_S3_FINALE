@@ -20,7 +20,7 @@ page : Dashboard.php :
   -> [ok] nombre de Categorie :
     [ok] fonction : Categorie.php -> getCountCategorie() ;
 
-  -> [ok] nombre d'objet :
+  -> [ok] nombre d objet :
     [ok] fonction : object.php -> getCountObject() ;
   
  - [ok] contrroler :

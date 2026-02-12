@@ -90,7 +90,7 @@ function renderObjectsCards(objets) {
               <p class="mb-3 text-sm">${desc}</p>
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center" style="gap: .5rem;">
-                  <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#modalObjet${id}">Voir</button>
+                  <button type="button" id="voir" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" >Voir</button>
                   <a class="btn bg-gradient-primary btn-sm mb-0" href="${exchangeUrl}">Exchange</a>
                 </div>
                 <p class="text-sm text-dark font-weight-bold mb-0">${prix} Ar</p>
@@ -121,6 +121,12 @@ function renderObjectsCards(objets) {
             </div>
           </div>
         `;
+
+        const btn_voir = card.querySelector('#voir');
+        btn_voir.addEventListener('click', function (e) {
+            e.preventDefault();
+            voir_fiche(id);
+        })
 
         container.appendChild(card);
     });
@@ -293,4 +299,9 @@ async function getObjetById(id_objet) {
     } catch (error) {
         throw error;
     }
+}
+
+function voir_fiche(id_objet) {
+  const url = `/view/objet/${id_objet}`;
+  window.location.href = url;
 }

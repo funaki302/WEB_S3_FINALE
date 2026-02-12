@@ -18,8 +18,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= BASE_URL ?>/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="<?= BASE_URL ?>/assets/img/favicon.png">
   <title>
     Soft UI Dashboard 3 by Creative Tim
   </title>
@@ -27,7 +27,7 @@
   <link href="#" rel="stylesheet" />
   <link href="#" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="<?= BASE_URL ?>/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
   <style>
     .my-objets-scroll {
@@ -63,7 +63,7 @@
                   <h6 class="mb-1">Proposer un échange</h6>
                   <p class="text-sm mb-0">Choisis un de tes objets pour l'échanger avec l'objet sélectionné</p>
                 </div>
-                <a href="/objets" class="btn btn-outline-primary btn-sm mb-0">Retour liste</a>
+                <a href="<?= BASE_URL ?>/objets" class="btn btn-outline-primary btn-sm mb-0">Retour liste</a>
               </div>
             </div>
             <div class="card-body p-3">
@@ -81,7 +81,7 @@
 
                 <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center mb-3 mb-lg-0">
                   <div class="text-center">
-                    <img src="/assets/icons/dashbord-icon/exchange.svg" alt="Exchange" style="width: 56px; height: 56px;" />
+                    <img src="<?= BASE_URL ?>/assets/icons/dashbord-icon/exchange.svg" alt="Exchange" style="width: 56px; height: 56px;" />
                     <div class="text-sm text-secondary mt-2">Trade</div>
                   </div>
                 </div>
@@ -119,13 +119,13 @@
     </div>
   </div>
 
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="/traitement-js/methodes/met_exchange.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/traitement-js/methodes/met_exchange.js"></script>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="<?= BASE_URL ?>/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
 
 </body>
 

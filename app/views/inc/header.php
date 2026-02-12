@@ -330,16 +330,16 @@ $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <button type="button" id="dark-mode-toggle" class="btn btn-outline-primary btn-sm mb-0 me-3" aria-label="Toggle dark mode">
-                        <img src="/assets/icons/theme-icon/moon-stars-fill.svg" alt="" class="theme-icon me-1" id="dark-mode-icon" />
+                        <img src="<?= BASE_URL ?>/assets/icons/theme-icon/moon-stars-fill.svg" alt="" class="theme-icon me-1" id="dark-mode-icon" />
                         <span class="d-sm-inline d-none" id="dark-mode-label">Dark</span>
                     </button>
                 </li>
 
                 <li class="nav-item d-flex align-items-center">
-                    <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/objets">Objets</a>
+                    <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="<?= BASE_URL ?>/objets">Objets</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
-                    <a href="/logout" class="nav-link text-body font-weight-bold px-0">
+                    <a href="<?= BASE_URL ?>/logout" class="nav-link text-body font-weight-bold px-0">
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">Sign Out</span>
                     </a>
@@ -360,7 +360,7 @@ $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
                             <a class="dropdown-item border-radius-md" href="javascript:;">
                                 <div class="d-flex py-1">
                                     <div class="my-auto">
-                                        <img src="/assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                                        <img src="<?= BASE_URL ?>/assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h6 class="text-sm font-weight-normal mb-1">
@@ -378,7 +378,7 @@ $onlineDotClass = $isAdmin ? 'bg-gradient-danger' : 'bg-gradient-success';
                             <a class="dropdown-item border-radius-md" href="javascript:;">
                                 <div class="d-flex py-1">
                                     <div class="my-auto">
-                                        <img src="/assets/img/small-logos/logo-spotify.svg"
+                                        <img src="<?= BASE_URL ?>/assets/img/small-logos/logo-spotify.svg"
                                             class="avatar avatar-sm bg-gradient-dark  me-3 ">
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">

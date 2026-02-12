@@ -18,8 +18,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= BASE_URL ?>/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="<?= BASE_URL ?>/assets/img/favicon.png">
   <title>
     Soft UI Dashboard 3 by Creative Tim
   </title>
@@ -31,7 +31,7 @@
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
-  <link id="pagestyle" href="/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link id="pagestyle" href="<?= BASE_URL ?>/assets/css/soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -78,7 +78,7 @@
                         </div>
                       </div>
                       <div class="ms-auto w-20 d-flex align-items-end justify-content-end">
-                        <img class="w-60 mt-2" src="/assets/img/logos/mastercard.png" alt="logo">
+                        <img class="w-60 mt-2" src="<?= BASE_URL ?>/assets/img/logos/mastercard.png" alt="logo">
                       </div>
                     </div>
                   </div>
@@ -135,14 +135,14 @@
                   <div class="row">
                     <div class="col-md-6 mb-md-0 mb-4">
                       <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
-                        <img class="w-10 me-3 mb-0" src="/assets/img/logos/mastercard.png" alt="logo">
+                        <img class="w-10 me-3 mb-0" src="<?= BASE_URL ?>/assets/img/logos/mastercard.png" alt="logo">
                         <h6 class="mb-0">****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;7852</h6>
                         <i class="fas fa-pencil-alt ms-auto text-dark cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Card"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
-                        <img class="w-10 me-3 mb-0" src="/assets/img/logos/visa.png" alt="logo">
+                        <img class="w-10 me-3 mb-0" src="<?= BASE_URL ?>/assets/img/logos/visa.png" alt="logo">
                         <h6 class="mb-0">****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;****&nbsp;&nbsp;&nbsp;5248</h6>
                         <i class="fas fa-pencil-alt ms-auto text-dark cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Card"></i>
                       </div>
@@ -209,7 +209,7 @@
                         <div class="d-flex align-items-center justify-content-between mt-2">
                           <div class="d-flex align-items-center" style="min-width: 0;">
                             <?php if ($receivedImg !== '') : ?>
-                              <img src="/uploads/objets/<?= htmlspecialchars($receivedImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="me-2">
+                              <img src="<?= BASE_URL ?>/uploads/objets/<?= htmlspecialchars($receivedImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="me-2">
                             <?php endif; ?>
                             <div class="d-flex flex-column" style="min-width:0;">
                               <span class="text-xs text-secondary">Reçu</span>
@@ -218,7 +218,7 @@
                           </div>
 
                           <div class="text-center" style="width: 42px;">
-                            <img src="/assets/icons/icon-exchange/arrow-left-right.svg" alt="exchange" style="width:18px;height:18px;">
+                            <img src="<?= BASE_URL ?>/assets/icons/icon-exchange/arrow-left-right.svg" alt="exchange" style="width:18px;height:18px;">
                           </div>
 
                           <div class="d-flex align-items-center justify-content-end" style="min-width: 0;">
@@ -229,7 +229,7 @@
                               </span>
                             </div>
                             <?php if ($givenImg !== '') : ?>
-                              <img src="/uploads/objets/<?= htmlspecialchars($givenImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="ms-2">
+                              <img src="<?= BASE_URL ?>/uploads/objets/<?= htmlspecialchars($givenImg) ?>" alt="" style="width:34px;height:34px;object-fit:cover;border-radius:10px;" class="ms-2">
                             <?php endif; ?>
                           </div>
                         </div>
@@ -442,10 +442,10 @@
     </div>
   </main>
   <!--   Core JS Files   -->
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -458,7 +458,7 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+  <script src="<?= BASE_URL ?>/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
 
 </body>
 

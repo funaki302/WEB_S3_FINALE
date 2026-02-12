@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="text-end">
-                  <a href="/tables" class="btn btn-outline-primary btn-sm mb-0">
+                  <a href="<?= BASE_URL ?>/tables" class="btn btn-outline-primary btn-sm mb-0">
                     <i class="fa fa-arrow-left me-1"></i>
                     Retour
                   </a>
@@ -298,7 +298,7 @@
                             <i class="fa fa-eye me-1"></i>
                             Voir
                           </button>
-                          <a class="btn bg-gradient-primary btn-sm mb-0" href="/exchange?target=<?= htmlspecialchars((string)$oid) ?>">
+                          <a class="btn bg-gradient-primary btn-sm mb-0" href="<?= BASE_URL ?>/exchange?target=<?= htmlspecialchars((string)$oid) ?>">
                             <i class="fa fa-right-left me-1"></i>
                             Échanger
                           </a>
@@ -324,7 +324,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary btn-sm mb-0" data-bs-dismiss="modal">Fermer</button>
-                            <a class="btn bg-gradient-primary btn-sm mb-0" href="/exchange?target=<?= htmlspecialchars((string)$oid) ?>">
+                            <a class="btn bg-gradient-primary btn-sm mb-0" href="<?= BASE_URL ?>/exchange?target=<?= htmlspecialchars((string)$oid) ?>">
                               <i class="fa fa-right-left me-1"></i>
                               Échanger
                             </a>
