@@ -81,7 +81,7 @@ class ObjetController {
         return $this->objetModel->update($id, $data);
     }
 
-    public function deleteObjet($id){
-        return $this->objetModel->delete($id);
+    public function update_inactif($id){
+        return $this->objetModel->update_inactif($id);
     }
 }

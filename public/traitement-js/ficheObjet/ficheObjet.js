@@ -134,7 +134,9 @@ function loadObjet(data){
                 <button class="btn btn-sm btn-outline-primary" title="Modifier">
                     <i class="fas fa-edit"></i> Modifier
                 </button>
-                
+                <button class="btn btn-sm btn-outline-danger" title="Supprimer">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
             </div>
             ` : '<small class="text-muted">Vous n’êtes pas propriétaire</small>'}
         </div>
@@ -146,16 +148,11 @@ function loadObjet(data){
       await editObjet(data.id_objet);
     });
 
-    /* 
-    <button class="btn btn-sm btn-outline-danger" title="Supprimer">
-        <i class="fas fa-trash"></i> Supprimer
-    </button>
-    */
-    //const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
-    /* btn_supprimer.addEventListener('click',async function (e) {
+    const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
+     btn_supprimer.addEventListener('click',async function (e) {
       e.preventDefault();
-      await deleteObjet(data.id_objet);
-    }); */
+      await supObjet(data.id_objet);
+    });
 }
 
 function loadProprio(data){
@@ -281,11 +278,22 @@ async function editObjet(idObjet) {
   loadForm(data);
 }
 
-async function deleteObjet(idObjet) {
+async function supObjet(idObjet) {
+    // Ajouter une confirmation avant de rendre l'objet inactif
+    if (!confirm('Êtes-vous sûr de vouloir rendre cet objet inactif ? Il ne sera plus visible mais sera conservé.')) {
+        return;
+    }
+    
     try {
-      await deleteObjet(idObjet);
+      const result = await inactifObjet(idObjet);
+      if (result) {
+        alert('Objet rendu inactif avec succès');
+        const url = `/profile`;
+        window.location.href = url;
+      }
     }catch(error) {
-      alert('Erreur lors de la suppression');
+      console.error('Erreur lors de la supObjet:', error);
+      alert('Erreur lors de la désactivation de l\'objet');
     }
 }
 
