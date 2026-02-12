@@ -139,17 +139,19 @@ function loadObjet(data){
             ` : '<small class="text-muted">Vous n’êtes pas propriétaire</small>'}
         </div>
     `;
+    
     const btn_modofier = div_objet.querySelector('.btn-outline-primary');
+    btn_modofier.addEventListener('click',async function (e) {
+      e.preventDefault();
+      await editObjet(data.id_objet);
+    });
+
     /* 
     <button class="btn btn-sm btn-outline-danger" title="Supprimer">
         <i class="fas fa-trash"></i> Supprimer
     </button>
     */
     //const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
-    btn_modofier.addEventListener('click',async function (e) {
-      e.preventDefault();
-      await editObjet(data.id_objet);
-    });
     /* btn_supprimer.addEventListener('click',async function (e) {
       e.preventDefault();
       await deleteObjet(data.id_objet);
@@ -281,9 +283,9 @@ async function editObjet(idObjet) {
 
 async function deleteObjet(idObjet) {
     try {
-        await deleteObjet(idObjet);
+      await deleteObjet(idObjet);
     }catch(error) {
-        alert('Erreur lors de la suppression');
+      alert('Erreur lors de la suppression');
     }
 }
 
