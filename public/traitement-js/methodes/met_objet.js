@@ -305,3 +305,26 @@ function voir_fiche(id_objet) {
   const url = `/view/objet/${id_objet}`;
   window.location.href = url;
 }
+
+async function getObjetsByMarge(min, max, id){
+    try {
+        const url = buildUrl("/api/getMarge");
+        const donne = {'min': min, 'max': max, 'idProprio': id};
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(donne)
+        };
+        const objet = await fetch(url, options);
+        if (!objet.ok){
+            alert("Erreur de getObjetsByMarge: "+min+" - "+max);
+            return null;
+        }
+        const data = await objet.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}

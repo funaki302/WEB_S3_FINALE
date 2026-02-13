@@ -325,5 +325,17 @@ class Objet {
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
-    
+
+    // Prendre les objets dans une marge de prix
+    public function getObjetsByMarge($min, $max, $idProprio) {
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM tk_v_info_objet o
+            WHERE o.id_proprietaire != ? 
+            AND (o.prix_estime >= ? AND o.prix_estime <= ?)
+            AND date_inactif IS NULL
+        ");
+        $stmt->execute([$idProprio, $min, $max]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

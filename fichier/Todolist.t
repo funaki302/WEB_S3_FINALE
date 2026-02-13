@@ -143,3 +143,32 @@ FICHE_OBJET:
   [] profile.php
   [] fiche_objet.php
 } 
+
+
+/ 12 fevrier 2026 /
+
+[] ajouter fonctionnalite dans fiche_objet.php{
+  [] ajouter 2 liens = +-10% et +-20%
+  [] si on clique sur un lien -> afficher les objets qui ont un prix 
+    dans la fourchette de +-10% ou +-20% du prix de l objet afficher
+  [] ajouter fonction dans met_objet.js{
+    [] getMargeObjet(id_objet, marge%)
+      - faire appel a fecth vers '/api/getMarge/' avec data={id_objet, marge%}
+      - return la liste des objet en json
+  }
+  [] ajouter url dans routes.php{
+    [] '/api/getMarge/' avec data={id_objet, marge%}
+     - appel getMarge() de ObjetController
+     - return la liste des objet en json
+  }
+  [] ajouter fonction dans ficheObjet.js{
+    [] loadMarge(marge%)
+     - affiche les objets qui ont un prix dans la fourchette de 
+       +-10% ou +-20% du prix de l objet afficher
+     - montre le % de difference de prix entre objet du user et 
+       objet de la liste 
+     - met  un bouton 'Echanger' sur chaque objet afficher
+      . cliquer sur 'Echanger'-> rediriger vers la page de demande d echange avec 
+        l objet selectionner
+  }
+}

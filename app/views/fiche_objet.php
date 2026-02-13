@@ -81,7 +81,12 @@
               </div>
             </div>
           </div>
-        </div>      
+        </div>  
+        <!-- Liste des objet des autre user dans la marge -->
+        <div class="card-body p-3">
+          <div class="row" id="liste-marge"> 
+          </div>
+        </div>    
       <!-- Footer -->
       <?php include __DIR__."/inc/footer.php"; ?>
     </div>

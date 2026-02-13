@@ -84,4 +84,8 @@ class ObjetController {
     public function update_inactif($id){
         return $this->objetModel->update_inactif($id);
     }
+
+    public function getObjetsByMarge($min, $max, $idProprio) {
+        return $this->objetModel->getObjetsByMarge($min, $max, $idProprio);
+    }
 }

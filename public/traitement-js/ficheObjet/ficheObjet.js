@@ -123,7 +123,7 @@ function loadObjet(data){
     });
 
     div_objet.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
             <div>
               <h5 class="mb-0">${data.title || 'Sans titre'}</h5>
               <p class="text-sm text-secondary mb-0">
@@ -131,12 +131,18 @@ function loadObjet(data){
               </p>
             </div>
             ${isOwner ? `
-            <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-outline-primary" title="Modifier">
-                    <i class="fas fa-edit"></i> Modifier
+            <div class="d-flex align-items-center gap-1">
+                <button class="btn btn-xs btn-outline-primary px-2 py-1" id="min" title="Objets ±10%">
+                    10%
                 </button>
-                <button class="btn btn-sm btn-outline-danger" title="Supprimer">
-                    <i class="fas fa-trash"></i> Supprimer
+                <button class="btn btn-xs btn-outline-primary px-2 py-1" id="max" title="Objets ±20%">
+                    20%
+                </button>
+                <button class="btn btn-xs btn-outline-secondary px-2 py-1" id="edit" title="Modifier">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-xs btn-outline-danger px-2 py-1" id="delete" title="Supprimer">
+                    <i class="fas fa-trash"></i>
                 </button>
             </div>
             ` : `<div class="modal-footer">
@@ -146,17 +152,44 @@ function loadObjet(data){
         </div>
     `;
     if (isOwner) {
-      const btn_modofier = div_objet.querySelector('.btn-outline-primary');
+      // bouton modisier
+      const btn_modofier = div_objet.querySelector('#edit');
       btn_modofier.addEventListener('click',async function (e) {
         e.preventDefault();
         await editObjet(data.id_objet);
       });
   
-      const btn_supprimer = div_objet.querySelector('.btn-outline-danger');
+      // bouton supprimer
+      const btn_supprimer = div_objet.querySelector('#delete');
        btn_supprimer.addEventListener('click',async function (e) {
         e.preventDefault();
         await supObjet(data.id_objet);
       });
+
+      // bouton + - 10%
+      const btn_10 = div_objet.querySelector('#min');
+      btn_10.addEventListener('click',async function (e) {
+        e.preventDefault();
+        try {
+          const result = await getMargeObjet(data, 10);
+          await loadListeMargeObjet(result, data.prix_estime);
+        } catch (error) {
+          alert("Erreur lors du chargement des objets dans la marge de 10%: " + error.message);
+        }
+      });
+  
+      // bouton + - 20%
+      const btn_20 = div_objet.querySelector('#max');
+       btn_20.addEventListener('click',async function (e) {
+        e.preventDefault();
+        try {
+          const result = await getMargeObjet(data, 20);
+          await loadListeMargeObjet(result, data.prix_estime);
+        } catch (error) {
+          alert("Erreur lors du chargement des objets dans la marge de 20%: " + error.message);
+        }
+      });
+
     }
 }
 
@@ -437,4 +470,96 @@ async function loadForm(data) {
       alert('Erreur lors de la modification: ' + error.message);
     }
   });
+}
+
+async function getMargeObjet(data, marge) {
+  try {
+    const min = data.prix_estime - (data.prix_estime * marge / 100);
+    const max = data.prix_estime + (data.prix_estime * marge / 100);
+    const id = data.id_proprietaire;
+    const result = await getObjetsByMarge(min, max, id);
+    return result;
+  } catch (error) {
+    alert('Erreur lors de la récupération des objets dans la marge : +- ' + marge + '% :' + error.message);
+  }
+}
+
+async function loadListeMargeObjet(liste, prixReference) {
+  try {
+    
+    const listObjet = document.querySelector('#liste-marge');
+    if (!listObjet) {
+      alert("Div #liste-marge non trouvé");
+      return;
+    }
+    
+    // effacer le contenu du div
+    listObjet.innerHTML = "";
+    
+    // Vérifier si liste est null ou undefined
+    if (!liste) {
+      console.warn('liste est null ou undefined');
+      liste = [];
+    }
+
+    // Message si aucun objet trouvé
+    if (!Array.isArray(liste) || liste.length === 0) {
+      listObjet.innerHTML = '<div class="col-12"><p class="text-muted text-center">Aucun objet trouvé dans cette marge de prix.</p></div>';
+      return;
+    }
+    
+    // ajouter la liste des objets
+    if (Array.isArray(liste) && liste.length > 0) {
+      liste.forEach(objet => {
+        
+        const rawImg = objet && (objet.image || objet.img || objet.photo) ? String(objet.image || objet.img || objet.photo) : '';
+        const imgUrl = rawImg.trim() !== '' ? ('/uploads/objets/' + rawImg.replace(/^[/\\]+/, '')) : '../assets/img/home-decor-1.jpg';
+        
+        // calcul la difference de % avec le prix de référence
+        const diff = objet.prix_estime - prixReference;
+        const diffPercent = prixReference > 0 ? (diff / prixReference) * 100 : 0;
+        const cls = diffPercent > 0 ? 'bg-gradient-success' : (diffPercent < 0 ? 'bg-gradient-danger' : 'bg-gradient-secondary');
+
+
+        // lien vers page echange
+        const exchangeUrl = `/exchange?target=${objet.id_objet}`;
+
+        const col = document.createElement('div');
+        col.classList.add('col-xl-3', 'col-md-6', 'mb-xl-0', 'mb-4');
+        col.innerHTML = `
+          <div class="card card-blog card-plain">
+            <div class="position-relative">
+              <a class="d-block">
+                <img src="${escapeHtml(imgUrl)}" alt="" class="img-fluid shadow border-radius-md" style="width:90%; height:90px; object-fit:cover;">
+              </a>
+            </div>
+            <div class="card-body px-1 pb-0">
+              <p class="text-secondary mb-0 text-sm">
+                ${objet.prix_estime || '0'} Ar
+                <br><small class="text-xs">(${diffPercent.toFixed(1)}%)</small>
+              </p>
+              <a href="javascript:;">
+                <h5 class="font-weight-bolder">
+                  ${objet.title || 'Sans titre'}
+                  <br><small class="text-xs">(${objet.proprietaire_name || 'Inconnu'})</small>
+                </h5>
+              </a>
+              <p class="mb-4 text-sm">
+                ${objet.description || 'Pas de description'}
+              </p>
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="${exchangeUrl}" class="btn bg-gradient-primary">Proposer un échange</a>
+              </div>
+            </div>
+          </div>
+        `;
+    
+        listObjet.appendChild(col);
+      });
+    }
+    
+    
+  } catch (error) {
+    alert("Error de loadListeMargeObjet: " + error.message);
+  }
 }

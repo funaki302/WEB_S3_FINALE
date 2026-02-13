@@ -558,4 +558,18 @@ $router->group('', function(Router $router) use ($app) {
 		}
 	});
 
+	// Prendre les objets dans les marges + - 10% / 20% /api/getMarge/
+	$router->post('/api/getMarge', function() use ($app) {
+		$objetController = new ObjetController();
+		
+		// Récupérer les données JSON du corps de la requête
+		$json_input = file_get_contents('php://input');
+		
+		$data = json_decode($json_input, true);
+		
+		$result = $objetController->getObjetsByMarge($data['min'], $data['max'], $data['idProprio']);
+		
+		$app->json($result);
+	});
+
 }, [ SecurityHeadersMiddleware::class ]);
