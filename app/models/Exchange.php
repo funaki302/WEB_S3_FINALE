@@ -281,9 +281,11 @@ class Exchange {
     public function EchangeAttente($id_receveur){
         $sql = "
             SELECT e.*,
+            e.objet_proposer AS id_objet_proposer,
+            e.objet_requise AS id_objet_requise,
             u1.name name_proposeur, u1.email email_proposeur,
-            o1.title objet_proposer, o1.prix_estime prix_proposer,
-            o2.title objet_requise, o2.prix_estime prix_requise
+            o1.title objet_proposer_title, o1.prix_estime prix_proposer,
+            o2.title objet_requise_title, o2.prix_estime prix_requise
             FROM tk_echanges e
             JOIN tk_user u1 ON e.id_proposeur = u1.id_user
             JOIN tk_objets o1 ON e.objet_proposer = o1.id_objet
@@ -296,32 +298,32 @@ class Exchange {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-	public function getAllWithRequestedObjectDetails($status = null) {
-		$sql = "
-			SELECT
-				e.id_echange,
-				e.id_proposeur,
-				e.id_receveur,
-				e.objet_proposer,
-				e.objet_requise,
-				e.status,
-				e.date_proposition,
-				orq.title AS objet_requise_title,
-				orq.prix_estime AS objet_requise_prix,
-				(
-					SELECT oi.image
-					FROM tk_objet_img oi
-					WHERE oi.id_objet = orq.id_objet
-					ORDER BY oi.id_objet_img ASC
-					LIMIT 1
-				) AS objet_requise_image,
-				u1.name AS proposeur_name,
-				u2.name AS receveur_name
-			FROM tk_echanges e
-			LEFT JOIN tk_objets orq ON e.objet_requise = orq.id_objet
-			LEFT JOIN tk_user u1 ON e.id_proposeur = u1.id_user
-			LEFT JOIN tk_user u2 ON e.id_receveur = u2.id_user
-		";
+    public function getAllWithRequestedObjectDetails($status = null) {
+        $sql = "
+            SELECT
+                e.id_echange,
+                e.id_proposeur,
+                e.id_receveur,
+                e.objet_proposer,
+                e.objet_requise,
+                e.status,
+                e.date_proposition,
+                orq.title AS objet_requise_title,
+                orq.prix_estime AS objet_requise_prix,
+                (
+                    SELECT oi.image
+                    FROM tk_objet_img oi
+                    WHERE oi.id_objet = orq.id_objet
+                    ORDER BY oi.id_objet_img ASC
+                    LIMIT 1
+                ) AS objet_requise_image,
+                u1.name AS proposeur_name,
+                u2.name AS receveur_name
+            FROM tk_echanges e
+            LEFT JOIN tk_objets orq ON e.objet_requise = orq.id_objet
+            LEFT JOIN tk_user u1 ON e.id_proposeur = u1.id_user
+            LEFT JOIN tk_user u2 ON e.id_receveur = u2.id_user
+        ";
 
 		$params = [];
 		if ($status !== null && $status !== '') {

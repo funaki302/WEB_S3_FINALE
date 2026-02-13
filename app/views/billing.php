@@ -243,6 +243,18 @@
         </div>
       </div>
 
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0">Demandes en attente</h6>
+            </div>
+            <div class="card-body p-3" id="liste-demande-billing">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-7 mt-4">
           <div class="card">
@@ -459,6 +471,10 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="<?= BASE_URL ?>/assets/js/soft-ui-dashboard.min.js?v=1.1.0"></script>
+
+  <!-- Mes script -->
+  <script src="<?= BASE_URL ?>/traitement-js/methodes/met_exchange.js"></script>
+  <script src="<?= BASE_URL ?>/traitement-js/profile/profile.js"></script>
 
 </body>
 
