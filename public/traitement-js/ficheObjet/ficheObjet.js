@@ -123,7 +123,7 @@ function loadObjet(data){
     });
 
     div_objet.innerHTML = `
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <div class="d-flex align-items-center justify-content-between">
             <div>
               <h5 class="mb-0">${data.title || 'Sans titre'}</h5>
               <p class="text-sm text-secondary mb-0">
@@ -131,18 +131,18 @@ function loadObjet(data){
               </p>
             </div>
             ${isOwner ? `
-            <div class="d-flex align-items-center gap-1">
-                <button class="btn btn-xs btn-outline-primary px-2 py-1" id="min" title="Objets ±10%">
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary" id="min" title="10%">
                     10%
                 </button>
-                <button class="btn btn-xs btn-outline-primary px-2 py-1" id="max" title="Objets ±20%">
+                <button class="btn btn-sm btn-outline-primary" id="max" title="20%">
                     20%
                 </button>
-                <button class="btn btn-xs btn-outline-secondary px-2 py-1" id="edit" title="Modifier">
-                    <i class="fas fa-edit"></i>
+                <button class="btn btn-link text-dark text-sm mb-0 px-2 py-1" id="edit" type="button" data-action="edit" title="Modifier">
+                  <img src="/assets/icons/modified/pencil-square.svg" alt="Modifier" style="width: 16px; height: 16px;">
                 </button>
-                <button class="btn btn-xs btn-outline-danger px-2 py-1" id="delete" title="Supprimer">
-                    <i class="fas fa-trash"></i>
+                <button class="btn btn-link text-danger text-sm mb-0 px-2 py-1" id="delete" type="button" data-action="archive" title="Archiver">
+                  <img src="/assets/icons/modified/archive-fill.svg" alt="Archiver" style="width: 16px; height: 16px;">
                 </button>
             </div>
             ` : `<div class="modal-footer">
