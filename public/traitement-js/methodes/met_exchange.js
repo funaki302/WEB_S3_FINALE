@@ -7,6 +7,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+if (typeof window.buildUrl !== 'function') {
+  window.buildUrl = function buildUrl(path) {
+    return path;
+  };
+}
+
 function getQueryParam(name) {
   const url = new URL(window.location.href);
   return url.searchParams.get(name);

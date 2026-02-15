@@ -67,6 +67,36 @@ function renderExchangeStats(el, title, stats) {
   `;
 }
 
+const __firstImageCache = new Map();
+
+async function getFirstObjetImageUrl(idObjet) {
+  const id = parseInt(idObjet || 0, 10);
+  if (!id) return null;
+  if (__firstImageCache.has(id)) return __firstImageCache.get(id);
+  try {
+    const res = await fetch(`/api/objet/first-image?id_objet=${encodeURIComponent(String(id))}`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!res.ok) {
+      __firstImageCache.set(id, null);
+      return null;
+    }
+    const data = await res.json();
+    const url = data && data.url ? String(data.url) : null;
+    __firstImageCache.set(id, url);
+    return url;
+  } catch (e) {
+    __firstImageCache.set(id, null);
+    return null;
+  }
+}
+
+function goToObjetFiche(idObjet) {
+  const id = parseInt(idObjet || 0, 10);
+  if (!id) return;
+  window.location.href = `/view/objet/${id}`;
+}
+
 window.addEventListener('load', async function () {
     try {
       const id_user = getCurrentUserId();
@@ -74,29 +104,46 @@ window.addEventListener('load', async function () {
         alert('id_user manquant');
       }
 
-      // Ses informations
-      const info = await getUserById(id_user);
-      loadInformation(info);
+      const hasProfileInfo = !!document.querySelector('#profile-information');
+      const hasProfileObjets = !!document.querySelector('#liste');
+      const hasProfileDemande = !!document.querySelector('#liste-demande');
+      const hasBillingDemande = !!document.querySelector('#liste-demande-billing');
 
-      // Liste de demandes en attente
-      const listeDemande = await EchangesAttente(id_user);
-      loadListDemande(listeDemande);
+      // Liste de demandes en attente (profile + billing)
+      if (hasProfileDemande || hasBillingDemande) {
+        const listeDemande = await EchangesAttente(id_user);
+        if (hasProfileDemande) {
+          loadListDemande(listeDemande, '#liste-demande');
+        }
+        if (hasBillingDemande) {
+          loadListDemande(listeDemande, '#liste-demande-billing');
+        }
+      }
 
-      // Liste de ses objets
-      const liste = await getObjet_User(id_user);
-      await loadListObjet(liste);
+      // Partie profile uniquement
+      if (hasProfileInfo && typeof getUserById === 'function') {
+        const info = await getUserById(id_user);
+        loadInformation(info);
+      }
 
-      // Stats échanges
-      try {
-        const receivedRes = await fetch('/api/exchange/stats/received', { headers: { 'Accept': 'application/json' } });
-        const sentRes = await fetch('/api/exchange/stats/sent', { headers: { 'Accept': 'application/json' } });
-        const received = receivedRes.ok ? await receivedRes.json() : null;
-        const sent = sentRes.ok ? await sentRes.json() : null;
+      if (hasProfileObjets) {
+        const liste = await getObjet_User(id_user);
+        await loadListObjet(liste);
+      }
 
-        renderExchangeStats(document.querySelector('#profile-exchange-received'), 'Reçues', received);
-        renderExchangeStats(document.querySelector('#profile-exchange-sent'), 'Envoyées', sent);
-      } catch (e) {
-        // ignore
+      // Stats échanges (profile uniquement)
+      if (document.querySelector('#profile-exchange-received') || document.querySelector('#profile-exchange-sent')) {
+        try {
+          const receivedRes = await fetch('/api/exchange/stats/received', { headers: { 'Accept': 'application/json' } });
+          const sentRes = await fetch('/api/exchange/stats/sent', { headers: { 'Accept': 'application/json' } });
+          const received = receivedRes.ok ? await receivedRes.json() : null;
+          const sent = sentRes.ok ? await sentRes.json() : null;
+
+          renderExchangeStats(document.querySelector('#profile-exchange-received'), 'Reçues', received);
+          renderExchangeStats(document.querySelector('#profile-exchange-sent'), 'Envoyées', sent);
+        } catch (e) {
+          // ignore
+        }
       }
 
     } catch (e) {
@@ -443,8 +490,9 @@ function loadInformation(data) {
   `;
 }
 
-function loadListDemande(demandes) {
-  const div_demande = document.querySelector('#liste-demande');
+function loadListDemande(demandes, containerSelector = '#liste-demande') {
+  const div_demande = document.querySelector(containerSelector);
+  if (!div_demande) return;
   // Vider son contenue
   div_demande.innerHTML = "";
 
@@ -531,13 +579,15 @@ function loadListDemande(demandes) {
     demandes.forEach(dm => {
       const li = document.createElement('li');
       li.classList.add('list-group-item', 'border-0', 'd-flex', 'align-items-center', 'px-0', 'mb-2');
+      const objetProposerLabel = dm && (dm.objet_proposer_title || dm.objet_proposer) ? String(dm.objet_proposer_title || dm.objet_proposer) : '';
+      const objetRequiseLabel = dm && (dm.objet_requise_title || dm.objet_requise) ? String(dm.objet_requise_title || dm.objet_requise) : '';
       li.innerHTML = `
         <div class="avatar me-3">
           <img src="/assets/img/avatar.svg" alt="" class="border-radius-lg shadow">
         </div>
         <div class="d-flex align-items-start flex-column justify-content-center">
           <h6 class="mb-0 text-sm">${dm.name_proposeur}</h6>
-          <p class="mb-0 text-xs">Propose son : <strong>${dm.objet_proposer}</strong> contre ton : <strong>${dm.objet_requise}</strong> </p>
+          <p class="mb-0 text-xs">Propose son : <strong>${escapeHtml(objetProposerLabel)}</strong> contre ton : <strong>${escapeHtml(objetRequiseLabel)}</strong> </p>
           <a href="#" class="text-primary text-xs mt-1" style="opacity: 0.85;">
             Voir plus…
           </a>
@@ -547,7 +597,7 @@ function loadListDemande(demandes) {
       const voir = li.querySelector('a');
       voir.addEventListener('click', function (e) {
         e.preventDefault();
-        voirPlus(dm);
+        voirPlus(dm, e, containerSelector);
       });
       
       ul.appendChild(li);
@@ -561,20 +611,30 @@ function loadListDemande(demandes) {
   }
 }
 
-function voirPlus(dm) {
+async function voirPlus(dm, ev, containerSelector = '#liste-demande') {
   // Fermer tous les autres détails ouverts
   document.querySelectorAll('.detail-demande').forEach(detail => {
     detail.remove();
   });
   
   // Retirer la classe 'expanded' de tous les li
-  document.querySelectorAll('#liste-demande li').forEach(li => {
+  document.querySelectorAll(`${containerSelector} li`).forEach(li => {
     li.classList.remove('expanded');
   });
   
   // Trouver le li actuel et ajouter la classe expanded
-  const liActuel = event.target.closest('li');
+  const liActuel = ev && ev.target && ev.target.closest ? ev.target.closest('li') : null;
+  if (!liActuel) return;
   liActuel.classList.add('expanded');
+
+  const idProposer = dm && (dm.id_objet_proposer || dm.objet_proposer_id || dm.objet_proposer) ? parseInt(dm.id_objet_proposer || dm.objet_proposer_id || 0, 10) : 0;
+  const idRequise = dm && (dm.id_objet_requise || dm.objet_requise_id || dm.objet_requise) ? parseInt(dm.id_objet_requise || dm.objet_requise_id || 0, 10) : 0;
+
+  const titreProposer = dm && (dm.objet_proposer_title || dm.objet_proposer) ? String(dm.objet_proposer_title || dm.objet_proposer) : '';
+  const titreRequise = dm && (dm.objet_requise_title || dm.objet_requise) ? String(dm.objet_requise_title || dm.objet_requise) : '';
+
+  const imgProposer = (await getFirstObjetImageUrl(idProposer)) || '/assets/img/home-decor-1.jpg';
+  const imgRequise = (await getFirstObjetImageUrl(idRequise)) || '/assets/img/home-decor-1.jpg';
   
   // Créer le contenu détaillé
   const detailDiv = document.createElement('div');
@@ -585,16 +645,20 @@ function voirPlus(dm) {
       <div class="col-md-4">
         <div class="text-center mb-3">
           <p class="text-xs text-muted mb-2">Objet proposé</p>
-          <img src="/assets/img/home-decor-1.jpg" alt="${dm.objet_proposer}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
-          <p class="mt-2 mb-0"><strong>${dm.objet_proposer}</strong></p>
+          <div class="p-2 border-radius-lg" data-action="open-objet" data-id="${escapeHtml(String(idProposer))}" style="cursor:pointer;">
+            <img src="${escapeHtml(String(imgProposer))}" alt="${escapeHtml(titreProposer)}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
+            <p class="mt-2 mb-0"><strong>${escapeHtml(titreProposer)}</strong></p>
+          </div>
           <p class="text-xs text-muted mb-0">${dm.prix_proposer || 'Prix non spécifié'} Ar</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="text-center mb-3">
           <p class="text-xs text-muted mb-2">Objet requis</p>
-          <img src="/assets/img/home-decor-1.jpg" alt="${dm.objet_requise}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
-          <p class="mt-2 mb-0"><strong>${dm.objet_requise}</strong></p>
+          <div class="p-2 border-radius-lg" data-action="open-objet" data-id="${escapeHtml(String(idRequise))}" style="cursor:pointer;">
+            <img src="${escapeHtml(String(imgRequise))}" alt="${escapeHtml(titreRequise)}" class="img-fluid rounded shadow" style="max-height: 120px; object-fit: cover;">
+            <p class="mt-2 mb-0"><strong>${escapeHtml(titreRequise)}</strong></p>
+          </div>
           <p class="text-xs text-muted mb-0">${dm.prix_requise || 'Prix non spécifié'} Ar</p>
         </div>
       </div>
@@ -618,6 +682,16 @@ function voirPlus(dm) {
   const btn_accept = detailDiv.querySelector('#btn-accept');
   const btn_refus = detailDiv.querySelector('#btn-refuse');
 
+  detailDiv.querySelectorAll('[data-action="open-objet"]').forEach((el) => {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      const id = parseInt(el.getAttribute('data-id') || '0', 10);
+      if (id) {
+        goToObjetFiche(id);
+      }
+    });
+  });
+  
   btn_accept.addEventListener('click',async function (e) {
     e.preventDefault();
     const success = await acceptEchange(dm.id_echange);
@@ -627,7 +701,7 @@ function voirPlus(dm) {
       const id_user = getCurrentUserId();
       const listeDemande = await EchangesAttente(id_user);
       const listeObjet = await getObjet_User(id_user);
-      loadListDemande(listeDemande);
+      loadListDemande(listeDemande, containerSelector);
       loadListObjet(listeObjet);
     }
   });
@@ -639,9 +713,7 @@ function voirPlus(dm) {
       // Recharger la liste des demandes
       const id_user = getCurrentUserId();
       const listeDemande = await EchangesAttente(id_user);
-      const listeObjet = await getObjet_User(id_user);
-      loadListDemande(listeDemande);
-      loadListObjet(listeObjet);
+      loadListDemande(listeDemande, containerSelector);
     }
   });
   
