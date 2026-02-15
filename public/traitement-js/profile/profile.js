@@ -139,7 +139,15 @@ async function loadListObjet(liste) {
               </a>
             </div>
             <div class="card-body px-1 pb-0">
-              <p class="text-secondary mb-0 text-sm">${objet.prix_estime || '0'} Ar</p>
+              <p class="text-secondary mb-0 text-sm">
+                <span>${objet.prix_estime || '0'} Ar</span>
+                <button class="btn btn-sm btn-outline-primary px-2 py-1 ms-2" id="min" title="10%" style="font-size: 0.7rem; line-height: 1;">
+                    10%
+                </button>
+                <button class="btn btn-sm btn-outline-primary px-2 py-1" id="max" title="20%" style="font-size: 0.7rem; line-height: 1;">
+                    20%
+                </button>
+              </p>
               <a href="javascript:;">
                 <h5 class="font-weight-bolder">
                   ${objet.title || 'Sans titre'}
@@ -169,10 +177,33 @@ async function loadListObjet(liste) {
           </div>
         `;
 
+        // Bouton voir 
         const btn_voir = col.querySelector('#voir');
         btn_voir.addEventListener('click', async function (e) {
           e.preventDefault();
           voir_fiche(objet.id_objet);
+        });
+
+        // bouton + - 10%
+        const btn_10 = col.querySelector('#min');
+        btn_10.addEventListener('click',async function (e) {
+          e.preventDefault();
+          try {
+            voirMargeObjets(objet.id_objet, 10);
+          } catch (error) {
+            alert("Erreur lors du chargement des objets dans la marge de 10%: " + error.message);
+          }
+        });
+    
+        // bouton + - 20%
+        const btn_20 = col.querySelector('#max');
+        btn_20.addEventListener('click',async function (e) {
+          e.preventDefault();
+          try {
+            voirMargeObjets(objet.id_objet, 20);
+          } catch (error) {
+            alert("Erreur lors du chargement des objets dans la marge de 20%: " + error.message);
+          }
         });
         
         listObjet.appendChild(col);
@@ -634,5 +665,11 @@ function formatDate(dateString) {
 
 function voir_fiche(id_objet) {
   const url = `/view/objet/${id_objet}`;
+  window.location.href = url;
+}
+
+function voirMargeObjets(id_objet, marge) {
+  // rediriger vers une page qui affiche l'objet et la liste
+  const url = `/margeObjet?id=${id_objet}&marge=${marge}`;
   window.location.href = url;
 }

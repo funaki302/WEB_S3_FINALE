@@ -94,10 +94,10 @@ PROFILE :
      - return true / false
   }
 }
-[] lier le bouton 'Voir' de chaque objet du user connecter vers '/view/objet'{
-  [] ajouter url dans routes
+[ok] lier le bouton 'Voir' de chaque objet du user connecter vers '/view/objet'{
+  [ok] ajouter url dans routes
    - rediriger vers le view fiche_objet.php
-  [] creer un view fiche_objet.php
+  [ok] creer un view fiche_objet.php
 }
 
 / 11 fevrier 2026 /
@@ -147,22 +147,22 @@ FICHE_OBJET:
 
 / 12 fevrier 2026 /
 
-[] ajouter fonctionnalite dans fiche_objet.php{
-  [] ajouter 2 liens = +-10% et +-20%
-  [] si on clique sur un lien -> afficher les objets qui ont un prix 
+[ok] ajouter fonctionnalite dans fiche_objet.php{
+  [ok] ajouter 2 liens = +-10% et +-20%
+  [ok] si on clique sur un lien -> afficher les objets qui ont un prix 
     dans la fourchette de +-10% ou +-20% du prix de l objet afficher
-  [] ajouter fonction dans met_objet.js{
-    [] getMargeObjet(id_objet, marge%)
+  [ok] ajouter fonction dans met_objet.js{
+    [ok] getMargeObjet(id_objet, marge%)
       - faire appel a fecth vers '/api/getMarge/' avec data={id_objet, marge%}
       - return la liste des objet en json
   }
-  [] ajouter url dans routes.php{
-    [] '/api/getMarge/' avec data={id_objet, marge%}
+  [ok] ajouter url dans routes.php{
+    [ok] '/api/getMarge/' avec data={id_objet, marge%}
      - appel getMarge() de ObjetController
      - return la liste des objet en json
   }
-  [] ajouter fonction dans ficheObjet.js{
-    [] loadMarge(marge%)
+  [ok] ajouter fonction dans ficheObjet.js{
+    [ok] loadMarge(marge%)
      - affiche les objets qui ont un prix dans la fourchette de 
        +-10% ou +-20% du prix de l objet afficher
      - montre le % de difference de prix entre objet du user et 
@@ -171,4 +171,5 @@ FICHE_OBJET:
       . cliquer sur 'Echanger'-> rediriger vers la page de demande d echange avec 
         l objet selectionner
   }
+  [ok] mettre le resultat de loadMarge() dans une autre section pour plus de visibilite
 }

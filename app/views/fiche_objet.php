@@ -93,6 +93,7 @@
   </div>
   <!-- Id_objet -->
   <meta name="objet-id" content="<?= htmlspecialchars($id_objet) ?>">
+  
   <!--   Core JS Files   -->
   <script src="<?= BASE_URL ?>/assets/js/core/popper.min.js"></script>
   <script src="<?= BASE_URL ?>/assets/js/core/bootstrap.min.js"></script>

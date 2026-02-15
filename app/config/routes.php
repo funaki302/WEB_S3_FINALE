@@ -572,4 +572,13 @@ $router->group('', function(Router $router) use ($app) {
 		$app->json($result);
 	});
 
+	// Route pour la page margeObjet
+	$router->get('/margeObjet', function() use ($app) {
+		if (!isset($_SESSION['user_id'])) {
+			$app->redirect('/');
+			return;
+		}
+		$app->render('margeObjet', []);
+	});
+
 }, [ SecurityHeadersMiddleware::class ]);
