@@ -91,12 +91,12 @@
                   <form id="signInForm" role="form" action="<?= BASE_URL ?>/login" method="post">
                     <label>Email</label>
                     <div class="mb-3">
-                      <input type="email" id="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                      <input type="email" id="email" name="Email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon" value="admin@gmail.com">
                       <div id="emailError" class="invalid-feedback" style="display:none;"></div>
                     </div>
                     <label>Password</label>
                     <div class="mb-3 position-relative">
-                      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;">
+                      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" style="padding-right: 40px;" value="AdminS32026!">
                       <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="right:8px;top:50%;transform:translateY(-50%);padding:4px 8px;">
                         <img src="<?= BASE_URL ?>/assets/icons/eye-fill.svg" alt="Show password" style="width:16px;height:16px;"></button>
                     </div>

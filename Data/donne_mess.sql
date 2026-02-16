@@ -32,3 +32,7 @@ INSERT INTO tk_messages (id_discussion, id_sender, contenue, date_envoie) VALUES
 (4, 5, 'Can we review the Q1 budget assumptions tomorrow morning?', '2026-01-25'),
 (4, 6, 'Yes, schedule a meeting at 10:00.', '2026-01-25'),
 (4, 5, 'Meeting invite sent.', '2026-01-26');
+
+
+INSERT INTO tk_user (name, email, role, status, phone, join_date, last_active, pwd) VALUES
+('Admin', 'admin@gmail.com', 'admin', 'active', '+261341234567', '2024-01-15', '2026-02-02 10:15', '$2y$12$XjlDWnhLTOa1ugkO96uqWeZjQcPtnSN3nMm06n0HbKpWu2Feu8QVq');
